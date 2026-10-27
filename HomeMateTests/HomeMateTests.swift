@@ -453,7 +453,7 @@ struct PersistenceTests {
         #expect(store.records.count == 1)
         #expect(model.entries.first?.family == nil)
     }
-    @Test func privateVisibilityPreservesAllRecordFieldsAndEditsInPlace() async {
+    @Test func privateVisibilityPreservesAllRecordFieldsAndEditsInPlace() async throws {
         let url = temporaryURL(); defer { cleanup(url) }
         let store = HouseholdStore(storageURL: url, notificationsEnabled: false)
         for kind in [RecordKind.bill, .maintenance, .event, .expense] {
@@ -464,12 +464,13 @@ struct PersistenceTests {
             let model = RecordEditorViewModel(store: store, account: CloudAccount(), record: record, sharedMembers: nil, onSave: nil)
             #expect(model.taskVisibility == .privateTask)
             #expect(await model.save())
-            let saved = try? #require(store.records.first(where: { $0.id == record.id }))
-            #expect(saved?.amount == 1234)
-            #expect(saved?.referenceNumber == "REF-123")
-            #expect(saved?.reminderDate == record.reminderDate)
-            if kind == .bill { #expect(saved?.paidAt != nil) }
-            let editor = RecordEditorViewModel(store: store, account: CloudAccount(), record: saved ?? record, sharedMembers: nil, onSave: nil)
+            let matchingRecord: HouseholdRecord? = store.records.first { $0.id == record.id }
+            let saved = try #require(matchingRecord)
+            #expect(saved.amount == 1234)
+            #expect(saved.referenceNumber == "REF-123")
+            #expect(saved.reminderDate == record.reminderDate)
+            if kind == .bill { #expect(saved.paidAt != nil) }
+            let editor = RecordEditorViewModel(store: store, account: CloudAccount(), record: saved, sharedMembers: nil, onSave: nil)
             editor.changeVisibility(.shared)
             #expect(editor.taskVisibility == .privateTask)
             editor.record.title = "Edited"
