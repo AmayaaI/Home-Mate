@@ -1,0 +1,146 @@
+[
+  {
+    "text": "Fresh eggs and bread from Keells",
+    "category": "Groceries"
+  },
+  {
+    "text": "Market vegetables for cooking",
+    "category": "Groceries"
+  },
+  {
+    "text": "Weekly rice and dhal shopping",
+    "category": "Groceries"
+  },
+  {
+    "text": "Supermarket fruit and dairy",
+    "category": "Groceries"
+  },
+  {
+    "text": "Ceylon tea bags for pantry",
+    "category": "Groceries"
+  },
+  {
+    "text": "Milk powder and breakfast oats",
+    "category": "Groceries"
+  },
+  {
+    "text": "CEB monthly household power usage",
+    "category": "Utilities"
+  },
+  {
+    "text": "SLT broadband data bill",
+    "category": "Utilities"
+  },
+  {
+    "text": "Water supply payment to NWSDB",
+    "category": "Utilities"
+  },
+  {
+    "text": "Dialog mobile monthly charges",
+    "category": "Utilities"
+  },
+  {
+    "text": "Refill cylinder with cooking gas",
+    "category": "Utilities"
+  },
+  {
+    "text": "Pay home television subscription",
+    "category": "Utilities"
+  },
+  {
+    "text": "Uber taxi home from work",
+    "category": "Transport"
+  },
+  {
+    "text": "Diesel purchase for van",
+    "category": "Transport"
+  },
+  {
+    "text": "Bus ticket for morning commute",
+    "category": "Transport"
+  },
+  {
+    "text": "Replace car engine oil",
+    "category": "Transport"
+  },
+  {
+    "text": "Expressway toll charge",
+    "category": "Transport"
+  },
+  {
+    "text": "Parking at railway station",
+    "category": "Transport"
+  },
+  {
+    "text": "Repair leaking roof at house",
+    "category": "Home"
+  },
+  {
+    "text": "Buy new curtains for bedroom",
+    "category": "Home"
+  },
+  {
+    "text": "Pay apartment rent for June",
+    "category": "Home"
+  },
+  {
+    "text": "Kitchen sink plumber charge",
+    "category": "Home"
+  },
+  {
+    "text": "Deep cleaning the living room",
+    "category": "Home"
+  },
+  {
+    "text": "AC service for master bedroom",
+    "category": "Home"
+  },
+  {
+    "text": "Blood sugar laboratory check",
+    "category": "Health"
+  },
+  {
+    "text": "Dental clinic consultation",
+    "category": "Health"
+  },
+  {
+    "text": "Collect tablets at pharmacy",
+    "category": "Health"
+  },
+  {
+    "text": "Hospital ultrasound scan fee",
+    "category": "Health"
+  },
+  {
+    "text": "Prescription lenses from optician",
+    "category": "Health"
+  },
+  {
+    "text": "Clinic vaccination appointment",
+    "category": "Health"
+  },
+  {
+    "text": "Buy concert passes",
+    "category": "Other"
+  },
+  {
+    "text": "Donation to local charity",
+    "category": "Other"
+  },
+  {
+    "text": "New school stationery",
+    "category": "Other"
+  },
+  {
+    "text": "Family meal at restaurant",
+    "category": "Other"
+  },
+  {
+    "text": "Birthday present for sister",
+    "category": "Other"
+  },
+  {
+    "text": "Haircut and salon visit",
+    "category": "Other"
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "history": [
+      18000,
+      19500,
+      21000
+    ],
+    "actual": 22000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      30000,
+      30000,
+      30000
+    ],
+    "actual": 31000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      12000,
+      18000,
+      24000
+    ],
+    "actual": 16000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      60000,
+      25000,
+      28000
+    ],
+    "actual": 30000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      8000,
+      8500,
+      9000
+    ],
+    "actual": 25000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      45000,
+      42000,
+      39000
+    ],
+    "actual": 36000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      100000,
+      110000,
+      105000
+    ],
+    "actual": 120000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      15000,
+      15000,
+      16000
+    ],
+    "actual": 5000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      5000,
+      10000,
+      20000
+    ],
+    "actual": 30000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      22000,
+      28000,
+      24000
+    ],
+    "actual": 26000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      80000,
+      82000,
+      81000
+    ],
+    "actual": 83000,
+    "currency": "LKR"
+  },
+  {
+    "history": [
+      35000,
+      31000,
+      33000
+    ],
+    "actual": 34000,
+    "currency": "LKR"
+  }
+]

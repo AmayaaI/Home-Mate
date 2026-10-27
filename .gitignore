@@ -1,0 +1,31 @@
+# macOS and Xcode local state
+.DS_Store
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+*.xcresult
+*.xccheckout
+*.xcscmblueprint
+
+# Dependencies, caches and logs
+node_modules/
+.firebase/
+.emulator-data/
+.cache/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.log
+
+# Local credentials and downloaded Firebase configuration
+.env
+.env.*
+!.env.example
+GoogleService-Info*.plist
+*service-account*.json
+*serviceAccount*.json
+*.p8
+*.p12
+*.mobileprovision

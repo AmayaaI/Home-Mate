@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>HomeMate</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Use Face ID to unlock your private household information in HomeMate.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan household bills and receipts to extract their text.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Record a voice note to attach to your household conversation.</string>
+	<key>FirebaseAPIKey</key>
+	<string>AIzaSyD482WD0737DHL51_OCQxnDUKUIKqBf3cc</string>
+	<key>FirebaseProjectID</key>
+	<string>homemate-ios-20261019</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow HomeMate to set up arrival reminders for your saved errands.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow HomeMate to remind you when you arrive near an enabled errand, even while the app is closed. Your location is not shared with family.</string>
+</dict>
+</plist>

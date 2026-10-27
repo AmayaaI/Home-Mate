@@ -1,0 +1,14 @@
+{
+  "name": "homemate-firebase-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "firebase": "firebase",
+    "emulators": "firebase emulators:start --config ../firebase.json --project demo-homemate --only auth,firestore",
+    "test": "firebase emulators:exec --config ../firebase.json --project demo-homemate --only auth,firestore 'node --test tests/firebase.test.mjs'",
+    "configure": "node scripts/configure.mjs"
+  },
+  "devDependencies": {
+    "firebase-tools": "15.34.0"
+  }
+}

@@ -1,0 +1,37 @@
+text,category
+Fresh eggs and bread from Keells,Groceries
+Market vegetables for cooking,Groceries
+Weekly rice and dhal shopping,Groceries
+Supermarket fruit and dairy,Groceries
+Ceylon tea bags for pantry,Groceries
+Milk powder and breakfast oats,Groceries
+CEB monthly household power usage,Utilities
+SLT broadband data bill,Utilities
+Water supply payment to NWSDB,Utilities
+Dialog mobile monthly charges,Utilities
+Refill cylinder with cooking gas,Utilities
+Pay home television subscription,Utilities
+Uber taxi home from work,Transport
+Diesel purchase for van,Transport
+Bus ticket for morning commute,Transport
+Replace car engine oil,Transport
+Expressway toll charge,Transport
+Parking at railway station,Transport
+Repair leaking roof at house,Home
+Buy new curtains for bedroom,Home
+Pay apartment rent for June,Home
+Kitchen sink plumber charge,Home
+Deep cleaning the living room,Home
+AC service for master bedroom,Home
+Blood sugar laboratory check,Health
+Dental clinic consultation,Health
+Collect tablets at pharmacy,Health
+Hospital ultrasound scan fee,Health
+Prescription lenses from optician,Health
+Clinic vaccination appointment,Health
+Buy concert passes,Other
+Donation to local charity,Other
+New school stationery,Other
+Family meal at restaurant,Other
+Birthday present for sister,Other
+Haircut and salon visit,Other

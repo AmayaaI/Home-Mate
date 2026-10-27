@@ -1,0 +1,7 @@
+{
+  "indexes": [
+    {"collectionGroup":"familyInvites","queryScope":"COLLECTION","fields":[{"fieldPath":"email","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"}]},
+    {"collectionGroup":"familyInvites","queryScope":"COLLECTION","fields":[{"fieldPath":"inviterID","order":"ASCENDING"},{"fieldPath":"status","order":"ASCENDING"}]}
+  ],
+  "fieldOverrides": []
+}

@@ -1,0 +1,181 @@
+text,category
+Keells supermarket weekly groceries,Groceries
+Cargills Food City food shopping,Groceries
+Arpico grocery basket,Groceries
+rice dhal and coconut oil,Groceries
+fresh milk and eggs,Groceries
+vegetables from local market,Groceries
+fruit bananas and apples,Groceries
+bread from bakery for breakfast,Groceries
+Ceylon tea and sugar,Groceries
+fish from fish market,Groceries
+chicken and meat for cooking,Groceries
+potatoes carrots and onions,Groceries
+flour and baking ingredients,Groceries
+yoghurt and cheese,Groceries
+pasta and noodles,Groceries
+spices salt and pepper,Groceries
+breakfast cereal and oats,Groceries
+bottled drinking water groceries,Groceries
+frozen vegetables and peas,Groceries
+biscuits and crackers,Groceries
+tinned tuna and beans,Groceries
+weekly pantry restock,Groceries
+butter and cooking oil,Groceries
+green leaves from vegetable stall,Groceries
+baby food and milk powder,Groceries
+coffee beans and cocoa,Groceries
+red rice and lentils,Groceries
+grocery delivery from supermarket,Groceries
+dairy products and curd,Groceries
+fresh produce for family meals,Groceries
+CEB electricity bill,Utilities
+LECO monthly power payment,Utilities
+National Water Board bill,Utilities
+Dialog home broadband subscription,Utilities
+SLT fibre internet monthly rental,Utilities
+Mobitel mobile phone bill,Utilities
+Lanka Bell telephone charges,Utilities
+domestic gas cylinder refill,Utilities
+household utility payment,Utilities
+electric meter standing charge,Utilities
+water supply monthly invoice,Utilities
+home internet data package,Utilities
+prepaid phone recharge,Utilities
+electricity usage for apartment,Utilities
+landline telephone rental,Utilities
+broadband router connection fee,Utilities
+sewerage service bill,Utilities
+municipal waste collection fee,Utilities
+cooking gas delivery,Utilities
+electric power late payment,Utilities
+Dialog television subscription,Utilities
+Peo TV monthly fee,Utilities
+renewal of home WiFi plan,Utilities
+Hutch mobile data top up,Utilities
+NWSDB water invoice,Utilities
+monthly satellite television service,Utilities
+home telephone call charges,Utilities
+utility service connection deposit,Utilities
+gas cylinder for household cooking,Utilities
+internet installation service,Utilities
+petrol for family car,Transport
+diesel fuel at filling station,Transport
+PickMe taxi ride home,Transport
+Uber trip to office,Transport
+bus fare to Colombo,Transport
+train ticket to Kandy,Transport
+tuk tuk fare to market,Transport
+expressway toll payment,Transport
+parking fee at shopping mall,Transport
+vehicle service and engine oil,Transport
+car insurance renewal,Transport
+motorcycle tyre replacement,Transport
+car repair at garage,Transport
+annual vehicle revenue licence,Transport
+emission test for vehicle,Transport
+school van transport fee,Transport
+monthly bus season pass,Transport
+airport taxi transfer,Transport
+wheel alignment and balancing,Transport
+car battery replacement,Transport
+motorbike petrol refill,Transport
+train season ticket,Transport
+paid parking at hospital,Transport
+car wash and vehicle cleaning,Transport
+three wheeler transport charge,Transport
+highway toll for family trip,Transport
+brake pads for car,Transport
+vehicle air filter replacement,Transport
+taxi booking charge,Transport
+public transport card top up,Transport
+monthly house rent,Home
+apartment rental payment,Home
+plumber repaired kitchen tap,Home
+electrician fixed ceiling light,Home
+AC maintenance and cleaning,Home
+washing machine repair,Home
+new sofa for living room,Home
+bedroom furniture purchase,Home
+garden maintenance service,Home
+roof leak repair,Home
+paint for bedroom walls,Home
+mop and floor cleaner,Home
+laundry detergent and dish soap,Home
+home cleaning service,Home
+pest control treatment,Home
+replacement light bulbs,Home
+door lock and house keys,Home
+curtains for living room,Home
+kitchen utensils and plates,Home
+mattress and pillows,Home
+bathroom shower repair,Home
+carpenter fixed wardrobe,Home
+refrigerator servicing,Home
+garden plants and compost,Home
+gutter cleaning before rain,Home
+home appliance spare parts,Home
+housing association maintenance fee,Home
+tiles and cement for home repair,Home
+new broom and dustpan,Home
+water pump repair for house,Home
+pharmacy medicine purchase,Health
+doctor consultation fee,Health
+hospital medical bill,Health
+dental checkup and cleaning,Health
+blood test laboratory fee,Health
+prescription tablets and antibiotics,Health
+vitamins from pharmacy,Health
+eye test at optician,Health
+physiotherapy treatment session,Health
+health insurance premium,Health
+medical scan and X ray,Health
+vaccination at clinic,Health
+specialist channeling appointment,Health
+asthma inhaler refill,Health
+diabetes medicine refill,Health
+dental filling at dentist,Health
+spectacles and prescription lenses,Health
+surgical dressing and bandages,Health
+child pediatric consultation,Health
+clinic registration and treatment,Health
+pain relief medicine,Health
+allergy medication at pharmacy,Health
+medical equipment thermometer,Health
+hospital admission fee,Health
+routine health screening,Health
+first aid kit for home,Health
+doctor prescribed cough syrup,Health
+eye drops from chemist,Health
+cardiology consultation,Health
+laboratory urine test,Health
+cinema tickets for family,Other
+birthday gift for cousin,Other
+restaurant dinner with family,Other
+school tuition class fees,Other
+books and stationery,Other
+clothes and shoes shopping,Other
+charity donation,Other
+museum entry tickets,Other
+haircut at salon,Other
+streaming music membership,Other
+hotel stay for holiday,Other
+gym membership fee,Other
+pet food for dog,Other
+veterinary visit for cat,Other
+university examination fee,Other
+birthday cake for celebration,Other
+sports club subscription,Other
+travel suitcase purchase,Other
+bank account service fee,Other
+postage and courier parcel,Other
+mobile phone handset purchase,Other
+laptop accessories and charger,Other
+art supplies and craft paper,Other
+concert tickets,Other
+kids toys and board game,Other
+wedding present,Other
+online course registration,Other
+swimming lesson fees,Other
+photo printing service,Other
+passport application fee,Other

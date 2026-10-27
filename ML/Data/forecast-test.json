@@ -1,0 +1,1602 @@
+[
+  {
+    "latestRatio": 0.998140492809438,
+    "previousRatio": 0.9932026410867661,
+    "nextRatio": 0.9836810556127809
+  },
+  {
+    "latestRatio": 0.9612902599269377,
+    "previousRatio": 0.9843065947873707,
+    "nextRatio": 0.9356507543612289
+  },
+  {
+    "latestRatio": 0.9275868602013766,
+    "previousRatio": 0.9780010071769716,
+    "nextRatio": 0.8107000609553195
+  },
+  {
+    "latestRatio": 1.0958687643150693,
+    "previousRatio": 0.9991217798142548,
+    "nextRatio": 1.2142950681198217
+  },
+  {
+    "latestRatio": 1.0842894660168763,
+    "previousRatio": 0.9753555255379455,
+    "nextRatio": 1.2512276938847173
+  },
+  {
+    "latestRatio": 0.9433097405551889,
+    "previousRatio": 0.9746381056592881,
+    "nextRatio": 0.8750411695607793
+  },
+  {
+    "latestRatio": 0.8999476489327607,
+    "previousRatio": 1.0078317779107975,
+    "nextRatio": 0.8540078707084764
+  },
+  {
+    "latestRatio": 1.1382950749928014,
+    "previousRatio": 0.9855532826207545,
+    "nextRatio": 1.2726454036135981
+  },
+  {
+    "latestRatio": 0.9295774919349837,
+    "previousRatio": 0.9711191139817125,
+    "nextRatio": 0.8148431979674458
+  },
+  {
+    "latestRatio": 1.1028628328694652,
+    "previousRatio": 0.9951191377062316,
+    "nextRatio": 1.2428081500914272
+  },
+  {
+    "latestRatio": 1.0260869398004155,
+    "previousRatio": 1.010265525134462,
+    "nextRatio": 1.0516940772513435
+  },
+  {
+    "latestRatio": 1.0564422887411165,
+    "previousRatio": 0.9893803188710896,
+    "nextRatio": 1.1324407185216898
+  },
+  {
+    "latestRatio": 1.0476869911747253,
+    "previousRatio": 0.9857556235441993,
+    "nextRatio": 1.0778200793148638
+  },
+  {
+    "latestRatio": 1.121960088026252,
+    "previousRatio": 0.9882223877369439,
+    "nextRatio": 1.2467974108154278
+  },
+  {
+    "latestRatio": 1.0197773826149066,
+    "previousRatio": 0.9965780154267951,
+    "nextRatio": 1.0500874022903923
+  },
+  {
+    "latestRatio": 1.080901342161438,
+    "previousRatio": 0.9961803856345323,
+    "nextRatio": 1.2025630913447045
+  },
+  {
+    "latestRatio": 0.9655997306838491,
+    "previousRatio": 1.0076685859245351,
+    "nextRatio": 0.9316733918948338
+  },
+  {
+    "latestRatio": 0.9492427995276123,
+    "previousRatio": 0.978402059963049,
+    "nextRatio": 0.895484824874889
+  },
+  {
+    "latestRatio": 0.9135674620738694,
+    "previousRatio": 1.0444252535645497,
+    "nextRatio": 0.8988711820885138
+  },
+  {
+    "latestRatio": 1.0898859454195726,
+    "previousRatio": 0.9893284744273008,
+    "nextRatio": 1.1936054858430238
+  },
+  {
+    "latestRatio": 0.9917720659168245,
+    "previousRatio": 0.9824904912338555,
+    "nextRatio": 1.0124604243089328
+  },
+  {
+    "latestRatio": 0.942207867295483,
+    "previousRatio": 1.030416012964343,
+    "nextRatio": 0.8937535051177966
+  },
+  {
+    "latestRatio": 0.9270011967223649,
+    "previousRatio": 0.9909378051230344,
+    "nextRatio": 0.8209320314490418
+  },
+  {
+    "latestRatio": 1.0096142276053781,
+    "previousRatio": 1.0080055347770849,
+    "nextRatio": 1.0534572204871242
+  },
+  {
+    "latestRatio": 1.0324764546998502,
+    "previousRatio": 0.9821991017919354,
+    "nextRatio": 1.0580116785073976
+  },
+  {
+    "latestRatio": 1.0516099268659216,
+    "previousRatio": 0.9920346746620703,
+    "nextRatio": 1.1123059676015217
+  },
+  {
+    "latestRatio": 0.9976482883218252,
+    "previousRatio": 1.0116011433580354,
+    "nextRatio": 1.0515461053505464
+  },
+  {
+    "latestRatio": 0.9871042646022871,
+    "previousRatio": 1.0145700949102574,
+    "nextRatio": 1.0565735623754382
+  },
+  {
+    "latestRatio": 1.097155468389467,
+    "previousRatio": 1.0018015670249867,
+    "nextRatio": 1.1939883755277696
+  },
+  {
+    "latestRatio": 1.017776974088011,
+    "previousRatio": 1.0018593531347029,
+    "nextRatio": 1.11430628506698
+  },
+  {
+    "latestRatio": 1.0527202503973712,
+    "previousRatio": 1.0136429290839615,
+    "nextRatio": 1.1164747227937608
+  },
+  {
+    "latestRatio": 0.9936972760448228,
+    "previousRatio": 1.0095125826812024,
+    "nextRatio": 1.0122797678708526
+  },
+  {
+    "latestRatio": 1.0784650738139085,
+    "previousRatio": 1.0268387166700368,
+    "nextRatio": 1.2000396210081112
+  },
+  {
+    "latestRatio": 1.1038235945009882,
+    "previousRatio": 0.997566570854516,
+    "nextRatio": 1.2582331392087793
+  },
+  {
+    "latestRatio": 0.9702096815012812,
+    "previousRatio": 1.0003985135676463,
+    "nextRatio": 0.9816427667275824
+  },
+  {
+    "latestRatio": 0.9948368164541982,
+    "previousRatio": 0.9959873425609135,
+    "nextRatio": 1.0585675051021695
+  },
+  {
+    "latestRatio": 0.9433934241093993,
+    "previousRatio": 0.9967304458865496,
+    "nextRatio": 0.9085434114914719
+  },
+  {
+    "latestRatio": 0.9588005536346524,
+    "previousRatio": 1.0038720041464988,
+    "nextRatio": 0.9431018748478341
+  },
+  {
+    "latestRatio": 1.0539439643428963,
+    "previousRatio": 0.959123632318537,
+    "nextRatio": 1.0252085388931378
+  },
+  {
+    "latestRatio": 1.0076613956634437,
+    "previousRatio": 0.9884025231059531,
+    "nextRatio": 0.9984686337752683
+  },
+  {
+    "latestRatio": 0.9863722315868594,
+    "previousRatio": 1.0108330398546364,
+    "nextRatio": 0.9844337360090445
+  },
+  {
+    "latestRatio": 0.7977550045847497,
+    "previousRatio": 1.0284180189944314,
+    "nextRatio": 0.7024421715755865
+  },
+  {
+    "latestRatio": 1.1024553247316413,
+    "previousRatio": 1.0006033212805896,
+    "nextRatio": 1.1889531404574416
+  },
+  {
+    "latestRatio": 1.0138502774638753,
+    "previousRatio": 1.0093537995857886,
+    "nextRatio": 1.003104913425591
+  },
+  {
+    "latestRatio": 1.044281369654786,
+    "previousRatio": 1.0185876040998618,
+    "nextRatio": 1.090669527763573
+  },
+  {
+    "latestRatio": 0.9230832740299364,
+    "previousRatio": 1.00300257350054,
+    "nextRatio": 0.9268991224167354
+  },
+  {
+    "latestRatio": 1.0672897295824535,
+    "previousRatio": 1.0126196386100381,
+    "nextRatio": 1.1398447528644686
+  },
+  {
+    "latestRatio": 1.0690446519095447,
+    "previousRatio": 0.9908484170524408,
+    "nextRatio": 1.1185769620235468
+  },
+  {
+    "latestRatio": 1.135321308335853,
+    "previousRatio": 0.9996325795735012,
+    "nextRatio": 1.2287315047734881
+  },
+  {
+    "latestRatio": 0.983330709720923,
+    "previousRatio": 0.9768980350277201,
+    "nextRatio": 0.9666052160209412
+  },
+  {
+    "latestRatio": 0.93877897492109,
+    "previousRatio": 1.0139680545292535,
+    "nextRatio": 0.9285354858676087
+  },
+  {
+    "latestRatio": 1.072239735406262,
+    "previousRatio": 0.9748469889985888,
+    "nextRatio": 1.1129629093482267
+  },
+  {
+    "latestRatio": 0.960217309650541,
+    "previousRatio": 0.9920343299248208,
+    "nextRatio": 0.9641412794966885
+  },
+  {
+    "latestRatio": 1.0328825509690438,
+    "previousRatio": 1.012954595672208,
+    "nextRatio": 1.1182102205952473
+  },
+  {
+    "latestRatio": 1.1197959456992637,
+    "previousRatio": 1.0016352437136704,
+    "nextRatio": 1.242896445534473
+  },
+  {
+    "latestRatio": 0.9245171843905607,
+    "previousRatio": 1.0012330846717514,
+    "nextRatio": 0.8897867424690257
+  },
+  {
+    "latestRatio": 1.1274761229586274,
+    "previousRatio": 0.9955097675165587,
+    "nextRatio": 1.2699142803208423
+  },
+  {
+    "latestRatio": 1.098973766995044,
+    "previousRatio": 0.9808724139399847,
+    "nextRatio": 1.1742854283909223
+  },
+  {
+    "latestRatio": 1.0515997135433035,
+    "previousRatio": 0.9850505680940911,
+    "nextRatio": 1.1086602625979611
+  },
+  {
+    "latestRatio": 1.081178416248356,
+    "previousRatio": 1.0197625135311394,
+    "nextRatio": 1.150575486908455
+  },
+  {
+    "latestRatio": 0.8943287073599148,
+    "previousRatio": 0.9986925767137301,
+    "nextRatio": 0.7465421713514766
+  },
+  {
+    "latestRatio": 1.059554863317695,
+    "previousRatio": 0.9852973635217532,
+    "nextRatio": 1.0920495232484988
+  },
+  {
+    "latestRatio": 0.9535448987331655,
+    "previousRatio": 0.9971891932997398,
+    "nextRatio": 0.8955594405874457
+  },
+  {
+    "latestRatio": 1.1154048233500626,
+    "previousRatio": 0.9681639270792353,
+    "nextRatio": 1.2645681775921036
+  },
+  {
+    "latestRatio": 0.9639628424996203,
+    "previousRatio": 0.9697828233022284,
+    "nextRatio": 0.9459976425000597
+  },
+  {
+    "latestRatio": 1.0148831741379067,
+    "previousRatio": 1.0199215185286594,
+    "nextRatio": 1.0170962089929343
+  },
+  {
+    "latestRatio": 0.913130280984012,
+    "previousRatio": 0.9899798348598894,
+    "nextRatio": 0.8485337085038144
+  },
+  {
+    "latestRatio": 0.9080718029416457,
+    "previousRatio": 0.9837650374192448,
+    "nextRatio": 0.8119605274689863
+  },
+  {
+    "latestRatio": 0.9869622916095283,
+    "previousRatio": 1.0001086273078357,
+    "nextRatio": 1.0048818755817002
+  },
+  {
+    "latestRatio": 0.8859930840816795,
+    "previousRatio": 1.010771129101907,
+    "nextRatio": 0.8124514475065101
+  },
+  {
+    "latestRatio": 1.0734735279291387,
+    "previousRatio": 0.9817572241756847,
+    "nextRatio": 1.1640757947994316
+  },
+  {
+    "latestRatio": 0.916074767065281,
+    "previousRatio": 0.9932180345609651,
+    "nextRatio": 0.8641249160240947
+  },
+  {
+    "latestRatio": 1.0817671419333788,
+    "previousRatio": 0.9856975512738155,
+    "nextRatio": 1.168518052691655
+  },
+  {
+    "latestRatio": 1.0543360728798274,
+    "previousRatio": 0.9963469291928877,
+    "nextRatio": 1.1063294813786693
+  },
+  {
+    "latestRatio": 1.0680913581714475,
+    "previousRatio": 0.9642858614690367,
+    "nextRatio": 1.1526420980536956
+  },
+  {
+    "latestRatio": 0.9301452093592912,
+    "previousRatio": 0.9910021103403243,
+    "nextRatio": 0.891796334602895
+  },
+  {
+    "latestRatio": 1.0584924371279725,
+    "previousRatio": 1.0074110710055715,
+    "nextRatio": 1.1685908716808666
+  },
+  {
+    "latestRatio": 0.9266915771985241,
+    "previousRatio": 0.971525667406849,
+    "nextRatio": 0.7861115414504284
+  },
+  {
+    "latestRatio": 1.0705260884205217,
+    "previousRatio": 1.0203972051321981,
+    "nextRatio": 1.0791410203342422
+  },
+  {
+    "latestRatio": 1.111420606241276,
+    "previousRatio": 0.9707442887568605,
+    "nextRatio": 1.2647044106350152
+  },
+  {
+    "latestRatio": 0.9406002449701543,
+    "previousRatio": 0.9810403550101089,
+    "nextRatio": 0.7835328177919607
+  },
+  {
+    "latestRatio": 1.0319868980507612,
+    "previousRatio": 1.0054717889256881,
+    "nextRatio": 1.1163741828682439
+  },
+  {
+    "latestRatio": 1.0691248608545065,
+    "previousRatio": 1.0162397838555608,
+    "nextRatio": 1.192480112416295
+  },
+  {
+    "latestRatio": 1.1294680061636415,
+    "previousRatio": 0.9790177055051372,
+    "nextRatio": 1.2666133461949574
+  },
+  {
+    "latestRatio": 0.9236223460956692,
+    "previousRatio": 0.9805660231499083,
+    "nextRatio": 0.8372483753224003
+  },
+  {
+    "latestRatio": 0.9641757436115507,
+    "previousRatio": 1.0132477566342086,
+    "nextRatio": 0.9323095183565957
+  },
+  {
+    "latestRatio": 1.1036046848990364,
+    "previousRatio": 1.003180820281538,
+    "nextRatio": 1.2494151437893062
+  },
+  {
+    "latestRatio": 0.968901063979922,
+    "previousRatio": 1.0326853210399787,
+    "nextRatio": 0.9872330018273036
+  },
+  {
+    "latestRatio": 0.9002919403550123,
+    "previousRatio": 1.0079381869070372,
+    "nextRatio": 0.8258113037855088
+  },
+  {
+    "latestRatio": 1.1142950863479453,
+    "previousRatio": 0.9911271276629282,
+    "nextRatio": 1.1663885294703737
+  },
+  {
+    "latestRatio": 0.9878402167188102,
+    "previousRatio": 1.0036272357199831,
+    "nextRatio": 0.9657745514648407
+  },
+  {
+    "latestRatio": 1.084908054707468,
+    "previousRatio": 1.0119861800056975,
+    "nextRatio": 1.2049638327510497
+  },
+  {
+    "latestRatio": 1.0197528684895678,
+    "previousRatio": 0.9972116200816177,
+    "nextRatio": 1.054305236822734
+  },
+  {
+    "latestRatio": 0.9613893361789808,
+    "previousRatio": 1.0160422811344416,
+    "nextRatio": 1.0213606007822218
+  },
+  {
+    "latestRatio": 0.9504776352855131,
+    "previousRatio": 0.9748384650388064,
+    "nextRatio": 0.9631684098147485
+  },
+  {
+    "latestRatio": 1.0720764884841327,
+    "previousRatio": 0.9753622201060687,
+    "nextRatio": 1.174208298047581
+  },
+  {
+    "latestRatio": 0.994990081370062,
+    "previousRatio": 0.9902828228920959,
+    "nextRatio": 0.9909087448029448
+  },
+  {
+    "latestRatio": 0.9655158225308608,
+    "previousRatio": 1.0061685021096023,
+    "nextRatio": 0.9578776281855137
+  },
+  {
+    "latestRatio": 0.9648182837371578,
+    "previousRatio": 0.9902653837476842,
+    "nextRatio": 0.9393150888919171
+  },
+  {
+    "latestRatio": 0.909903666815036,
+    "previousRatio": 0.982313879339061,
+    "nextRatio": 0.8362275825497615
+  },
+  {
+    "latestRatio": 1.031821244210364,
+    "previousRatio": 0.9975034102920477,
+    "nextRatio": 1.0922191689249905
+  },
+  {
+    "latestRatio": 0.942320801545014,
+    "previousRatio": 0.9957736642985852,
+    "nextRatio": 0.8903035170548561
+  },
+  {
+    "latestRatio": 1.10435748021886,
+    "previousRatio": 0.9925184463754383,
+    "nextRatio": 1.2106382802252924
+  },
+  {
+    "latestRatio": 1.0629503486118017,
+    "previousRatio": 1.0117788146108273,
+    "nextRatio": 1.0721295660878025
+  },
+  {
+    "latestRatio": 1.0405052385366027,
+    "previousRatio": 1.0022095275530054,
+    "nextRatio": 1.1951234902856358
+  },
+  {
+    "latestRatio": 1.1069598433969952,
+    "previousRatio": 0.9654428768687048,
+    "nextRatio": 1.2327023750185886
+  },
+  {
+    "latestRatio": 0.9890373876867845,
+    "previousRatio": 0.9857685234933221,
+    "nextRatio": 0.9827406036696209
+  },
+  {
+    "latestRatio": 0.9738789826612421,
+    "previousRatio": 1.0133138361096845,
+    "nextRatio": 0.997733498435843
+  },
+  {
+    "latestRatio": 0.9239123955916195,
+    "previousRatio": 0.9817946049279573,
+    "nextRatio": 0.8828216199589736
+  },
+  {
+    "latestRatio": 0.9214937633864805,
+    "previousRatio": 1.025791991089579,
+    "nextRatio": 0.8645076517208332
+  },
+  {
+    "latestRatio": 1.135010515465271,
+    "previousRatio": 0.9789630761663813,
+    "nextRatio": 1.2521825545474559
+  },
+  {
+    "latestRatio": 1.095471176854942,
+    "previousRatio": 1.0058051525456158,
+    "nextRatio": 1.2311292549781216
+  },
+  {
+    "latestRatio": 0.9599330698646497,
+    "previousRatio": 1.00036839860658,
+    "nextRatio": 0.9509920510918716
+  },
+  {
+    "latestRatio": 0.9910345902072457,
+    "previousRatio": 1.0052353545291077,
+    "nextRatio": 1.083934625995141
+  },
+  {
+    "latestRatio": 1.0404711564456137,
+    "previousRatio": 0.9942247375531665,
+    "nextRatio": 1.0711283580249897
+  },
+  {
+    "latestRatio": 1.0245328326485652,
+    "previousRatio": 1.0006171849273107,
+    "nextRatio": 0.9807547990523787
+  },
+  {
+    "latestRatio": 0.9109609809354967,
+    "previousRatio": 0.9921930082587633,
+    "nextRatio": 0.893355606506189
+  },
+  {
+    "latestRatio": 0.9858051728140664,
+    "previousRatio": 0.9952699037415959,
+    "nextRatio": 1.0019506427409777
+  },
+  {
+    "latestRatio": 1.0284304561547657,
+    "previousRatio": 0.9872592346152911,
+    "nextRatio": 1.0372162655190404
+  },
+  {
+    "latestRatio": 1.0003320891751772,
+    "previousRatio": 0.9910094835872786,
+    "nextRatio": 0.9352716657931818
+  },
+  {
+    "latestRatio": 0.9853257817211397,
+    "previousRatio": 0.9972199277654887,
+    "nextRatio": 0.8963596202973592
+  },
+  {
+    "latestRatio": 0.9464824245200208,
+    "previousRatio": 1.0227641979281024,
+    "nextRatio": 0.8735406843495366
+  },
+  {
+    "latestRatio": 0.8909886536099374,
+    "previousRatio": 1.023099213242459,
+    "nextRatio": 0.7890861493561779
+  },
+  {
+    "latestRatio": 1.0845423100643885,
+    "previousRatio": 1.013538089133243,
+    "nextRatio": 1.1515653969250017
+  },
+  {
+    "latestRatio": 0.9939585706717786,
+    "previousRatio": 1.0406668567739419,
+    "nextRatio": 1.0255460808381232
+  },
+  {
+    "latestRatio": 0.92851884517551,
+    "previousRatio": 1.002419206000108,
+    "nextRatio": 0.8233766690165357
+  },
+  {
+    "latestRatio": 1.0027656437878427,
+    "previousRatio": 0.9785529383742196,
+    "nextRatio": 0.8919703008635008
+  },
+  {
+    "latestRatio": 0.9458354895812349,
+    "previousRatio": 0.997629250313041,
+    "nextRatio": 0.9302139058505368
+  },
+  {
+    "latestRatio": 0.9278648881825033,
+    "previousRatio": 1.014813723540354,
+    "nextRatio": 0.881930492049799
+  },
+  {
+    "latestRatio": 0.9604859480030845,
+    "previousRatio": 1.0086297088771405,
+    "nextRatio": 0.822950977644154
+  },
+  {
+    "latestRatio": 0.9617636120252585,
+    "previousRatio": 1.0271101462329701,
+    "nextRatio": 0.9133095039679585
+  },
+  {
+    "latestRatio": 0.9615163978910127,
+    "previousRatio": 1.0089668645479808,
+    "nextRatio": 0.9393322708318289
+  },
+  {
+    "latestRatio": 1.1306837444608395,
+    "previousRatio": 0.999244623055165,
+    "nextRatio": 1.262358358868668
+  },
+  {
+    "latestRatio": 1.028348576135186,
+    "previousRatio": 0.9821604212706918,
+    "nextRatio": 1.067856163737611
+  },
+  {
+    "latestRatio": 0.9778502506590627,
+    "previousRatio": 1.0205488858827227,
+    "nextRatio": 0.9934048410542151
+  },
+  {
+    "latestRatio": 1.0281836304303522,
+    "previousRatio": 0.990077227481393,
+    "nextRatio": 1.1105842162804733
+  },
+  {
+    "latestRatio": 0.9680229450478026,
+    "previousRatio": 1.0066385463818979,
+    "nextRatio": 0.9593568960405472
+  },
+  {
+    "latestRatio": 0.9643766669006327,
+    "previousRatio": 0.9983110151005483,
+    "nextRatio": 0.9413622762236782
+  },
+  {
+    "latestRatio": 1.1182441777666037,
+    "previousRatio": 0.9909622363821108,
+    "nextRatio": 1.2363503345700215
+  },
+  {
+    "latestRatio": 1.0780948877461665,
+    "previousRatio": 0.9831340962988222,
+    "nextRatio": 1.1341156638090952
+  },
+  {
+    "latestRatio": 1.0571415421767847,
+    "previousRatio": 1.0065076127234591,
+    "nextRatio": 1.0448132944550077
+  },
+  {
+    "latestRatio": 0.972280349594639,
+    "previousRatio": 1.0027606966852123,
+    "nextRatio": 0.9729433303172375
+  },
+  {
+    "latestRatio": 0.9342002741674056,
+    "previousRatio": 1.0012397924489886,
+    "nextRatio": 0.8787466520087082
+  },
+  {
+    "latestRatio": 1.0143796228688522,
+    "previousRatio": 1.0090739246258442,
+    "nextRatio": 0.97601125745924
+  },
+  {
+    "latestRatio": 1.028856164349859,
+    "previousRatio": 1.0073083395182858,
+    "nextRatio": 1.011810793291092
+  },
+  {
+    "latestRatio": 1.0421266818252586,
+    "previousRatio": 1.0201102202669239,
+    "nextRatio": 1.079904520426428
+  },
+  {
+    "latestRatio": 1.1094739364795636,
+    "previousRatio": 1.0019604236893889,
+    "nextRatio": 1.202958141926938
+  },
+  {
+    "latestRatio": 1.0271206233198802,
+    "previousRatio": 1.0272973519738615,
+    "nextRatio": 1.1014389105301674
+  },
+  {
+    "latestRatio": 1.0748705281739235,
+    "previousRatio": 0.9910742469573813,
+    "nextRatio": 1.1801585713105434
+  },
+  {
+    "latestRatio": 1.1292910755785683,
+    "previousRatio": 1.0016791563134297,
+    "nextRatio": 1.278252336017214
+  },
+  {
+    "latestRatio": 1.111451550941843,
+    "previousRatio": 1.0007883155830428,
+    "nextRatio": 1.1692677578608552
+  },
+  {
+    "latestRatio": 1.0989009739035518,
+    "previousRatio": 1.0083077852016322,
+    "nextRatio": 1.2209396585328849
+  },
+  {
+    "latestRatio": 0.9462331235439231,
+    "previousRatio": 1.0013249409461744,
+    "nextRatio": 0.917018914088891
+  },
+  {
+    "latestRatio": 1.049028324083487,
+    "previousRatio": 1.0117502844822202,
+    "nextRatio": 1.173862366725905
+  },
+  {
+    "latestRatio": 1.0044591120174402,
+    "previousRatio": 0.9995388630355606,
+    "nextRatio": 1.0243944435563792
+  },
+  {
+    "latestRatio": 1.033326892764503,
+    "previousRatio": 1.0142866290322958,
+    "nextRatio": 1.0903752695847873
+  },
+  {
+    "latestRatio": 1.088169598346949,
+    "previousRatio": 0.9889324642264493,
+    "nextRatio": 1.2198682430536278
+  },
+  {
+    "latestRatio": 1.005392956870123,
+    "previousRatio": 1.0152788686217598,
+    "nextRatio": 0.9676838351290689
+  },
+  {
+    "latestRatio": 1.0364780804312879,
+    "previousRatio": 0.9942795241024743,
+    "nextRatio": 1.1128066444292042
+  },
+  {
+    "latestRatio": 1.112596047859377,
+    "previousRatio": 0.9988032863208837,
+    "nextRatio": 1.2118306923024151
+  },
+  {
+    "latestRatio": 1.0573493791824464,
+    "previousRatio": 1.0056696173793418,
+    "nextRatio": 1.0982168597998672
+  },
+  {
+    "latestRatio": 0.9804031175720498,
+    "previousRatio": 0.9790858761547993,
+    "nextRatio": 0.9605126500391991
+  },
+  {
+    "latestRatio": 0.9889751365369663,
+    "previousRatio": 0.9855405473330447,
+    "nextRatio": 0.9042161035900599
+  },
+  {
+    "latestRatio": 1.0696870360111914,
+    "previousRatio": 0.9815951168985223,
+    "nextRatio": 1.167123139021407
+  },
+  {
+    "latestRatio": 1.058306858737138,
+    "previousRatio": 0.9914761643397264,
+    "nextRatio": 1.1045807818007243
+  },
+  {
+    "latestRatio": 0.837924078128955,
+    "previousRatio": 1.0007946381404174,
+    "nextRatio": 0.7608693491818087
+  },
+  {
+    "latestRatio": 1.0315627457630772,
+    "previousRatio": 1.0020177543294173,
+    "nextRatio": 1.029498913839515
+  },
+  {
+    "latestRatio": 0.9905551285126145,
+    "previousRatio": 0.9972283847073659,
+    "nextRatio": 1.0307564327970047
+  },
+  {
+    "latestRatio": 1.0949164610019124,
+    "previousRatio": 1.003022217979715,
+    "nextRatio": 1.1517887174427135
+  },
+  {
+    "latestRatio": 0.9127528488215493,
+    "previousRatio": 1.0298566131897782,
+    "nextRatio": 0.9668627507257909
+  },
+  {
+    "latestRatio": 1.0810431271797616,
+    "previousRatio": 1.000186445113894,
+    "nextRatio": 1.1346116563219655
+  },
+  {
+    "latestRatio": 0.9867060622963384,
+    "previousRatio": 0.9827948972311524,
+    "nextRatio": 0.9811461467067109
+  },
+  {
+    "latestRatio": 1.0638014060292187,
+    "previousRatio": 1.010257800819964,
+    "nextRatio": 1.1312746547046186
+  },
+  {
+    "latestRatio": 1.0634690351386076,
+    "previousRatio": 0.985028601196093,
+    "nextRatio": 1.1325562415734745
+  },
+  {
+    "latestRatio": 0.9187981814718383,
+    "previousRatio": 1.012575607271115,
+    "nextRatio": 0.8971319681039319
+  },
+  {
+    "latestRatio": 0.9992771193546743,
+    "previousRatio": 1.0185707667325152,
+    "nextRatio": 0.957787856742478
+  },
+  {
+    "latestRatio": 0.9438163724256357,
+    "previousRatio": 0.9689104507778813,
+    "nextRatio": 0.8079694333962079
+  },
+  {
+    "latestRatio": 1.0795152831642498,
+    "previousRatio": 1.0021468755099574,
+    "nextRatio": 1.1646032368950257
+  },
+  {
+    "latestRatio": 1.0333638226583826,
+    "previousRatio": 0.9909144745848324,
+    "nextRatio": 1.0591883560253064
+  },
+  {
+    "latestRatio": 1.0570437705501456,
+    "previousRatio": 0.9950177945154134,
+    "nextRatio": 1.0757255375687493
+  },
+  {
+    "latestRatio": 1.030564912108512,
+    "previousRatio": 1.0216543491919585,
+    "nextRatio": 1.1413733891178606
+  },
+  {
+    "latestRatio": 1.0468846811961252,
+    "previousRatio": 0.9985681703269131,
+    "nextRatio": 1.1274478696677777
+  },
+  {
+    "latestRatio": 0.9209968930563418,
+    "previousRatio": 1.0072865504248423,
+    "nextRatio": 0.8231145889730129
+  },
+  {
+    "latestRatio": 1.1429735496837008,
+    "previousRatio": 0.9996854325504516,
+    "nextRatio": 1.2758241761229
+  },
+  {
+    "latestRatio": 0.9450990232895305,
+    "previousRatio": 0.9866229976174351,
+    "nextRatio": 0.9585991728152797
+  },
+  {
+    "latestRatio": 1.0229971379003593,
+    "previousRatio": 1.0101544181858086,
+    "nextRatio": 1.0777541410197027
+  },
+  {
+    "latestRatio": 0.9967741390290583,
+    "previousRatio": 0.9731260785141964,
+    "nextRatio": 1.0265085198908412
+  },
+  {
+    "latestRatio": 1.1086594283978295,
+    "previousRatio": 1.0026669321399693,
+    "nextRatio": 1.2783591857313696
+  },
+  {
+    "latestRatio": 1.0841264296861597,
+    "previousRatio": 0.9732976508421908,
+    "nextRatio": 1.1437128935156704
+  },
+  {
+    "latestRatio": 1.0620764286791124,
+    "previousRatio": 1.0027828345673337,
+    "nextRatio": 1.1191601044307196
+  },
+  {
+    "latestRatio": 0.9563595691270027,
+    "previousRatio": 0.981084869623508,
+    "nextRatio": 0.8596451529405318
+  },
+  {
+    "latestRatio": 1.103341493399686,
+    "previousRatio": 0.9919199223328538,
+    "nextRatio": 1.2156771517713172
+  },
+  {
+    "latestRatio": 1.0693667849491977,
+    "previousRatio": 0.9969724136550904,
+    "nextRatio": 1.1030764732396146
+  },
+  {
+    "latestRatio": 1.0493364675057584,
+    "previousRatio": 0.9992926392568711,
+    "nextRatio": 1.0873871199980232
+  },
+  {
+    "latestRatio": 0.9611573139879688,
+    "previousRatio": 0.9862383403892732,
+    "nextRatio": 0.9374485662922439
+  },
+  {
+    "latestRatio": 1.1228233526762437,
+    "previousRatio": 0.997823848594596,
+    "nextRatio": 1.2447495063683174
+  },
+  {
+    "latestRatio": 1.049053011260009,
+    "previousRatio": 0.9963863490851499,
+    "nextRatio": 1.1667475749209442
+  },
+  {
+    "latestRatio": 1.0724233089229829,
+    "previousRatio": 0.9853392971106143,
+    "nextRatio": 1.1873162481234207
+  },
+  {
+    "latestRatio": 1.0401309588077008,
+    "previousRatio": 1.0154523895011165,
+    "nextRatio": 1.0766107184173552
+  },
+  {
+    "latestRatio": 0.9432934363850441,
+    "previousRatio": 1.0075046429539183,
+    "nextRatio": 0.9258941123271416
+  },
+  {
+    "latestRatio": 1.002339531524327,
+    "previousRatio": 1.0212486458200498,
+    "nextRatio": 1.022887239751122
+  },
+  {
+    "latestRatio": 1.0186768840863234,
+    "previousRatio": 0.9741441939316908,
+    "nextRatio": 1.0130179903393786
+  },
+  {
+    "latestRatio": 1.0713586000299855,
+    "previousRatio": 0.9933824294660525,
+    "nextRatio": 1.1038874442514
+  },
+  {
+    "latestRatio": 1.0059665557422013,
+    "previousRatio": 1.0140024848293987,
+    "nextRatio": 1.084970955518685
+  },
+  {
+    "latestRatio": 1.089999994004385,
+    "previousRatio": 1.0043209484531455,
+    "nextRatio": 1.229002805379599
+  },
+  {
+    "latestRatio": 1.0963712402011374,
+    "previousRatio": 0.9783354114249009,
+    "nextRatio": 1.151757203043137
+  },
+  {
+    "latestRatio": 1.1545802135922067,
+    "previousRatio": 0.9947971856337193,
+    "nextRatio": 1.2980684507602291
+  },
+  {
+    "latestRatio": 1.1256593821819967,
+    "previousRatio": 0.9802879827059146,
+    "nextRatio": 1.2705149087720755
+  },
+  {
+    "latestRatio": 1.0950831737182725,
+    "previousRatio": 1.0066534602377508,
+    "nextRatio": 1.265598933893759
+  },
+  {
+    "latestRatio": 1.0711352176051057,
+    "previousRatio": 1.0090174186779557,
+    "nextRatio": 1.1550951623097039
+  },
+  {
+    "latestRatio": 0.9932502933227406,
+    "previousRatio": 0.9996295949261303,
+    "nextRatio": 0.9463813146770413
+  },
+  {
+    "latestRatio": 1.0359937044352472,
+    "previousRatio": 0.9913114453833826,
+    "nextRatio": 1.0457740877092678
+  },
+  {
+    "latestRatio": 1.0734507331307517,
+    "previousRatio": 0.9929845022281701,
+    "nextRatio": 1.1475957291059384
+  },
+  {
+    "latestRatio": 0.8595009096464259,
+    "previousRatio": 1.011067413766701,
+    "nextRatio": 0.7512891955989799
+  },
+  {
+    "latestRatio": 1.0374539292648404,
+    "previousRatio": 0.9902673048066064,
+    "nextRatio": 1.050033602284545
+  },
+  {
+    "latestRatio": 0.9324719972268833,
+    "previousRatio": 0.9894003795852961,
+    "nextRatio": 0.8743903881480721
+  },
+  {
+    "latestRatio": 1.0242293664044766,
+    "previousRatio": 0.9890184174109294,
+    "nextRatio": 1.011150015513854
+  },
+  {
+    "latestRatio": 0.9731688302717283,
+    "previousRatio": 1.0258791852402562,
+    "nextRatio": 0.9564405305904032
+  },
+  {
+    "latestRatio": 1.0157801406158198,
+    "previousRatio": 0.9983852598038078,
+    "nextRatio": 1.023683597968805
+  },
+  {
+    "latestRatio": 1.012797230710233,
+    "previousRatio": 0.976263945378632,
+    "nextRatio": 1.0085304845021656
+  },
+  {
+    "latestRatio": 1.0630040384680661,
+    "previousRatio": 0.99340077407537,
+    "nextRatio": 1.08798762280959
+  },
+  {
+    "latestRatio": 1.084934199784409,
+    "previousRatio": 0.9891521617900972,
+    "nextRatio": 1.2287485435964816
+  },
+  {
+    "latestRatio": 1.1542766140871545,
+    "previousRatio": 0.9872271571523755,
+    "nextRatio": 1.2725741281938103
+  },
+  {
+    "latestRatio": 1.0645805755142055,
+    "previousRatio": 1.0227521802150301,
+    "nextRatio": 1.1226881374180877
+  },
+  {
+    "latestRatio": 0.9491132698573216,
+    "previousRatio": 1.039629532717543,
+    "nextRatio": 0.9072822140027684
+  },
+  {
+    "latestRatio": 1.0032515513918894,
+    "previousRatio": 1.007033281591685,
+    "nextRatio": 1.0625001347662921
+  },
+  {
+    "latestRatio": 1.0448674002462,
+    "previousRatio": 0.9931100508228885,
+    "nextRatio": 1.096611095729862
+  },
+  {
+    "latestRatio": 1.079757847900782,
+    "previousRatio": 0.9912636197094182,
+    "nextRatio": 1.1588385798455865
+  },
+  {
+    "latestRatio": 1.1081496268723736,
+    "previousRatio": 0.985104584066369,
+    "nextRatio": 1.2411292889041343
+  },
+  {
+    "latestRatio": 1.0754313662581356,
+    "previousRatio": 0.9720635202944035,
+    "nextRatio": 1.1662821151564577
+  },
+  {
+    "latestRatio": 0.9340415849299588,
+    "previousRatio": 1.0018966626014818,
+    "nextRatio": 0.8235632673112758
+  },
+  {
+    "latestRatio": 1.1406224088654155,
+    "previousRatio": 0.9971418099688544,
+    "nextRatio": 1.3333560510717188
+  },
+  {
+    "latestRatio": 1.1272695787149234,
+    "previousRatio": 0.986007073966926,
+    "nextRatio": 1.3194559412939217
+  },
+  {
+    "latestRatio": 0.9493332594402876,
+    "previousRatio": 0.9949736263118385,
+    "nextRatio": 0.8937173152823152
+  },
+  {
+    "latestRatio": 1.0425956522151403,
+    "previousRatio": 0.9982967463329205,
+    "nextRatio": 1.0844793071810648
+  },
+  {
+    "latestRatio": 1.0343717893832767,
+    "previousRatio": 1.0064241088550174,
+    "nextRatio": 1.038927680895339
+  },
+  {
+    "latestRatio": 0.9574090020265489,
+    "previousRatio": 0.98285003624257,
+    "nextRatio": 0.8830887858642594
+  },
+  {
+    "latestRatio": 0.9607065446195427,
+    "previousRatio": 0.9958677625807573,
+    "nextRatio": 0.8826187564355372
+  },
+  {
+    "latestRatio": 1.0573993528577807,
+    "previousRatio": 0.9902526463870184,
+    "nextRatio": 1.1202875858642525
+  },
+  {
+    "latestRatio": 1.0822335712769868,
+    "previousRatio": 0.9869165800092042,
+    "nextRatio": 1.1550834464683986
+  },
+  {
+    "latestRatio": 1.0485901609945338,
+    "previousRatio": 1.0139284382946043,
+    "nextRatio": 1.0685822903230964
+  },
+  {
+    "latestRatio": 1.038307769708532,
+    "previousRatio": 1.0036746294488879,
+    "nextRatio": 1.1021093297397142
+  },
+  {
+    "latestRatio": 1.1125877663352444,
+    "previousRatio": 0.9854518488626756,
+    "nextRatio": 1.2574033413159729
+  },
+  {
+    "latestRatio": 1.086763284114751,
+    "previousRatio": 0.9985215487810494,
+    "nextRatio": 1.1804902961349502
+  },
+  {
+    "latestRatio": 0.944091724223668,
+    "previousRatio": 0.9864357120056113,
+    "nextRatio": 0.894888477624044
+  },
+  {
+    "latestRatio": 1.1269770569985098,
+    "previousRatio": 0.9939704679491166,
+    "nextRatio": 1.257491295422801
+  },
+  {
+    "latestRatio": 1.1230565507404495,
+    "previousRatio": 1.0023819447264948,
+    "nextRatio": 1.2785861983187377
+  },
+  {
+    "latestRatio": 1.0324092035866854,
+    "previousRatio": 1.003470863614115,
+    "nextRatio": 1.0641657635811719
+  },
+  {
+    "latestRatio": 1.0328507254407073,
+    "previousRatio": 0.9862955005036441,
+    "nextRatio": 1.0749553585598617
+  },
+  {
+    "latestRatio": 0.8958689557277222,
+    "previousRatio": 1.015390959412269,
+    "nextRatio": 0.7761248390268377
+  },
+  {
+    "latestRatio": 0.9951954209739622,
+    "previousRatio": 0.9956758116924587,
+    "nextRatio": 1.0265337609761
+  },
+  {
+    "latestRatio": 0.9875781737374032,
+    "previousRatio": 0.9970750672136952,
+    "nextRatio": 1.0067623123120772
+  },
+  {
+    "latestRatio": 1.0807541306317423,
+    "previousRatio": 1.0001876541359875,
+    "nextRatio": 1.180419747556287
+  },
+  {
+    "latestRatio": 1.093016372900181,
+    "previousRatio": 0.986392140479273,
+    "nextRatio": 1.1922532845683897
+  },
+  {
+    "latestRatio": 1.0326216936788015,
+    "previousRatio": 0.9912169171851426,
+    "nextRatio": 1.00903805952496
+  },
+  {
+    "latestRatio": 1.0973005837642849,
+    "previousRatio": 0.9966152069245173,
+    "nextRatio": 1.127454710115153
+  },
+  {
+    "latestRatio": 1.0828808670921626,
+    "previousRatio": 0.9906244512327591,
+    "nextRatio": 1.1794879012122272
+  },
+  {
+    "latestRatio": 1.026557083674332,
+    "previousRatio": 1.006661653039909,
+    "nextRatio": 0.9700058888803932
+  },
+  {
+    "latestRatio": 0.9664587139419919,
+    "previousRatio": 0.9897597630308845,
+    "nextRatio": 0.8836489065667551
+  },
+  {
+    "latestRatio": 1.0801745909749887,
+    "previousRatio": 1.0009357498725815,
+    "nextRatio": 1.1552245202708304
+  },
+  {
+    "latestRatio": 0.9852358809051733,
+    "previousRatio": 0.9895332615154189,
+    "nextRatio": 0.9064873523831471
+  },
+  {
+    "latestRatio": 0.9457741788548819,
+    "previousRatio": 1.032381574642632,
+    "nextRatio": 0.9515382668345879
+  },
+  {
+    "latestRatio": 1.0260056054428182,
+    "previousRatio": 0.9869497424334343,
+    "nextRatio": 1.0291917931140548
+  },
+  {
+    "latestRatio": 1.059008903860407,
+    "previousRatio": 1.0016568594717385,
+    "nextRatio": 1.0705040210608319
+  },
+  {
+    "latestRatio": 1.1155755640291756,
+    "previousRatio": 0.99987786139428,
+    "nextRatio": 1.3028822353747325
+  },
+  {
+    "latestRatio": 0.9763594803736861,
+    "previousRatio": 1.012078223540692,
+    "nextRatio": 0.9314554036106892
+  },
+  {
+    "latestRatio": 0.9191160882473529,
+    "previousRatio": 0.9598457075661927,
+    "nextRatio": 0.8834065597006239
+  },
+  {
+    "latestRatio": 1.004188619113734,
+    "previousRatio": 0.9955061996810921,
+    "nextRatio": 1.0625802784093394
+  },
+  {
+    "latestRatio": 1.0311885712764541,
+    "previousRatio": 1.0034458242298034,
+    "nextRatio": 1.0535040163915903
+  },
+  {
+    "latestRatio": 1.1093636399712272,
+    "previousRatio": 1.0014735066610738,
+    "nextRatio": 1.245581122694067
+  },
+  {
+    "latestRatio": 1.0240225418371183,
+    "previousRatio": 1.0149064912439283,
+    "nextRatio": 1.0630845782705844
+  },
+  {
+    "latestRatio": 0.9369370683641945,
+    "previousRatio": 0.9858784166986218,
+    "nextRatio": 0.9360208077538438
+  },
+  {
+    "latestRatio": 1.0606031951913313,
+    "previousRatio": 1.0293429271242345,
+    "nextRatio": 1.11560299695303
+  },
+  {
+    "latestRatio": 1.095745259687716,
+    "previousRatio": 1.0082112350514318,
+    "nextRatio": 1.2018154628932143
+  },
+  {
+    "latestRatio": 1.1019300291724468,
+    "previousRatio": 1.0070244174830834,
+    "nextRatio": 1.2139836314108643
+  },
+  {
+    "latestRatio": 1.0956446223042051,
+    "previousRatio": 0.9960761746981693,
+    "nextRatio": 1.2225990699650333
+  },
+  {
+    "latestRatio": 1.0015341090351784,
+    "previousRatio": 0.971376194803187,
+    "nextRatio": 1.0913243045119339
+  },
+  {
+    "latestRatio": 0.9667467175175662,
+    "previousRatio": 0.9899795756509742,
+    "nextRatio": 0.9520592770681786
+  },
+  {
+    "latestRatio": 0.930878766602495,
+    "previousRatio": 1.0231734136824466,
+    "nextRatio": 0.9726743525064965
+  },
+  {
+    "latestRatio": 0.9727847880480225,
+    "previousRatio": 0.972647946337802,
+    "nextRatio": 0.8481225952673319
+  },
+  {
+    "latestRatio": 0.9610402936503921,
+    "previousRatio": 1.0098869487294588,
+    "nextRatio": 0.9217030711222833
+  },
+  {
+    "latestRatio": 0.9178044840015669,
+    "previousRatio": 1.0090308624244355,
+    "nextRatio": 0.8737493535631501
+  },
+  {
+    "latestRatio": 0.9422245373117003,
+    "previousRatio": 0.977975692753549,
+    "nextRatio": 0.885501870631103
+  },
+  {
+    "latestRatio": 0.964704695050657,
+    "previousRatio": 0.974384508177376,
+    "nextRatio": 0.9809935143557681
+  },
+  {
+    "latestRatio": 1.0556400018823429,
+    "previousRatio": 0.9963801192697904,
+    "nextRatio": 1.1251719777864941
+  },
+  {
+    "latestRatio": 1.0264286207485447,
+    "previousRatio": 0.9940526413163173,
+    "nextRatio": 1.0768939820613674
+  },
+  {
+    "latestRatio": 1.103737563566598,
+    "previousRatio": 1.0104761331752292,
+    "nextRatio": 1.2387914250290775
+  },
+  {
+    "latestRatio": 1.075954528829196,
+    "previousRatio": 1.0284586593063811,
+    "nextRatio": 1.1954492787893165
+  },
+  {
+    "latestRatio": 0.9068960743824634,
+    "previousRatio": 1.0027181529915221,
+    "nextRatio": 0.8034283825676107
+  },
+  {
+    "latestRatio": 0.9275225122257863,
+    "previousRatio": 1.0014300020635838,
+    "nextRatio": 0.8698880284544677
+  },
+  {
+    "latestRatio": 0.952397743853433,
+    "previousRatio": 0.9861336787442038,
+    "nextRatio": 0.9078229506419443
+  },
+  {
+    "latestRatio": 0.9279834340924624,
+    "previousRatio": 0.9943274579500384,
+    "nextRatio": 0.892223540039817
+  },
+  {
+    "latestRatio": 0.9973946214821018,
+    "previousRatio": 0.9840125095508893,
+    "nextRatio": 0.9501298328430199
+  },
+  {
+    "latestRatio": 0.9458764825950624,
+    "previousRatio": 0.9822632182066684,
+    "nextRatio": 0.9500926515913253
+  },
+  {
+    "latestRatio": 0.9147401473694641,
+    "previousRatio": 0.9818115050974762,
+    "nextRatio": 0.8353764348388397
+  },
+  {
+    "latestRatio": 1.1209544786424348,
+    "previousRatio": 0.987083649189404,
+    "nextRatio": 1.2276365056253815
+  },
+  {
+    "latestRatio": 0.972113424365488,
+    "previousRatio": 0.9980664184341017,
+    "nextRatio": 1.0028488789231675
+  },
+  {
+    "latestRatio": 1.0439506988157994,
+    "previousRatio": 0.9737449243608607,
+    "nextRatio": 1.0429590791458323
+  },
+  {
+    "latestRatio": 1.0603154630309144,
+    "previousRatio": 1.0164928166914586,
+    "nextRatio": 1.1515757473627772
+  },
+  {
+    "latestRatio": 1.130954139977074,
+    "previousRatio": 0.9805167918533954,
+    "nextRatio": 1.2623022821933931
+  },
+  {
+    "latestRatio": 1.0751302582617004,
+    "previousRatio": 0.9972134850553702,
+    "nextRatio": 1.1258442321301334
+  },
+  {
+    "latestRatio": 1.0696535372916705,
+    "previousRatio": 1.016944673500757,
+    "nextRatio": 1.1789337645164464
+  },
+  {
+    "latestRatio": 1.0044425639116117,
+    "previousRatio": 1.0161338241343685,
+    "nextRatio": 0.9778557932140716
+  },
+  {
+    "latestRatio": 1.0408539648218886,
+    "previousRatio": 1.0143993630032548,
+    "nextRatio": 1.0831523069213458
+  },
+  {
+    "latestRatio": 1.0825531150279324,
+    "previousRatio": 0.9714012510304891,
+    "nextRatio": 1.1126061858012377
+  },
+  {
+    "latestRatio": 0.9642815238525713,
+    "previousRatio": 1.0078167010872712,
+    "nextRatio": 0.9427948039533202
+  },
+  {
+    "latestRatio": 0.971022496078279,
+    "previousRatio": 0.996814130325881,
+    "nextRatio": 0.9753007718295603
+  },
+  {
+    "latestRatio": 0.9855421237478511,
+    "previousRatio": 1.0146052440920061,
+    "nextRatio": 0.9659115989045357
+  },
+  {
+    "latestRatio": 0.958030302956582,
+    "previousRatio": 0.9966236867651316,
+    "nextRatio": 0.8905698887535093
+  },
+  {
+    "latestRatio": 0.8992015118100468,
+    "previousRatio": 0.9818519937603359,
+    "nextRatio": 0.8262204091215912
+  },
+  {
+    "latestRatio": 0.9323400404401908,
+    "previousRatio": 0.9727361352130277,
+    "nextRatio": 0.9013400613118857
+  },
+  {
+    "latestRatio": 1.069164061079306,
+    "previousRatio": 0.9921264227702001,
+    "nextRatio": 1.0930638874827985
+  },
+  {
+    "latestRatio": 0.9285191784452328,
+    "previousRatio": 0.9903345906392477,
+    "nextRatio": 0.8097534172384047
+  },
+  {
+    "latestRatio": 1.0658568079254043,
+    "previousRatio": 0.9953279936070732,
+    "nextRatio": 1.1060686080581938
+  },
+  {
+    "latestRatio": 1.0358850923666139,
+    "previousRatio": 1.0072794007996617,
+    "nextRatio": 1.1027406162127236
+  },
+  {
+    "latestRatio": 1.0130303184501668,
+    "previousRatio": 1.007169656394881,
+    "nextRatio": 1.0279459095252172
+  },
+  {
+    "latestRatio": 1.0188024935635491,
+    "previousRatio": 0.9996443973159199,
+    "nextRatio": 1.0673608478171088
+  },
+  {
+    "latestRatio": 1.018512173676747,
+    "previousRatio": 0.9796849935467433,
+    "nextRatio": 1.0284750637968416
+  },
+  {
+    "latestRatio": 0.9542215409738483,
+    "previousRatio": 0.9947138795702015,
+    "nextRatio": 0.8645147555547873
+  },
+  {
+    "latestRatio": 0.9965013547162128,
+    "previousRatio": 1.010116282551228,
+    "nextRatio": 1.0461962386287724
+  }
+]

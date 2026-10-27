@@ -1,0 +1,243 @@
+{
+  "anomaly" : {
+    "count" : 2000,
+    "f1" : 0.84779050736497541,
+    "fn" : 67,
+    "fp" : 26,
+    "precision" : 0.90877192982456145,
+    "recall" : 0.79447852760736193,
+    "threshold" : 0.69999999999999996,
+    "tn" : 1648,
+    "tp" : 259
+  },
+  "category" : {
+    "accuracy" : 0.90000000000000002,
+    "confusion" : {
+      "Groceries" : {
+        "Groceries" : 10
+      },
+      "Health" : {
+        "Health" : 9,
+        "Utilities" : 1
+      },
+      "Home" : {
+        "Home" : 9,
+        "Other" : 1
+      },
+      "Other" : {
+        "Health" : 1,
+        "Other" : 9
+      },
+      "Transport" : {
+        "Other" : 2,
+        "Transport" : 8
+      },
+      "Utilities" : {
+        "Other" : 1,
+        "Utilities" : 9
+      }
+    },
+    "count" : 60,
+    "exactTrainValidationOverlap" : 0,
+    "macroF1" : 0.9031443342656158,
+    "mistakes" : [
+      {
+        "expected" : "Utilities",
+        "predicted" : "Other",
+        "text" : "Television subscription for this month"
+      },
+      {
+        "expected" : "Transport",
+        "predicted" : "Other",
+        "text" : "Petrol purchase for motorcycle"
+      },
+      {
+        "expected" : "Transport",
+        "predicted" : "Other",
+        "text" : "Train ride tickets for weekend"
+      },
+      {
+        "expected" : "Home",
+        "predicted" : "Other",
+        "text" : "Plumber visit for leaking tap"
+      },
+      {
+        "expected" : "Health",
+        "predicted" : "Utilities",
+        "text" : "Dentist bill for tooth filling"
+      },
+      {
+        "expected" : "Other",
+        "predicted" : "Health",
+        "text" : "Pet vet appointment"
+      }
+    ],
+    "perCategory" : {
+      "Groceries" : {
+        "f1" : 1,
+        "precision" : 1,
+        "recall" : 1,
+        "support" : 10
+      },
+      "Health" : {
+        "f1" : 0.90000000000000002,
+        "precision" : 0.90000000000000002,
+        "recall" : 0.90000000000000002,
+        "support" : 10
+      },
+      "Home" : {
+        "f1" : 0.94736842105263164,
+        "precision" : 1,
+        "recall" : 0.90000000000000002,
+        "support" : 10
+      },
+      "Other" : {
+        "f1" : 0.78260869565217384,
+        "precision" : 0.69230769230769229,
+        "recall" : 0.90000000000000002,
+        "support" : 10
+      },
+      "Transport" : {
+        "f1" : 0.88888888888888895,
+        "precision" : 1,
+        "recall" : 0.80000000000000004,
+        "support" : 10
+      },
+      "Utilities" : {
+        "f1" : 0.90000000000000002,
+        "precision" : 0.90000000000000002,
+        "recall" : 0.90000000000000002,
+        "support" : 10
+      }
+    },
+    "slices" : {
+      "original_holdout" : {
+        "correct" : 54,
+        "count" : 60
+      }
+    }
+  },
+  "categoryLocalOCRStress" : {
+    "accuracy" : 0.875,
+    "confusion" : {
+      "Groceries" : {
+        "Groceries" : 4
+      },
+      "Health" : {
+        "Health" : 4
+      },
+      "Home" : {
+        "Home" : 2,
+        "Transport" : 2
+      },
+      "Other" : {
+        "Other" : 3,
+        "Utilities" : 1
+      },
+      "Transport" : {
+        "Transport" : 4
+      },
+      "Utilities" : {
+        "Utilities" : 4
+      }
+    },
+    "count" : 24,
+    "exactTrainValidationOverlap" : 0,
+    "macroF1" : 0.86878306878306877,
+    "mistakes" : [
+      {
+        "expected" : "Home",
+        "predicted" : "Transport",
+        "text" : "Damro replacement dining chair"
+      },
+      {
+        "expected" : "Home",
+        "predicted" : "Transport",
+        "text" : "Hardware shop plumbing pipe replacement"
+      },
+      {
+        "expected" : "Other",
+        "predicted" : "Utilities",
+        "text" : "Online service subscription software"
+      }
+    ],
+    "perCategory" : {
+      "Groceries" : {
+        "f1" : 1,
+        "precision" : 1,
+        "recall" : 1,
+        "support" : 4
+      },
+      "Health" : {
+        "f1" : 1,
+        "precision" : 1,
+        "recall" : 1,
+        "support" : 4
+      },
+      "Home" : {
+        "f1" : 0.66666666666666663,
+        "precision" : 1,
+        "recall" : 0.5,
+        "support" : 4
+      },
+      "Other" : {
+        "f1" : 0.8571428571428571,
+        "precision" : 1,
+        "recall" : 0.75,
+        "support" : 4
+      },
+      "Transport" : {
+        "f1" : 0.80000000000000004,
+        "precision" : 0.66666666666666663,
+        "recall" : 1,
+        "support" : 4
+      },
+      "Utilities" : {
+        "f1" : 0.88888888888888895,
+        "precision" : 0.80000000000000004,
+        "recall" : 1,
+        "support" : 4
+      }
+    },
+    "slices" : {
+      "ambiguous" : {
+        "correct" : 3,
+        "count" : 3
+      },
+      "local_description" : {
+        "correct" : 13,
+        "count" : 15
+      },
+      "ocr_noise" : {
+        "correct" : 5,
+        "count" : 6
+      }
+    }
+  },
+  "forecast" : {
+    "count" : 320,
+    "MAE" : 0.030762400624205471,
+    "MAPEPercent" : 3.0337845260085148,
+    "meanBaselineMAE" : 0.12158856760473169,
+    "meanBaselineMAPEPercent" : 11.514004563365825,
+    "meanBaselineRMSE" : 0.14450523498122503,
+    "RMSE" : 0.039308807922028205,
+    "units" : "normalised ratio"
+  },
+  "forecastLKRStress" : {
+    "count" : 12,
+    "MAE" : 6295.2469383853122,
+    "MAPEPercent" : 38.471961934218562,
+    "meanBaselineMAE" : 6972.2222222222226,
+    "meanBaselineMAPEPercent" : 35.50570524735496,
+    "meanBaselineRMSE" : 9367.2498829896904,
+    "RMSE" : 8741.0206967705926,
+    "units" : "LKR (authored scenarios, not observed households)"
+  },
+  "modelSHA256" : {
+    "ExpenseAnomaly" : "f8acf9d1369d747ca5cd0ce3396b866785a32bc1aae6f5727a8ef8586c631437",
+    "ExpenseClassifier" : "bb24d9ae33d63c7e10072c0a670cfd16e2f67b88180d6b070763a591966cb4e2",
+    "ExpenseForecast" : "b389c37d034244588484a40a6f3923e5c68e0119c33ec435220674c1337d8ef2"
+  },
+  "provenance" : "Authored descriptions and simulated histories only. Audit cases were written before evaluating; no tuning or retraining. No real-world validation claim. Zero denominators in classification metrics are reported as zero."
+}

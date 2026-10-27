@@ -1,0 +1,122 @@
+[
+  {
+    "text": "Keells Colombo fresh vegetables and rice",
+    "category": "Groceries",
+    "slice": "local_description"
+  },
+  {
+    "text": "Cargills Food City eggs dhal and milk",
+    "category": "Groceries",
+    "slice": "local_description"
+  },
+  {
+    "text": "ARPICO SUPER CENTRE bread yoghurt receipt",
+    "category": "Groceries",
+    "slice": "local_description"
+  },
+  {
+    "text": "KEE11S supermarket gr0ceries rice",
+    "category": "Groceries",
+    "slice": "ocr_noise"
+  },
+  {
+    "text": "CEB electricity payment October household",
+    "category": "Utilities",
+    "slice": "local_description"
+  },
+  {
+    "text": "LECO monthly power account settlement",
+    "category": "Utilities",
+    "slice": "local_description"
+  },
+  {
+    "text": "Dialog home broadband monthly rental",
+    "category": "Utilities",
+    "slice": "local_description"
+  },
+  {
+    "text": "NWSDB water b1ll total LKR 2450",
+    "category": "Utilities",
+    "slice": "ocr_noise"
+  },
+  {
+    "text": "PickMe ride from Nugegoda to office",
+    "category": "Transport",
+    "slice": "local_description"
+  },
+  {
+    "text": "Uber trip fare Colombo Fort",
+    "category": "Transport",
+    "slice": "local_description"
+  },
+  {
+    "text": "Ceypetco petrol for family car",
+    "category": "Transport",
+    "slice": "local_description"
+  },
+  {
+    "text": "IOC fue1 station petrol receipt",
+    "category": "Transport",
+    "slice": "ocr_noise"
+  },
+  {
+    "text": "Damro replacement dining chair",
+    "category": "Home",
+    "slice": "local_description"
+  },
+  {
+    "text": "Singer washing machine repair service",
+    "category": "Home",
+    "slice": "local_description"
+  },
+  {
+    "text": "Hardware shop plumbing pipe replacement",
+    "category": "Home",
+    "slice": "local_description"
+  },
+  {
+    "text": "house roof repa1r materials",
+    "category": "Home",
+    "slice": "ocr_noise"
+  },
+  {
+    "text": "Asiri laboratory blood investigation receipt",
+    "category": "Health",
+    "slice": "local_description"
+  },
+  {
+    "text": "Nawaloka doctor consultation charge",
+    "category": "Health",
+    "slice": "local_description"
+  },
+  {
+    "text": "Durdans diagnostic scan payment",
+    "category": "Health",
+    "slice": "local_description"
+  },
+  {
+    "text": "medica1 report laboratory test fee",
+    "category": "Health",
+    "slice": "ocr_noise"
+  },
+  {
+    "text": "Payment reference 93671",
+    "category": "Other",
+    "slice": "ambiguous"
+  },
+  {
+    "text": "Monthly purchase unspecified",
+    "category": "Other",
+    "slice": "ambiguous"
+  },
+  {
+    "text": "Receipt total LKR 6200 no items",
+    "category": "Other",
+    "slice": "ambiguous"
+  },
+  {
+    "text": "Online service subscription software",
+    "category": "Other",
+    "slice": "ocr_noise"
+  }
+]

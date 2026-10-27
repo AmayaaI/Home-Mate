@@ -1,0 +1,722 @@
+[
+  {
+    "text": "Keells supermarket weekly groceries",
+    "category": "Groceries"
+  },
+  {
+    "text": "Cargills Food City food shopping",
+    "category": "Groceries"
+  },
+  {
+    "text": "Arpico grocery basket",
+    "category": "Groceries"
+  },
+  {
+    "text": "rice dhal and coconut oil",
+    "category": "Groceries"
+  },
+  {
+    "text": "fresh milk and eggs",
+    "category": "Groceries"
+  },
+  {
+    "text": "vegetables from local market",
+    "category": "Groceries"
+  },
+  {
+    "text": "fruit bananas and apples",
+    "category": "Groceries"
+  },
+  {
+    "text": "bread from bakery for breakfast",
+    "category": "Groceries"
+  },
+  {
+    "text": "Ceylon tea and sugar",
+    "category": "Groceries"
+  },
+  {
+    "text": "fish from fish market",
+    "category": "Groceries"
+  },
+  {
+    "text": "chicken and meat for cooking",
+    "category": "Groceries"
+  },
+  {
+    "text": "potatoes carrots and onions",
+    "category": "Groceries"
+  },
+  {
+    "text": "flour and baking ingredients",
+    "category": "Groceries"
+  },
+  {
+    "text": "yoghurt and cheese",
+    "category": "Groceries"
+  },
+  {
+    "text": "pasta and noodles",
+    "category": "Groceries"
+  },
+  {
+    "text": "spices salt and pepper",
+    "category": "Groceries"
+  },
+  {
+    "text": "breakfast cereal and oats",
+    "category": "Groceries"
+  },
+  {
+    "text": "bottled drinking water groceries",
+    "category": "Groceries"
+  },
+  {
+    "text": "frozen vegetables and peas",
+    "category": "Groceries"
+  },
+  {
+    "text": "biscuits and crackers",
+    "category": "Groceries"
+  },
+  {
+    "text": "tinned tuna and beans",
+    "category": "Groceries"
+  },
+  {
+    "text": "weekly pantry restock",
+    "category": "Groceries"
+  },
+  {
+    "text": "butter and cooking oil",
+    "category": "Groceries"
+  },
+  {
+    "text": "green leaves from vegetable stall",
+    "category": "Groceries"
+  },
+  {
+    "text": "baby food and milk powder",
+    "category": "Groceries"
+  },
+  {
+    "text": "coffee beans and cocoa",
+    "category": "Groceries"
+  },
+  {
+    "text": "red rice and lentils",
+    "category": "Groceries"
+  },
+  {
+    "text": "grocery delivery from supermarket",
+    "category": "Groceries"
+  },
+  {
+    "text": "dairy products and curd",
+    "category": "Groceries"
+  },
+  {
+    "text": "fresh produce for family meals",
+    "category": "Groceries"
+  },
+  {
+    "text": "CEB electricity bill",
+    "category": "Utilities"
+  },
+  {
+    "text": "LECO monthly power payment",
+    "category": "Utilities"
+  },
+  {
+    "text": "National Water Board bill",
+    "category": "Utilities"
+  },
+  {
+    "text": "Dialog home broadband subscription",
+    "category": "Utilities"
+  },
+  {
+    "text": "SLT fibre internet monthly rental",
+    "category": "Utilities"
+  },
+  {
+    "text": "Mobitel mobile phone bill",
+    "category": "Utilities"
+  },
+  {
+    "text": "Lanka Bell telephone charges",
+    "category": "Utilities"
+  },
+  {
+    "text": "domestic gas cylinder refill",
+    "category": "Utilities"
+  },
+  {
+    "text": "household utility payment",
+    "category": "Utilities"
+  },
+  {
+    "text": "electric meter standing charge",
+    "category": "Utilities"
+  },
+  {
+    "text": "water supply monthly invoice",
+    "category": "Utilities"
+  },
+  {
+    "text": "home internet data package",
+    "category": "Utilities"
+  },
+  {
+    "text": "prepaid phone recharge",
+    "category": "Utilities"
+  },
+  {
+    "text": "electricity usage for apartment",
+    "category": "Utilities"
+  },
+  {
+    "text": "landline telephone rental",
+    "category": "Utilities"
+  },
+  {
+    "text": "broadband router connection fee",
+    "category": "Utilities"
+  },
+  {
+    "text": "sewerage service bill",
+    "category": "Utilities"
+  },
+  {
+    "text": "municipal waste collection fee",
+    "category": "Utilities"
+  },
+  {
+    "text": "cooking gas delivery",
+    "category": "Utilities"
+  },
+  {
+    "text": "electric power late payment",
+    "category": "Utilities"
+  },
+  {
+    "text": "Dialog television subscription",
+    "category": "Utilities"
+  },
+  {
+    "text": "Peo TV monthly fee",
+    "category": "Utilities"
+  },
+  {
+    "text": "renewal of home WiFi plan",
+    "category": "Utilities"
+  },
+  {
+    "text": "Hutch mobile data top up",
+    "category": "Utilities"
+  },
+  {
+    "text": "NWSDB water invoice",
+    "category": "Utilities"
+  },
+  {
+    "text": "monthly satellite television service",
+    "category": "Utilities"
+  },
+  {
+    "text": "home telephone call charges",
+    "category": "Utilities"
+  },
+  {
+    "text": "utility service connection deposit",
+    "category": "Utilities"
+  },
+  {
+    "text": "gas cylinder for household cooking",
+    "category": "Utilities"
+  },
+  {
+    "text": "internet installation service",
+    "category": "Utilities"
+  },
+  {
+    "text": "petrol for family car",
+    "category": "Transport"
+  },
+  {
+    "text": "diesel fuel at filling station",
+    "category": "Transport"
+  },
+  {
+    "text": "PickMe taxi ride home",
+    "category": "Transport"
+  },
+  {
+    "text": "Uber trip to office",
+    "category": "Transport"
+  },
+  {
+    "text": "bus fare to Colombo",
+    "category": "Transport"
+  },
+  {
+    "text": "train ticket to Kandy",
+    "category": "Transport"
+  },
+  {
+    "text": "tuk tuk fare to market",
+    "category": "Transport"
+  },
+  {
+    "text": "expressway toll payment",
+    "category": "Transport"
+  },
+  {
+    "text": "parking fee at shopping mall",
+    "category": "Transport"
+  },
+  {
+    "text": "vehicle service and engine oil",
+    "category": "Transport"
+  },
+  {
+    "text": "car insurance renewal",
+    "category": "Transport"
+  },
+  {
+    "text": "motorcycle tyre replacement",
+    "category": "Transport"
+  },
+  {
+    "text": "car repair at garage",
+    "category": "Transport"
+  },
+  {
+    "text": "annual vehicle revenue licence",
+    "category": "Transport"
+  },
+  {
+    "text": "emission test for vehicle",
+    "category": "Transport"
+  },
+  {
+    "text": "school van transport fee",
+    "category": "Transport"
+  },
+  {
+    "text": "monthly bus season pass",
+    "category": "Transport"
+  },
+  {
+    "text": "airport taxi transfer",
+    "category": "Transport"
+  },
+  {
+    "text": "wheel alignment and balancing",
+    "category": "Transport"
+  },
+  {
+    "text": "car battery replacement",
+    "category": "Transport"
+  },
+  {
+    "text": "motorbike petrol refill",
+    "category": "Transport"
+  },
+  {
+    "text": "train season ticket",
+    "category": "Transport"
+  },
+  {
+    "text": "paid parking at hospital",
+    "category": "Transport"
+  },
+  {
+    "text": "car wash and vehicle cleaning",
+    "category": "Transport"
+  },
+  {
+    "text": "three wheeler transport charge",
+    "category": "Transport"
+  },
+  {
+    "text": "highway toll for family trip",
+    "category": "Transport"
+  },
+  {
+    "text": "brake pads for car",
+    "category": "Transport"
+  },
+  {
+    "text": "vehicle air filter replacement",
+    "category": "Transport"
+  },
+  {
+    "text": "taxi booking charge",
+    "category": "Transport"
+  },
+  {
+    "text": "public transport card top up",
+    "category": "Transport"
+  },
+  {
+    "text": "monthly house rent",
+    "category": "Home"
+  },
+  {
+    "text": "apartment rental payment",
+    "category": "Home"
+  },
+  {
+    "text": "plumber repaired kitchen tap",
+    "category": "Home"
+  },
+  {
+    "text": "electrician fixed ceiling light",
+    "category": "Home"
+  },
+  {
+    "text": "AC maintenance and cleaning",
+    "category": "Home"
+  },
+  {
+    "text": "washing machine repair",
+    "category": "Home"
+  },
+  {
+    "text": "new sofa for living room",
+    "category": "Home"
+  },
+  {
+    "text": "bedroom furniture purchase",
+    "category": "Home"
+  },
+  {
+    "text": "garden maintenance service",
+    "category": "Home"
+  },
+  {
+    "text": "roof leak repair",
+    "category": "Home"
+  },
+  {
+    "text": "paint for bedroom walls",
+    "category": "Home"
+  },
+  {
+    "text": "mop and floor cleaner",
+    "category": "Home"
+  },
+  {
+    "text": "laundry detergent and dish soap",
+    "category": "Home"
+  },
+  {
+    "text": "home cleaning service",
+    "category": "Home"
+  },
+  {
+    "text": "pest control treatment",
+    "category": "Home"
+  },
+  {
+    "text": "replacement light bulbs",
+    "category": "Home"
+  },
+  {
+    "text": "door lock and house keys",
+    "category": "Home"
+  },
+  {
+    "text": "curtains for living room",
+    "category": "Home"
+  },
+  {
+    "text": "kitchen utensils and plates",
+    "category": "Home"
+  },
+  {
+    "text": "mattress and pillows",
+    "category": "Home"
+  },
+  {
+    "text": "bathroom shower repair",
+    "category": "Home"
+  },
+  {
+    "text": "carpenter fixed wardrobe",
+    "category": "Home"
+  },
+  {
+    "text": "refrigerator servicing",
+    "category": "Home"
+  },
+  {
+    "text": "garden plants and compost",
+    "category": "Home"
+  },
+  {
+    "text": "gutter cleaning before rain",
+    "category": "Home"
+  },
+  {
+    "text": "home appliance spare parts",
+    "category": "Home"
+  },
+  {
+    "text": "housing association maintenance fee",
+    "category": "Home"
+  },
+  {
+    "text": "tiles and cement for home repair",
+    "category": "Home"
+  },
+  {
+    "text": "new broom and dustpan",
+    "category": "Home"
+  },
+  {
+    "text": "water pump repair for house",
+    "category": "Home"
+  },
+  {
+    "text": "pharmacy medicine purchase",
+    "category": "Health"
+  },
+  {
+    "text": "doctor consultation fee",
+    "category": "Health"
+  },
+  {
+    "text": "hospital medical bill",
+    "category": "Health"
+  },
+  {
+    "text": "dental checkup and cleaning",
+    "category": "Health"
+  },
+  {
+    "text": "blood test laboratory fee",
+    "category": "Health"
+  },
+  {
+    "text": "prescription tablets and antibiotics",
+    "category": "Health"
+  },
+  {
+    "text": "vitamins from pharmacy",
+    "category": "Health"
+  },
+  {
+    "text": "eye test at optician",
+    "category": "Health"
+  },
+  {
+    "text": "physiotherapy treatment session",
+    "category": "Health"
+  },
+  {
+    "text": "health insurance premium",
+    "category": "Health"
+  },
+  {
+    "text": "medical scan and X ray",
+    "category": "Health"
+  },
+  {
+    "text": "vaccination at clinic",
+    "category": "Health"
+  },
+  {
+    "text": "specialist channeling appointment",
+    "category": "Health"
+  },
+  {
+    "text": "asthma inhaler refill",
+    "category": "Health"
+  },
+  {
+    "text": "diabetes medicine refill",
+    "category": "Health"
+  },
+  {
+    "text": "dental filling at dentist",
+    "category": "Health"
+  },
+  {
+    "text": "spectacles and prescription lenses",
+    "category": "Health"
+  },
+  {
+    "text": "surgical dressing and bandages",
+    "category": "Health"
+  },
+  {
+    "text": "child pediatric consultation",
+    "category": "Health"
+  },
+  {
+    "text": "clinic registration and treatment",
+    "category": "Health"
+  },
+  {
+    "text": "pain relief medicine",
+    "category": "Health"
+  },
+  {
+    "text": "allergy medication at pharmacy",
+    "category": "Health"
+  },
+  {
+    "text": "medical equipment thermometer",
+    "category": "Health"
+  },
+  {
+    "text": "hospital admission fee",
+    "category": "Health"
+  },
+  {
+    "text": "routine health screening",
+    "category": "Health"
+  },
+  {
+    "text": "first aid kit for home",
+    "category": "Health"
+  },
+  {
+    "text": "doctor prescribed cough syrup",
+    "category": "Health"
+  },
+  {
+    "text": "eye drops from chemist",
+    "category": "Health"
+  },
+  {
+    "text": "cardiology consultation",
+    "category": "Health"
+  },
+  {
+    "text": "laboratory urine test",
+    "category": "Health"
+  },
+  {
+    "text": "cinema tickets for family",
+    "category": "Other"
+  },
+  {
+    "text": "birthday gift for cousin",
+    "category": "Other"
+  },
+  {
+    "text": "restaurant dinner with family",
+    "category": "Other"
+  },
+  {
+    "text": "school tuition class fees",
+    "category": "Other"
+  },
+  {
+    "text": "books and stationery",
+    "category": "Other"
+  },
+  {
+    "text": "clothes and shoes shopping",
+    "category": "Other"
+  },
+  {
+    "text": "charity donation",
+    "category": "Other"
+  },
+  {
+    "text": "museum entry tickets",
+    "category": "Other"
+  },
+  {
+    "text": "haircut at salon",
+    "category": "Other"
+  },
+  {
+    "text": "streaming music membership",
+    "category": "Other"
+  },
+  {
+    "text": "hotel stay for holiday",
+    "category": "Other"
+  },
+  {
+    "text": "gym membership fee",
+    "category": "Other"
+  },
+  {
+    "text": "pet food for dog",
+    "category": "Other"
+  },
+  {
+    "text": "veterinary visit for cat",
+    "category": "Other"
+  },
+  {
+    "text": "university examination fee",
+    "category": "Other"
+  },
+  {
+    "text": "birthday cake for celebration",
+    "category": "Other"
+  },
+  {
+    "text": "sports club subscription",
+    "category": "Other"
+  },
+  {
+    "text": "travel suitcase purchase",
+    "category": "Other"
+  },
+  {
+    "text": "bank account service fee",
+    "category": "Other"
+  },
+  {
+    "text": "postage and courier parcel",
+    "category": "Other"
+  },
+  {
+    "text": "mobile phone handset purchase",
+    "category": "Other"
+  },
+  {
+    "text": "laptop accessories and charger",
+    "category": "Other"
+  },
+  {
+    "text": "art supplies and craft paper",
+    "category": "Other"
+  },
+  {
+    "text": "concert tickets",
+    "category": "Other"
+  },
+  {
+    "text": "kids toys and board game",
+    "category": "Other"
+  },
+  {
+    "text": "wedding present",
+    "category": "Other"
+  },
+  {
+    "text": "online course registration",
+    "category": "Other"
+  },
+  {
+    "text": "swimming lesson fees",
+    "category": "Other"
+  },
+  {
+    "text": "photo printing service",
+    "category": "Other"
+  },
+  {
+    "text": "passport application fee",
+    "category": "Other"
+  }
+]

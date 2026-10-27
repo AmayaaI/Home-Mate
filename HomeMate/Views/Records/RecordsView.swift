@@ -1,0 +1,277 @@
+import SwiftUI
+
+/// A viewing projection only: shared records never enter the private store.
+struct AccessibleRecordsList: View {
+    @EnvironmentObject private var dependencies: AppDependencies
+    var kind: RecordKind?
+    var date: Date? = nil
+    var onRecords: (([HouseholdRecord]) -> Void)? = nil
+    var body: some View {
+        ViewModelHost(make: AccessibleRecordsViewModel(store: dependencies.store, account: dependencies.account, context: dependencies.household)) { model in
+            AccessibleRecordsListContent(model: model, kind: kind, date: date, onRecords: onRecords)
+        }.id(dependencies.household.identity)
+    }
+}
+
+private struct AccessibleRecordsListContent: View {
+    @ObservedObject var model: AccessibleRecordsViewModel
+    @Environment(\.scenePhase) private var phase
+    @State private var editing: AccessibleRecord?
+    var kind: RecordKind?
+    var date: Date?
+    var onRecords: (([HouseholdRecord]) -> Void)?
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Picker("Assignment", selection: $model.mineOnly) {
+                Text(kind == .task ? "All Accessible Tasks" : "All Accessible Records").tag(false)
+                Text("Assigned to Me").tag(true)
+            }
+            Toggle(kind == .bill ? "Unpaid only" : "Pending only", isOn: $model.pendingOnly)
+            if model.loading { ProgressView("Loading households…") }
+            if let error = model.error { Text(error).font(.footnote).foregroundStyle(.red) }
+            Button("Refresh", systemImage: "arrow.clockwise") { Task { await model.refresh() } }.disabled(model.loading)
+            if !model.loading && model.filtered(kind: kind, date: date).isEmpty {
+                ContentUnavailableView("No matching records", systemImage: "tray", description: Text("Try another date or filter."))
+            }
+            ForEach(model.filtered(kind: kind, date: date)) { entry in
+                VStack(alignment: .leading, spacing: 10) {
+                    Label(entry.householdName, systemImage: entry.family == nil ? "lock" : "person.2")
+                        .font(.caption.weight(.semibold)).foregroundStyle(DashboardPalette.green)
+                    Button { editing = entry } label: {
+                        VStack(alignment: .leading, spacing: 7) {
+                            Label(entry.record.title, systemImage: entry.record.kind.icon).font(.headline)
+                            Text(AssignmentDisplay.label(for: entry.record.assignee, accountEmail: model.accountEmail, localName: model.profile.name, members: entry.members, shared: entry.family != nil)).font(.subheadline)
+                            Text(entry.record.kind == .expense ? "Recorded" : entry.record.completed ? (entry.record.kind == .bill ? "Paid" : "Completed") : entry.record.date < Date() ? "Overdue" : "Pending").font(.caption.weight(.semibold))
+                            Text(entry.record.date.formatted(date: .abbreviated, time: .shortened)).font(.caption).foregroundStyle(.secondary)
+                            if entry.record.amount > 0 { Text(entry.record.amount.formatted(.currency(code: entry.family?.currency ?? model.store.profile.currency))) }
+                        }.frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+                    }.buttonStyle(.plain).accessibilityHint("Open record editor")
+                    Button("View in \(entry.householdName)", systemImage: "arrow.up.right") {
+                        model.context?.select(entry.family)
+                        Task { await model.context?.refresh() }
+                    }.font(.caption.weight(.semibold))
+                }.padding(16).homeCard(cornerRadius: 16)
+            }
+        }
+        .task(id: phase) {
+            guard phase == .active else { return }
+            while !Task.isCancelled {
+                await model.refresh()
+                onRecords?(model.entries.map(\.record))
+                do { try await Task.sleep(for: .seconds(15)) } catch { return }
+            }
+        }
+        .sheet(item: $editing) { entry in
+            RecordEditor(record: entry.record, sharedMembers: entry.family == nil ? nil : entry.members, sourceFamily: entry.family, onSave: { updated in
+                try await model.save(updated, source: entry)
+            })
+        }
+    }
+}
+
+struct RecordsView: View {
+    @EnvironmentObject private var dependencies: AppDependencies
+    var kind: RecordKind = .task
+    var onClose: (() -> Void)? = nil
+    var body: some View {
+        ViewModelHost(make: RecordsViewModel(store: dependencies.store, account: dependencies.account, kind: kind, context: dependencies.household)) { model in
+            RecordsViewScreen(viewModel: model, onClose: onClose)
+        }.id(dependencies.household.identity)
+    }
+}
+
+private struct RecordsViewScreen: View {
+
+    @Environment(\.homeContentWidth) private var contentWidth
+
+
+
+
+
+
+
+
+    @ObservedObject var viewModel: RecordsViewModel
+    @State private var allHouseholds = false
+    var onClose: (() -> Void)?
+    private var kind: RecordKind { viewModel.kind }
+    private var search: String { get { viewModel.search } nonmutating set { viewModel.search = newValue } }
+    private var selected: HouseholdRecord? { get { viewModel.selected } nonmutating set { viewModel.selected = newValue } }
+    private var creating: Bool { get { viewModel.creating } nonmutating set { viewModel.creating = newValue } }
+    private var scanning: Bool { get { viewModel.scanning } nonmutating set { viewModel.scanning = newValue } }
+    private var showCompleted: Bool { get { viewModel.showCompleted } nonmutating set { viewModel.showCompleted = newValue } }
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 22) {
+                    Picker("Viewing", selection: $allHouseholds) {
+                        Text(viewModel.context?.family?.name ?? "Private").tag(false)
+                        Text("All Households").tag(true)
+                    }.pickerStyle(.segmented)
+                    if allHouseholds {
+                        AccessibleRecordsList(kind: kind)
+                    } else {
+                    if kind == .bill || kind == .expense {
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(kind == .bill ? "TO PAY" : "SPENT THIS MONTH")
+                                    .font(.caption2.weight(.bold)).foregroundStyle(DashboardPalette.muted)
+                                Text(viewModel.money(kind == .bill ? viewModel.unpaidBills : viewModel.spendingThisMonth))
+                                    .font(.title3.weight(.bold)).foregroundStyle(DashboardPalette.green)
+                            }
+                            Spacer()
+                            if kind == .bill {
+                                VStack(alignment: .trailing, spacing: 4) {
+                                    Text("PAID THIS MONTH").font(.caption2.weight(.bold)).foregroundStyle(DashboardPalette.muted)
+                                    Text(viewModel.money(viewModel.paidBillsThisMonth)).font(.subheadline.weight(.semibold))
+                                }
+                            }
+                        }
+                        .padding(18).homeCard(cornerRadius: 18)
+                    }
+                    if kind == .expense {
+                        ExpenseAnalysisSummary().padding(18).homeCard(cornerRadius: 18)
+                    }
+                    if kind == .task {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                ForEach(TaskFilter.allCases) { filter in
+                                    Button { withAnimation(.easeInOut(duration: 0.15)) { viewModel.taskFilter = filter } } label: {
+                                        Text(filter.rawValue)
+                                            .font(.caption.weight(.semibold))
+                                            .padding(.horizontal, 13).padding(.vertical, 9)
+                                            .foregroundStyle(viewModel.taskFilter == filter ? .white : DashboardPalette.green)
+                                            .background(viewModel.taskFilter == filter ? DashboardPalette.brandFill : DashboardPalette.green.opacity(0.09), in: Capsule())
+                                    }
+                                    .buttonStyle(HomePressStyle())
+                                    .accessibilityAddTraits(viewModel.taskFilter == filter ? .isSelected : [])
+                                }
+                            }
+                        }
+                        .accessibilityLabel("Task filters")
+                    }
+                    if kind == .bill {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                ForEach(BillFilter.allCases) { filter in
+                                    Button { withAnimation(.easeInOut(duration: 0.15)) { viewModel.billFilter = filter } } label: {
+                                        Text(filter.rawValue)
+                                            .font(.caption.weight(.semibold))
+                                            .padding(.horizontal, 13).padding(.vertical, 9)
+                                            .foregroundStyle(viewModel.billFilter == filter ? .white : DashboardPalette.green)
+                                            .background(viewModel.billFilter == filter ? DashboardPalette.brandFill : DashboardPalette.green.opacity(0.09), in: Capsule())
+                                    }
+                                    .buttonStyle(HomePressStyle())
+                                    .accessibilityAddTraits(viewModel.billFilter == filter ? .isSelected : [])
+                                }
+                            }
+                        }
+                        .accessibilityLabel("Bill filters")
+                    }
+                    HStack(spacing: 10) {
+                        Image(systemName: "magnifyingglass").foregroundStyle(DashboardPalette.muted.opacity(0.6))
+                        TextField("Search \(kind.rawValue.lowercased())", text: $viewModel.search).font(.subheadline)
+                        if !search.isEmpty { Button { search = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(DashboardPalette.muted.opacity(0.5)) }.accessibilityLabel("Clear search") }
+                    }
+                    .padding(14)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    HStack {
+                        Text(kind == .expense ? "YOUR SPENDING" : kind == .task ? "\(viewModel.taskFilter.rawValue.uppercased())" : "YOUR \(kind.rawValue.uppercased())").font(.caption2 .weight(.bold)).tracking(1.5).foregroundStyle(DashboardPalette.muted)
+                        Spacer()
+                        if kind != .expense && kind != .bill {
+                            Menu {
+                                Toggle("Include completed", isOn: $viewModel.showCompleted)
+                            } label: {
+                                Label(showCompleted ? "All statuses" : "Pending only", systemImage: "line.3.horizontal.decrease")
+                                    .font(.caption2.weight(.semibold))
+                            }.accessibilityLabel("Filter by status")
+                        }
+                    }
+                    if viewModel.filtered.isEmpty {
+                        VStack(spacing: 14) {
+                            Image(systemName: search.isEmpty ? kind.icon : "magnifyingglass").font(.system(size: 32, weight: .light)).foregroundStyle(DashboardPalette.green).frame(width: 76, height: 76).background(DashboardPalette.mint.opacity(0.2), in: RoundedRectangle(cornerRadius: 26))
+                            Text(search.isEmpty ? "A fresh start" : "No matches yet").font(.title3 .weight(.bold))
+                            Text(search.isEmpty ? (kind == .bill ? "Add a bill you need to pay." : kind == .expense ? "Add a paid receipt to track spending." : "Add your first activity and give it a home.") : "Try a different name or clear the search.").font(.footnote).foregroundStyle(DashboardPalette.muted).multilineTextAlignment(.center)
+                        }.padding(30).frame(maxWidth: .infinity).homeCard()
+                    }
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 14, alignment: .top), count: contentWidth >= 1120 ? 3 : contentWidth >= 760 ? 2 : 1), alignment: .leading, spacing: 14) {
+                        ForEach(viewModel.filtered) { record in
+                            VStack(alignment: .leading, spacing: 14) {
+                                Label(viewModel.context?.family?.name ?? "Private", systemImage: viewModel.context?.family == nil ? "lock" : "person.2")
+                                    .font(.caption.weight(.semibold)).foregroundStyle(DashboardPalette.green)
+                                Button { selected = record } label: { RecordRow(record: record) }.buttonStyle(.plain)
+                                HStack {
+                                    Text(record.category.uppercased()).font(.system(size: 9, weight: .bold)).tracking(0.6).foregroundStyle(DashboardPalette.green).padding(.horizontal, 9).padding(.vertical, 5).background(DashboardPalette.green.opacity(0.055), in: Capsule())
+                                    Spacer()
+                                    if kind != .expense {
+                                        Button { viewModel.toggle(record) } label: { Label(record.completed ? "Reopen" : kind == .bill ? "Mark paid" : "Mark complete", systemImage: record.completed ? "arrow.uturn.backward" : "checkmark").font(.caption .weight(.semibold)) }
+                                            .buttonStyle(.bordered)
+                                    }
+                                    Menu { Button("View details", systemImage: "doc.text.magnifyingglass") { selected = record }; Button("Delete", systemImage: "trash", role: .destructive) { viewModel.delete(record) } } label: { Image(systemName: "ellipsis").frame(width: 30, height: 30) }.accessibilityLabel("Record actions")
+                                }
+                            }
+                            .padding(16)
+                            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                        }
+                    }
+                    }
+                }.padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 24).frame(maxWidth: 1200).frame(maxWidth: .infinity)
+            }
+            .background(Color(uiColor: .systemGroupedBackground))
+            .navigationTitle(kind == .task ? "Tasks" : kind.rawValue)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(selected == nil ? .hidden : .visible, for: .navigationBar)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                pageHeader
+            }
+                .sheet(isPresented: $viewModel.creating) { RecordEditor(record: HouseholdRecord(kind: kind, title: "", assignee: viewModel.recommendedMember)) }
+                .sheet(isPresented: $viewModel.scanning) { ScanReviewView(initialKind: kind == .expense ? .expense : .bill) }
+                .navigationDestination(isPresented: Binding(
+                    get: { selected != nil },
+                    set: { if !$0 { selected = nil } }
+                )) {
+                    if let selected { RecordDetailView(record: selected, presentsAsSheet: false) }
+                }
+        }
+    }
+
+    private var pageHeader: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let onClose {
+                HStack {
+                    Spacer()
+                    Button("Done", action: onClose).font(.body.weight(.semibold))
+                        .frame(minHeight: 44)
+                }
+            }
+            HStack(alignment: .center, spacing: 12) {
+                Text(kind == .task ? "Tasks" : kind.rawValue)
+                    .font(.largeTitle.bold())
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityAddTraits(.isHeader)
+                HStack(spacing: 10) {
+                    headerAction(kind == .task ? "Add task" : kind == .bill ? "Add bill" : kind == .expense ? "Add expense" : kind == .event ? "Add event" : "Add maintenance", icon: "plus", primary: true) { creating = true }
+                    if kind == .bill || kind == .expense {
+                        headerAction(kind == .bill ? "Scan bill" : "Scan receipt", icon: "doc.viewfinder", primary: false) { scanning = true }
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 14)
+        .frame(maxWidth: 1200).frame(maxWidth: .infinity)
+        .background(Color(uiColor: .systemGroupedBackground))
+    }
+
+    private func headerAction(_ title: String, icon: String, primary: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(primary ? .white : DashboardPalette.green)
+                .frame(width: 44, height: 44)
+                .background(primary ? DashboardPalette.brandFill : Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+        .buttonStyle(HomePressStyle())
+        .accessibilityLabel(title)
+    }
+}

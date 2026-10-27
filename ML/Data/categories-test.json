@@ -1,0 +1,242 @@
+[
+  {
+    "text": "Keells receipt for milk and bread",
+    "category": "Groceries"
+  },
+  {
+    "text": "Food City weekly pantry items",
+    "category": "Groceries"
+  },
+  {
+    "text": "Apples bananas and yoghurt for breakfast",
+    "category": "Groceries"
+  },
+  {
+    "text": "Rice lentils and spices for dinner",
+    "category": "Groceries"
+  },
+  {
+    "text": "Fresh chicken from market",
+    "category": "Groceries"
+  },
+  {
+    "text": "Sugar coffee and tea restock",
+    "category": "Groceries"
+  },
+  {
+    "text": "Grocery shopping at Arpico",
+    "category": "Groceries"
+  },
+  {
+    "text": "Vegetable stall fresh tomatoes and onions",
+    "category": "Groceries"
+  },
+  {
+    "text": "Canned beans pasta and flour",
+    "category": "Groceries"
+  },
+  {
+    "text": "Cheese butter and eggs",
+    "category": "Groceries"
+  },
+  {
+    "text": "Pay CEB bill for electricity",
+    "category": "Utilities"
+  },
+  {
+    "text": "Water Board monthly water charge",
+    "category": "Utilities"
+  },
+  {
+    "text": "Dialog fibre home broadband payment",
+    "category": "Utilities"
+  },
+  {
+    "text": "SLT internet monthly subscription renewal",
+    "category": "Utilities"
+  },
+  {
+    "text": "LECO power supply invoice",
+    "category": "Utilities"
+  },
+  {
+    "text": "Mobitel recharge for phone calls",
+    "category": "Utilities"
+  },
+  {
+    "text": "Home cooking gas refill payment",
+    "category": "Utilities"
+  },
+  {
+    "text": "Television subscription for this month",
+    "category": "Utilities"
+  },
+  {
+    "text": "NWSDB utility water service",
+    "category": "Utilities"
+  },
+  {
+    "text": "Monthly home WiFi data bill",
+    "category": "Utilities"
+  },
+  {
+    "text": "PickMe fare to the office",
+    "category": "Transport"
+  },
+  {
+    "text": "Petrol purchase for motorcycle",
+    "category": "Transport"
+  },
+  {
+    "text": "Train ride tickets for weekend",
+    "category": "Transport"
+  },
+  {
+    "text": "Car garage brake repair",
+    "category": "Transport"
+  },
+  {
+    "text": "Annual motor vehicle insurance",
+    "category": "Transport"
+  },
+  {
+    "text": "Highway expressway toll fee",
+    "category": "Transport"
+  },
+  {
+    "text": "Uber taxi fare to airport",
+    "category": "Transport"
+  },
+  {
+    "text": "Bus season ticket renewal",
+    "category": "Transport"
+  },
+  {
+    "text": "New tyres for family car",
+    "category": "Transport"
+  },
+  {
+    "text": "Mall car parking charge",
+    "category": "Transport"
+  },
+  {
+    "text": "AC filter cleaning and service",
+    "category": "Home"
+  },
+  {
+    "text": "Monthly rental for family apartment",
+    "category": "Home"
+  },
+  {
+    "text": "Purchase bedroom wardrobe furniture",
+    "category": "Home"
+  },
+  {
+    "text": "Plumber visit for leaking tap",
+    "category": "Home"
+  },
+  {
+    "text": "Living room paint and curtains",
+    "category": "Home"
+  },
+  {
+    "text": "Roof and gutter maintenance",
+    "category": "Home"
+  },
+  {
+    "text": "Buy floor mop and laundry detergent",
+    "category": "Home"
+  },
+  {
+    "text": "Fridge repair technician payment",
+    "category": "Home"
+  },
+  {
+    "text": "Gardener trimming plants",
+    "category": "Home"
+  },
+  {
+    "text": "Replacement lock for front door",
+    "category": "Home"
+  },
+  {
+    "text": "Medicine and vitamins at pharmacy",
+    "category": "Health"
+  },
+  {
+    "text": "Doctor appointment for child",
+    "category": "Health"
+  },
+  {
+    "text": "Dentist bill for tooth filling",
+    "category": "Health"
+  },
+  {
+    "text": "Medical blood test at hospital",
+    "category": "Health"
+  },
+  {
+    "text": "Monthly health insurance payment",
+    "category": "Health"
+  },
+  {
+    "text": "Physiotherapy clinic treatment",
+    "category": "Health"
+  },
+  {
+    "text": "Prescription asthma inhaler",
+    "category": "Health"
+  },
+  {
+    "text": "Optician eye examination",
+    "category": "Health"
+  },
+  {
+    "text": "Buy bandages and thermometer",
+    "category": "Health"
+  },
+  {
+    "text": "Specialist consultation at medical centre",
+    "category": "Health"
+  },
+  {
+    "text": "Movie tickets for Saturday night",
+    "category": "Other"
+  },
+  {
+    "text": "Gift for a friends wedding",
+    "category": "Other"
+  },
+  {
+    "text": "Annual gym subscription",
+    "category": "Other"
+  },
+  {
+    "text": "Lunch with family at restaurant",
+    "category": "Other"
+  },
+  {
+    "text": "School books and pencils",
+    "category": "Other"
+  },
+  {
+    "text": "New pair of shoes",
+    "category": "Other"
+  },
+  {
+    "text": "Donate to charity fundraiser",
+    "category": "Other"
+  },
+  {
+    "text": "Pet vet appointment",
+    "category": "Other"
+  },
+  {
+    "text": "Music streaming renewal",
+    "category": "Other"
+  },
+  {
+    "text": "Laptop charger replacement",
+    "category": "Other"
+  }
+]

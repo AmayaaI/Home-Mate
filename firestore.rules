@@ -1,0 +1,189 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    function validRecord(recordId) {
+      let data = request.resource.data;
+      return data.keys().hasAll(['id', 'kind', 'title', 'amount', 'dueAt', 'category', 'assignee', 'important', 'completed', 'notes'])
+        && data.keys().hasOnly(['id', 'kind', 'title', 'amount', 'dueAt', 'category', 'assignee', 'important', 'completed', 'notes', 'referenceNumber', 'endAt', 'location', 'contactPhone', 'paidAt', 'latitude', 'longitude', 'reminderEnabled', 'reminderAt'])
+        && data.id == recordId && data.id is string && data.id.size() == 36
+        && data.kind in ['Tasks', 'Bills', 'Maintenance', 'Expenses', 'Events']
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 200 && data.title.matches('.*[^ \t\n\r].*')
+        && data.amount is number && data.amount >= 0 && data.amount <= 1000000000000
+        && data.dueAt is timestamp && data.category is string && data.category.size() <= 100
+        && data.assignee is string && data.assignee.size() <= 254
+        && data.important is bool && data.completed is bool
+        && data.notes is string && data.notes.size() <= 10000
+        && (!('referenceNumber' in data) || (data.referenceNumber is string && data.referenceNumber.size() <= 200))
+        // Optional for legacy records. Access is still restricted by account/family membership.
+        && (!('paidAt' in data) || data.paidAt is timestamp)
+        && (!('reminderEnabled' in data) || data.reminderEnabled is bool)
+        && (!('reminderAt' in data) || (data.reminderAt is timestamp && data.reminderAt < data.dueAt))
+        && ((!('latitude' in data) && !('longitude' in data)) ||
+          (data.latitude is number && data.longitude is number && data.latitude >= -90 && data.latitude <= 90 && data.longitude >= -180 && data.longitude <= 180))
+        && (!('endAt' in data) || (data.endAt is timestamp && data.endAt >= data.dueAt))
+        && (!('location' in data) || (data.location is string && data.location.size() <= 500))
+        && (!('contactPhone' in data) || (data.contactPhone is string && data.contactPhone.size() <= 50));
+    }
+    // Existing manual snapshot backup remains compatible with the app.
+    match /households/{userId} {
+      allow read: if owner(userId);
+      allow create, update: if owner(userId)
+        && request.resource.data.keys().hasOnly(['records'])
+        && request.resource.data.records is string
+        && request.resource.data.records.size() <= 800000;
+      allow delete: if owner(userId);
+      match /records/{recordId} {
+        allow read: if owner(userId);
+        allow create, update: if owner(userId) && validRecord(recordId);
+        allow delete: if owner(userId);
+      }
+    }
+    function verified() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+    function familyMember(familyId) {
+      return request.auth != null && exists(/databases/$(database)/documents/families/$(familyId)/members/$(request.auth.uid));
+    }
+    function familyOwner(familyId) {
+      return familyMember(familyId) && get(/databases/$(database)/documents/families/$(familyId)).data.ownerID == request.auth.uid;
+    }
+    function recipient(invite) {
+      return verified() && invite.email == request.auth.token.email.lower();
+    }
+    match /families/{familyId} {
+      allow read: if familyMember(familyId);
+      allow create: if verified()
+        && request.resource.data.keys().hasOnly(['name', 'ownerID', 'currency', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.ownerID == request.auth.uid
+        && request.resource.data.currency in ['LKR', 'USD', 'GBP', 'EUR', 'INR']
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/families/$(familyId)/members/$(request.auth.uid)).data.role == 'owner';
+      allow update: if familyOwner(familyId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100;
+      allow delete: if false;
+      match /members/{memberId} {
+        function validMember() {
+          let d = request.resource.data;
+          return d.keys().hasOnly(['uid', 'email', 'displayName', 'role', 'joinedAt', 'inviteID'])
+            && d.uid == memberId && memberId == request.auth.uid
+            && d.email == request.auth.token.email.lower()
+            && d.displayName is string && d.displayName.size() > 0 && d.displayName.size() <= 100
+            && d.joinedAt == request.time;
+        }
+        function acceptedInvite() {
+          let id = request.resource.data.inviteID;
+          let before = get(/databases/$(database)/documents/familyInvites/$(id)).data;
+          let after = getAfter(/databases/$(database)/documents/familyInvites/$(id)).data;
+          return before.familyID == familyId && recipient(before) && before.status == 'pending'
+            && before.expiresAt > request.time && after.status == 'accepted' && after.acceptedBy == request.auth.uid;
+        }
+        allow read: if familyMember(familyId);
+        allow create: if verified() && validMember() && (
+          (request.resource.data.role == 'owner'
+            && !exists(/databases/$(database)/documents/families/$(familyId))
+            && getAfter(/databases/$(database)/documents/families/$(familyId)).data.ownerID == request.auth.uid)
+          || (request.resource.data.role == 'member' && acceptedInvite()));
+        allow update: if false;
+        allow delete: if familyMember(familyId) && resource.data.role != 'owner'
+          && (request.auth.uid == memberId || familyOwner(familyId));
+      }
+      match /records/{recordId} {
+        allow read: if familyMember(familyId);
+        allow create, update: if familyMember(familyId) && validRecord(recordId);
+        allow delete: if familyMember(familyId);
+      }
+      match /announcements/{announcementId} {
+        function validAnnouncement() {
+          let d = request.resource.data;
+          return d.keys().hasAll(['title', 'body', 'authorID', 'authorName', 'important', 'createdAt'])
+            && d.keys().hasOnly(['title', 'body', 'authorID', 'authorName', 'important', 'createdAt'])
+            && d.title is string && d.title.size() > 0 && d.title.size() <= 200 && d.title.matches('.*[^ \\t\\n\\r].*')
+            && d.body is string && d.body.size() > 0 && d.body.size() <= 10000
+            && d.authorID is string && d.authorName is string && d.authorName.size() > 0 && d.authorName.size() <= 100
+            && d.important is bool && d.createdAt is timestamp;
+        }
+        allow read: if familyMember(familyId);
+        allow create: if familyMember(familyId) && validAnnouncement()
+          && request.resource.data.authorID == request.auth.uid && request.resource.data.createdAt == request.time;
+        allow update: if familyMember(familyId) && validAnnouncement()
+          && (resource.data.authorID == request.auth.uid || familyOwner(familyId))
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title', 'body', 'important']);
+        allow delete: if familyMember(familyId) && (resource.data.authorID == request.auth.uid || familyOwner(familyId));
+      }
+      match /messages/{messageId} {
+        allow read: if familyMember(familyId);
+        allow create: if familyMember(familyId)
+          && request.resource.data.keys().hasOnly(['authorID', 'authorName', 'text', 'createdAt'])
+          && request.resource.data.authorID == request.auth.uid
+          && request.resource.data.authorName is string && request.resource.data.authorName.size() > 0 && request.resource.data.authorName.size() <= 100
+          && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 4000
+          && request.resource.data.createdAt == request.time;
+        allow update: if false;
+        allow delete: if familyMember(familyId) && (resource.data.authorID == request.auth.uid || familyOwner(familyId));
+      }
+    }
+    match /users/{userId}/sync/{documentId} {
+      allow read: if owner(userId) && documentId == 'state';
+      allow create, update: if owner(userId) && documentId == 'state'
+        && request.resource.data.keys().hasOnly(['version', 'chunks'])
+        && request.resource.data.version == 1
+        && request.resource.data.chunks is list
+        && request.resource.data.chunks.size() > 0 && request.resource.data.chunks.size() <= 128;
+    }
+    match /users/{userId}/syncChunks/{chunkId} {
+      allow read: if owner(userId);
+      allow create: if owner(userId) && chunkId.matches('[0-9a-f]{64}')
+        && request.resource.data.keys().hasOnly(['data'])
+        && request.resource.data.data is bytes && request.resource.data.data.size() <= 450000;
+      // Reusable immutable chunks; only a successfully published manifest is restored.
+      allow update, delete: if false;
+    }
+    match /users/{userId}/profile/{profileId} {
+      allow read: if owner(userId) && profileId == 'details';
+      allow create, update: if owner(userId) && profileId == 'details'
+        && request.resource.data.keys().hasAll(['payload', 'version'])
+        && request.resource.data.keys().hasOnly(['payload', 'version'])
+        && request.resource.data.version == 1
+        && request.resource.data.payload is string
+        && request.resource.data.payload.size() <= 800000;
+      allow delete: if owner(userId);
+    }
+    match /users/{userId}/families/{familyId} {
+      allow read, delete: if owner(userId);
+      allow create, update: if owner(userId) && request.resource.data.keys().hasOnly(['familyID'])
+        && request.resource.data.familyID == familyId
+        && existsAfter(/databases/$(database)/documents/families/$(familyId)/members/$(userId));
+    }
+    match /familyInvites/{inviteId} {
+      allow read: if request.auth != null && (resource.data.inviterID == request.auth.uid || recipient(resource.data));
+      allow create: if verified() && familyOwner(request.resource.data.familyID)
+        && request.resource.data.keys().hasOnly(['familyID', 'familyName', 'inviterID', 'email', 'status', 'createdAt', 'expiresAt'])
+        && request.resource.data.familyName == get(/databases/$(database)/documents/families/$(request.resource.data.familyID)).data.name
+        && request.resource.data.inviterID == request.auth.uid
+        && request.resource.data.email is string && request.resource.data.email.size() <= 254
+        && request.resource.data.email == request.resource.data.email.lower()
+        && request.resource.data.email != request.auth.token.email.lower()
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.expiresAt is timestamp && request.resource.data.expiresAt > request.time
+        && request.resource.data.expiresAt <= request.time + duration.value(7, 'd');
+      allow update: if request.auth != null && resource.data.status == 'pending' && (
+        (familyOwner(resource.data.familyID)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+          && request.resource.data.status == 'cancelled')
+        || (recipient(resource.data) && resource.data.expiresAt > request.time
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'acceptedBy'])
+          && request.resource.data.status == 'accepted' && request.resource.data.acceptedBy == request.auth.uid
+          && getAfter(/databases/$(database)/documents/families/$(resource.data.familyID)/members/$(request.auth.uid)).data.inviteID == inviteId));
+      allow delete: if false;
+    }
+    // Anything not explicitly allowed above is denied.
+    match /{document=**} { allow read, write: if false; }
+  }
+}
