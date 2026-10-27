@@ -36,8 +36,10 @@ private struct DashboardViewScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
+                LazyVStack(alignment: .leading, spacing: 22) {
                     welcome
+                    householdHero
+                    quickActions
                     nextUp
                     spendingSection
                     tasksSection
@@ -57,8 +59,8 @@ private struct DashboardViewScreen: View {
                         }.buttonStyle(.plain)
                     } else { familySection }
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 12)
+                .padding(.horizontal, 20)
+                .padding(.top, 18)
                 .padding(.bottom, 36)
                 .frame(maxWidth: 760)
                 .frame(maxWidth: .infinity)
@@ -83,70 +85,134 @@ private struct DashboardViewScreen: View {
     }
 
     private var welcome: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .center, spacing: 12) {
-                Image(systemName: "house.fill")
-                    .font(.system(size: 17, weight: .semibold))
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 5) {
+                Text(viewModel.greetingText.uppercased())
+                    .font(.caption2.weight(.bold)).tracking(1.8)
                     .foregroundStyle(DashboardPalette.green)
-                    .frame(width: 44, height: 44)
-                    .background(DashboardPalette.green.opacity(colorScheme == .dark ? 0.22 : 0.11), in: Circle())
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(viewModel.greetingText.uppercased())
-                        .font(.caption2.weight(.bold))
-                        .tracking(1.1)
-                        .foregroundStyle(DashboardPalette.green)
-                    Text(firstName.isEmpty ? "Welcome home" : firstName)
-                        .font(.title3.weight(.bold))
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                Button { viewModel.showReminders = true } label: {
-                    Image(systemName: viewModel.pending.isEmpty ? "bell" : "bell.badge")
-                        .font(.system(size: 16, weight: .semibold))
-                        .frame(width: 44, height: 44)
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(viewModel.pending.isEmpty ? DashboardPalette.ink : DashboardPalette.green)
-                .background(Color(uiColor: .secondarySystemGroupedBackground), in: Circle())
-                .overlay(Circle().stroke(Color.primary.opacity(colorScheme == .dark ? 0.12 : 0.06)))
-                .accessibilityLabel("Activity reminders")
-                Button { showingProfile = true } label: {
-                    ProfileAvatar(data: viewModel.profile.personalDetails?.avatarData,
-                                  name: viewModel.profile.name, size: 44)
-                        .frame(width: 44, height: 44)
-                        .overlay(Circle().stroke(Color.primary.opacity(colorScheme == .dark ? 0.18 : 0.08)))
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel("Open profile settings")
+                Text(firstName.isEmpty ? "Welcome home." : "Hello, \(firstName).")
+                    .font(.system(.title, design: .rounded, weight: .bold))
+                    .lineLimit(2)
+                Text(Date().formatted(.dateTime.weekday(.wide).month(.abbreviated).day()))
+                    .font(.caption).foregroundStyle(.secondary)
             }
-            Text("Your household at a glance")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Button { viewModel.showChat = true } label: {
-                HStack(spacing: 10) {
-                    Image(systemName: "person.2.fill")
-                        .foregroundStyle(DashboardPalette.green)
-                    Text(viewModel.profile.household)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-                    Spacer(minLength: 8)
-                    Text("Family hub")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    Image(systemName: "chevron.right")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.tertiary)
-                }
-                .padding(.horizontal, 14)
-                .frame(minHeight: 48)
-                .background(Color(uiColor: .secondarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: 14))
+            Spacer(minLength: 0)
+            Button { viewModel.showReminders = true } label: {
+                Image(systemName: viewModel.pending.isEmpty ? "bell" : "bell.badge")
+                    .font(.system(size: 18, weight: .medium))
+                    .frame(width: 44, height: 44)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: Circle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Activity reminders")
+            Button { showingProfile = true } label: {
+                ProfileAvatar(data: viewModel.profile.personalDetails?.avatarData,
+                              name: viewModel.profile.name, size: 46)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Open profile settings")
         }
-        .padding(.bottom, 4)
+    }
+
+    private var householdHero: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Label(dependencies.household.family == nil ? "YOUR PRIVATE SPACE" : "YOUR SHARED HOME",
+                          systemImage: "house.fill")
+                        .font(.caption2.weight(.bold)).tracking(1.3)
+                        .foregroundStyle(DashboardPalette.mint)
+                    Text(viewModel.profile.household)
+                        .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("A little more harmony, every day.")
+                        .font(.subheadline).foregroundStyle(.white.opacity(0.8))
+                }
+                Spacer(minLength: 4)
+                Button { viewModel.showChat = true } label: {
+                    Image(systemName: "arrow.up.right")
+                        .font(.headline).frame(width: 44, height: 44)
+                        .background(.white.opacity(0.14), in: Circle())
+                        .overlay(Circle().stroke(.white.opacity(0.2)))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Open family hub")
+            }
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 12) { heroMetrics }
+                VStack(alignment: .leading, spacing: 12) { heroMetrics }
+            }
+        }
+        .foregroundStyle(.white)
+        .padding(24)
+        .background {
+            ZStack(alignment: .topTrailing) {
+                LinearGradient(colors: [Color(red: 0.05, green: 0.23, blue: 0.21),
+                                        DashboardPalette.brandFill],
+                               startPoint: .topLeading, endPoint: .bottomTrailing)
+                Circle().stroke(.white.opacity(0.07), lineWidth: 36)
+                    .frame(width: 230, height: 230).offset(x: 105, y: -110)
+                Circle().fill(DashboardPalette.mint.opacity(0.07))
+                    .frame(width: 180, height: 180).offset(x: 95, y: 100)
+            }.allowsHitTesting(false).accessibilityHidden(true)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+        .shadow(color: DashboardPalette.brandFill.opacity(0.18), radius: 18, x: 0, y: 10)
+    }
+
+    @ViewBuilder private var heroMetrics: some View {
+        heroMetric("Open activities", value: viewModel.pending.count, icon: "sparkles")
+        heroMetric("Tasks today", value: viewModel.tasks.count, icon: "checklist")
+        heroMetric("Unpaid bills", value: viewModel.bills.count, icon: "doc.text")
+    }
+
+    private func heroMetric(_ title: String, value: Int, icon: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Image(systemName: icon).font(.subheadline).foregroundStyle(DashboardPalette.mint)
+            Text(value.formatted()).font(.system(.title2, design: .rounded, weight: .bold)).monospacedDigit()
+            Text(title).font(.caption2.weight(.medium)).foregroundStyle(.white.opacity(0.8))
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
+        .accessibilityElement(children: .combine)
+    }
+
+    private var quickActions: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Make room for easy").font(.headline)
+                Spacer()
+                Text("QUICK ADD").font(.caption2.weight(.bold)).tracking(1.2).foregroundStyle(.secondary)
+            }
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 90), spacing: 12)], spacing: 12) {
+                quickAction("New task", icon: "plus", tint: DashboardPalette.green) {
+                    creatingRecord = HouseholdRecord(kind: .task, title: "", assignee: viewModel.recommendedMember)
+                }
+                quickAction("Add bill", icon: "doc.badge.plus", tint: Color(uiColor: .systemOrange)) {
+                    creatingRecord = HouseholdRecord(kind: .bill, title: "", assignee: viewModel.recommendedMember)
+                }
+                quickAction("Scan receipt", icon: "viewfinder", tint: Color(uiColor: .systemIndigo)) {
+                    viewModel.scanning = true
+                }
+            }
+        }
+    }
+
+    private func quickAction(_ title: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 10) {
+                Image(systemName: icon).font(.system(size: 21, weight: .semibold))
+                    .foregroundStyle(tint).frame(width: 48, height: 48)
+                    .background(tint.opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
+                Text(title).font(.caption.weight(.semibold)).foregroundStyle(.primary)
+                    .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, minHeight: 98)
+            .padding(8)
+            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 22))
+        }.buttonStyle(.plain)
     }
 
     private var nextUp: some View {
@@ -323,7 +389,7 @@ private struct DashboardViewScreen: View {
     private var spendingSection: some View {
         DashboardSurface {
             HStack {
-                Text("This month spending").font(.headline)
+                Label("Monthly spending", systemImage: "chart.bar.xaxis").font(.headline)
                 Spacer()
                 Button { viewModel.scanning = true } label: {
                     Image(systemName: "doc.viewfinder").frame(width: 44, height: 44)
@@ -338,7 +404,7 @@ private struct DashboardViewScreen: View {
                 if viewModel.preferences.monthlyBudget > 0 {
                     Text("\(Int(budgetUsage * 100))% spent")
                         .font(.caption.weight(.semibold))
-                        .foregroundStyle(DashboardPalette.green)
+                        .foregroundStyle(budgetUsage > 1 ? DashboardPalette.red : DashboardPalette.green)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                         .background(DashboardPalette.green.opacity(0.10), in: Capsule())
@@ -354,7 +420,9 @@ private struct DashboardViewScreen: View {
                 .foregroundStyle(.secondary)
             if viewModel.preferences.monthlyBudget > 0 {
                 ProgressView(value: min(budgetUsage, 1))
-                    .tint(DashboardPalette.green)
+                    .tint(budgetUsage > 1 ? DashboardPalette.red : DashboardPalette.green)
+                    .scaleEffect(x: 1, y: 1.6, anchor: .center)
+                    .padding(.vertical, 4)
                     .accessibilityLabel("Monthly budget used")
                 HStack {
                     Text("of \(viewModel.money(viewModel.preferences.monthlyBudget)) budget")
@@ -614,10 +682,11 @@ private struct DashboardViewScreen: View {
 private struct DashboardSurface<Content: View>: View {
     @ViewBuilder var content: () -> Content
     var body: some View {
-        VStack(alignment: .leading, spacing: 13, content: content)
-            .padding(18)
+        VStack(alignment: .leading, spacing: 16, content: content)
+            .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 20))
-            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.primary.opacity(0.045)))
+            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26))
+            .overlay(RoundedRectangle(cornerRadius: 26).stroke(Color.primary.opacity(0.04)))
+            .shadow(color: .black.opacity(0.025), radius: 14, x: 0, y: 6)
     }
 }
