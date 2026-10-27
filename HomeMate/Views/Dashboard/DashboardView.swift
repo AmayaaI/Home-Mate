@@ -161,7 +161,7 @@ private struct DashboardViewScreen: View {
     }
 
     @ViewBuilder private var heroMetrics: some View {
-        heroMetric("Open activities", value: viewModel.pending.count, icon: "sparkles")
+        heroMetric("Open activities", value: viewModel.pending.count, icon: "clock")
         heroMetric("Tasks today", value: viewModel.tasks.count, icon: "checklist")
         heroMetric("Unpaid bills", value: viewModel.bills.count, icon: "doc.text")
     }
