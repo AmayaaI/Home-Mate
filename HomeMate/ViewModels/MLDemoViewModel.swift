@@ -11,6 +11,7 @@ final class MLDemoViewModel: ScreenViewModel {
     @Published var prediction: Double?
     @Published var categoryError: String?
     @Published var forecastError: String?
+    @Published var forecastUsesTrendFallback = false
 
     func predictCategory() {
         do { category = try ExpenseIntelligence.suggestCategory(description); categoryError = nil }
@@ -19,8 +20,11 @@ final class MLDemoViewModel: ScreenViewModel {
     func predictForecast() {
         do {
             guard let model = ExpenseIntelligence.forecaster else { throw ExpenseIntelligence.ModelError.missingModel }
-            prediction = try ExpenseIntelligence.predictMonth(history: [oldest, previous, latest], model: model); forecastError = nil
-        } catch { prediction = nil; forecastError = error.localizedDescription }
+            let estimate = try ExpenseIntelligence.estimateMonth(history: [oldest, previous, latest], model: model)
+            prediction = estimate.amount
+            forecastUsesTrendFallback = estimate.usesTrendFallback
+            forecastError = nil
+        } catch { prediction = nil; forecastUsesTrendFallback = false; forecastError = error.localizedDescription }
     }
 
 }

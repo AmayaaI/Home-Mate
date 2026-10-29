@@ -22,7 +22,7 @@ private struct StartupScreen: View {
                         ProgressView("Opening your household…")
                         if let error = viewModel.profileSyncError {
                             Text(error).font(.callout).multilineTextAlignment(.center)
-                            Button("Retry") { Task { await viewModel.syncProfile() } }
+                            Button("Retry") { Task { await viewModel.syncProfile(force: true) } }
                             Button("Sign out") { viewModel.account.signOut() }
                         }
                     }.padding()
@@ -36,7 +36,7 @@ private struct StartupScreen: View {
             if !viewModel.loadingProfile, let error = viewModel.profileSyncError {
                 VStack {
                     Text(error).font(.caption)
-                    Button("Retry account sync") { Task { await viewModel.syncProfile() } }
+                    Button("Retry account sync") { Task { await viewModel.syncProfile(force: true) } }
                 }.padding().frame(maxWidth: .infinity).background(.regularMaterial)
             }
         }

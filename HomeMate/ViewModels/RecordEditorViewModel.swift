@@ -56,6 +56,8 @@ final class RecordEditorViewModel: ScreenViewModel {
         if draft.title.isEmpty, draft.kind != .expense, abs(draft.date.timeIntervalSinceNow) < 10 {
             draft.date = Date().addingTimeInterval(3600)
         }
+        // Preserve an existing non-default category, including a category the user
+        // confirmed while reviewing a scanned receipt.
         categoryChosenManually = correctedModelCategory != nil || (!record.title.isEmpty && record.category != "Other")
         lastModelCategory = correctedModelCategory
         self.record = draft; self.sharedMembers = sharedMembers; self.onSave = onSave
@@ -207,7 +209,7 @@ final class RecordEditorViewModel: ScreenViewModel {
     }
     func suggestAfterTitleChange() async {
         let title = record.title
-        guard record.kind == .expense || record.kind == .bill,
+        guard [.task, .bill, .expense, .maintenance].contains(record.kind),
               !categoryChosenManually, !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         do { try await Task.sleep(for: .milliseconds(650)) } catch { return }
         guard !Task.isCancelled, isActive, !saving, record.title == title, !categoryChosenManually else { return }
@@ -221,8 +223,8 @@ final class RecordEditorViewModel: ScreenViewModel {
             record.category = ExpenseIntelligence.medicalCategoryCorrection(description) ?? prediction
             categoryFailed = false
             categoryMessage = ExpenseIntelligence.medicalCategoryCorrection(record.title + " " + record.notes) != nil
-                ? "Health suggested using a medical terminology correction to Core ML. You can change it."
-                : "Core ML suggested \(record.category). Review and change it if needed."
+                ? "Health suggested from the description. You can change it."
+                : "Suggested \(record.category). Review and change it if needed."
         } catch { categoryFailed = true; categoryMessage = error.localizedDescription }
     }
     func uploadPrivateRecord() async {

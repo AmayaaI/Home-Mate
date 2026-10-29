@@ -62,6 +62,7 @@ final class CloudAccount: ObservableObject {
     @Published var rememberSession = true
     private var token = ""
     private var refreshToken = ""
+    private var knownSyncChunkIDs: [String: Set<String>] = [:]
     private(set) var userID = ""
     var dataScope: String { signedIn ? "user:" + userID : "guest" }
     private var expiresAt = Date.distantPast
@@ -294,6 +295,14 @@ final class CloudAccount: ObservableObject {
         SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
     func fetchAccountSnapshot() async throws -> AccountCloudState {
+        guard let snapshot = try await fetchAccountSnapshot(ifUnchangedSince: nil) else {
+            throw URLError(.cannotParseResponse)
+        }
+        return snapshot
+    }
+    /// Always reads the small manifest, but skips all chunk reads when the cloud
+    /// snapshot has not changed since the caller's last successful sync.
+    func fetchAccountSnapshot(ifUnchangedSince previousUpdateTime: String?) async throws -> AccountCloudState? {
         let uid = userID
         let generation = sessionGeneration
         let manifest: [String: Any]
@@ -309,7 +318,9 @@ final class CloudAccount: ObservableObject {
               let array = fields["chunks"]?["arrayValue"] as? [String: Any],
               let values = array["values"] as? [[String: String]], !values.isEmpty, values.count <= 128,
               let updateTime = manifest["updateTime"] as? String else { throw URLError(.cannotParseResponse) }
+        if updateTime == previousUpdateTime { return nil }
         var data = Data()
+        var fetchedChunkIDs = Set<String>()
         for value in values {
             guard generation == sessionGeneration else { throw CancellationError() }
             guard let id = value["stringValue"], id.count == 64, id.allSatisfy({ $0.isHexDigit }) else { throw URLError(.cannotParseResponse) }
@@ -319,23 +330,28 @@ final class CloudAccount: ObservableObject {
                   let chunk = Data(base64Encoded: encoded), chunk.count <= 450000,
                   chunkID(chunk) == id else { throw URLError(.cannotParseResponse) }
             data.append(chunk)
+            fetchedChunkIDs.insert(id)
         }
         guard generation == sessionGeneration else { throw CancellationError() }
+        knownSyncChunkIDs[uid] = fetchedChunkIDs
         return AccountCloudState(snapshot: try JSONDecoder().decode(AccountSnapshot.self, from: data), updateTime: updateTime)
     }
     /// Content-addressed chunks are immutable. The manifest is published last with a
     /// server precondition, so readers never observe partial uploads or lost concurrent writes.
-    func uploadAccountSnapshot(_ snapshot: AccountSnapshot, updateTime: String?) async throws {
+    @discardableResult
+    func uploadAccountSnapshot(_ snapshot: AccountSnapshot, updateTime: String?) async throws -> String? {
         let data = try snapshot.encoded()
         guard data.count <= 450000 * 128 else {
             throw NSError(domain: "HomeMateSync", code: 3, userInfo: [NSLocalizedDescriptionKey: "Your account exceeds the 57 MB sync limit. Remove large attachments and retry. Your local data is safe."])
         }
         let uid = userID, generation = sessionGeneration
+        var knownIDs = knownSyncChunkIDs[uid] ?? []
         var ids: [String] = []
         for offset in stride(from: 0, to: data.count, by: 450000) {
             guard generation == sessionGeneration else { throw CancellationError() }
             let chunk = data.subdata(in: offset..<min(offset + 450000, data.count))
             let id = chunkID(chunk); ids.append(id)
+            if knownIDs.contains(id) { continue }
             func existingChunkMatches() async throws -> Bool {
                 do {
                     let document = try await documentRequest(path: ["users", uid, "syncChunks", id])
@@ -356,14 +372,17 @@ final class CloudAccount: ObservableObject {
                 guard generation == sessionGeneration else { throw CancellationError() }
                 guard try await existingChunkMatches() else { throw error }
             }
+            knownIDs.insert(id)
         }
         guard generation == sessionGeneration else { throw CancellationError() }
         let precondition = updateTime.map { URLQueryItem(name: "currentDocument.updateTime", value: $0) }
             ?? URLQueryItem(name: "currentDocument.exists", value: "false")
-        _ = try await documentRequest(path: ["users", uid, "sync", "state"], method: "PATCH", body: ["fields": [
+        let manifest = try await documentRequest(path: ["users", uid, "sync", "state"], method: "PATCH", body: ["fields": [
             "version": ["integerValue": "1"],
             "chunks": ["arrayValue": ["values": ids.map { ["stringValue": $0] }]]
         ]], query: [precondition])
+        knownSyncChunkIDs[uid] = Set(ids)
+        return manifest["updateTime"] as? String
     }
     func fetchProfile() async throws -> HouseholdProfile? {
         do {

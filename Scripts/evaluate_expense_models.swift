@@ -46,23 +46,43 @@ func categoryReport(_ name: String) throws -> [String: Any] {
 }
 func forecastReport(_ name: String, currency: Bool) throws -> [String: Any] {
     let examples = try rows(name)
-    var ae=0.0, se=0.0, ape=0.0, baseAE=0.0, baseSE=0.0, baseAPE=0.0
+    var ae=0.0, se=0.0, ape=0.0, rawAE=0.0, rawSE=0.0, rawAPE=0.0
+    var baseAE=0.0, baseSE=0.0, baseAPE=0.0, fallbackCount=0
+    let latestTrainingRange = 0.8330927492528469...1.1723745141781126
+    let previousTrainingRange = 0.9390704276832605...1.0540911314301622
     for row in examples {
         let mean: Double, inputs: [String: Double], actual: Double
+        let latestAmount: Double, previousAmount: Double, minimumAmount: Double, maximumAmount: Double
         if currency {
             let history = row["history"] as! [Double]; mean = history.reduce(0,+)/3
             inputs = ["latestRatio":history[2]/mean,"previousRatio":history[1]/mean]; actual = row["actual"] as! Double
+            latestAmount = history[2]
+            previousAmount = history[1]; minimumAmount = history.min()!; maximumAmount = history.max()!
         } else {
             mean = 1; inputs = ["latestRatio":row["latestRatio"] as! Double,"previousRatio":row["previousRatio"] as! Double]; actual = row["nextRatio"] as! Double
+            latestAmount = inputs["latestRatio"]!
+            previousAmount = inputs["previousRatio"]!
+            let oldestAmount = 3 - latestAmount - previousAmount
+            minimumAmount = min(oldestAmount, previousAmount, latestAmount); maximumAmount = max(oldestAmount, previousAmount, latestAmount)
         }
         let result = try forecast.prediction(from: MLDictionaryFeatureProvider(dictionary: inputs))
-        let prediction = result.featureValue(for:"nextRatio")!.doubleValue * mean
+        let rawPrediction = result.featureValue(for:"nextRatio")!.doubleValue * mean
+        let outOfRange = !latestTrainingRange.contains(inputs["latestRatio"]!) || !previousTrainingRange.contains(inputs["previousRatio"]!)
+        if outOfRange { fallbackCount += 1 }
+        let trend = latestAmount + 0.5 * (latestAmount - previousAmount)
+        let safeTrend = min(max(trend, minimumAmount * 0.5), maximumAmount * 1.5)
+        let prediction = outOfRange ? safeTrend : rawPrediction
         let error = abs(prediction-actual), baseError = abs(mean-actual)
         ae += error; se += error*error; ape += error/actual
+        let rawError = abs(rawPrediction-actual)
+        rawAE += rawError; rawSE += rawError*rawError; rawAPE += rawError/actual
         baseAE += baseError; baseSE += baseError*baseError; baseAPE += baseError/actual
     }
     let n = Double(examples.count)
-    return ["count":examples.count,"units":currency ? "LKR (authored scenarios, not observed households)" : "normalised ratio","MAE":ae/n,"RMSE":sqrt(se/n),"MAPEPercent":100*ape/n,"meanBaselineMAE":baseAE/n,"meanBaselineRMSE":sqrt(baseSE/n),"meanBaselineMAPEPercent":100*baseAPE/n]
+    return ["count":examples.count,"units":currency ? "LKR (authored scenarios, not observed households)" : "normalised ratio",
+        "MAE":ae/n,"RMSE":sqrt(se/n),"MAPEPercent":100*ape/n,"fallbackCount":fallbackCount,
+        "rawModelMAE":rawAE/n,"rawModelRMSE":sqrt(rawSE/n),"rawModelMAPEPercent":100*rawAPE/n,
+        "meanBaselineMAE":baseAE/n,"meanBaselineRMSE":sqrt(baseSE/n),"meanBaselineMAPEPercent":100*baseAPE/n]
 }
 let anomalyRows = try rows("anomaly-test")
 var tp=0, fp=0, tn=0, fn=0

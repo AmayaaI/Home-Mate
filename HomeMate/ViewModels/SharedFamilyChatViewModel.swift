@@ -57,10 +57,9 @@ final class SharedFamilyChatViewModel: ScreenViewModel {
     }
     func monitor(active: Bool) async {
         guard active, isActive else { return }
-        while !Task.isCancelled {
-            await load()
-            do { try await Task.sleep(for: .seconds(4)) } catch { return }
-        }
+        // Load on entry/foreground. Sending and pull-to-refresh reload messages;
+        // polling the full recent history every few seconds is very read-heavy.
+        await load()
     }
 
 }

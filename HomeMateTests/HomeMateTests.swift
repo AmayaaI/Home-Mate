@@ -893,6 +893,24 @@ struct MedicalCategoryCorrectionTests {
 }
 
 struct ForecastAuditTests {
+    @Test func outOfTrainingRangeHistoryUsesDampedTrendInsteadOfUnreliableExtrapolation() throws {
+        let model = try #require(ExpenseIntelligence.forecaster)
+        let estimate = try ExpenseIntelligence.estimateMonth(history: [54000, 23000, 19000], model: model)
+        #expect(estimate.usesTrendFallback)
+        #expect(estimate.amount == 17000)
+    }
+    @Test func inRangeHistoryStillUsesTheBundledModel() throws {
+        let model = try #require(ExpenseIntelligence.forecaster)
+        let estimate = try ExpenseIntelligence.estimateMonth(history: [40000, 43000, 46000], model: model)
+        #expect(!estimate.usesTrendFallback)
+        #expect(estimate.amount == (try ExpenseIntelligence.predictMonth(history: [40000, 43000, 46000], model: model)))
+    }
+    @Test func trendFallbackRemainsWithinTheApplicationAmountLimit() throws {
+        let model = try #require(ExpenseIntelligence.forecaster)
+        let estimate = try ExpenseIntelligence.estimateMonth(history: [1_000_000_000_000, 500_000_000_000, 1_000_000_000_000], model: model)
+        #expect(estimate.usesTrendFallback)
+        #expect(estimate.amount == 1_000_000_000_000)
+    }
     @Test func invalidAndExtremeHistoriesFailSafely() throws {
         let model = try #require(ExpenseIntelligence.forecaster)
         for history in [[0.0, 10, 10], [Double.nan, 10, 10], [Double.infinity, 10, 10], [1e13, 1e13, 1e13]] {

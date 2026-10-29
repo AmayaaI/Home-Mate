@@ -88,7 +88,9 @@ final class HouseholdContext: ObservableObject {
         guard active else { return }
         while !Task.isCancelled {
             if !writing { await refresh() }
-            do { try await Task.sleep(for: .seconds(8)) } catch { return }
+            // These REST refreshes read every shared family feed. Polling every
+            // few seconds can exhaust Firestore's free daily read allowance.
+            do { try await Task.sleep(for: .seconds(300)) } catch { return }
         }
     }
     func save(_ record: HouseholdRecord, expectedIdentity: String) async throws {

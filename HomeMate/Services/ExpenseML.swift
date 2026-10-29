@@ -65,9 +65,23 @@ enum ExpenseIntelligence {
     struct MonthlyForecast {
         var thisMonth: Date
         var thisMonthAmount: Double
+        var thisMonthUsesTrendFallback: Bool
         var nextMonth: Date
         var nextMonthAmount: Double
+        var nextMonthUsesTrendFallback: Bool
         var history: [Double]
+    }
+    struct MonthlyEstimate {
+        var amount: Double
+        var usesTrendFallback: Bool
+    }
+    private static func trendFallback(for history: [Double]) -> MonthlyEstimate {
+        let latest = history[2]
+        let dampedTrend = latest + 0.5 * (latest - history[1])
+        let minimumPlausible = (history.min() ?? latest) * 0.5
+        let maximumPlausible = min((history.max() ?? latest) * 1.5, 1_000_000_000_000)
+        let amount = min(max(dampedTrend, minimumPlausible), maximumPlausible)
+        return MonthlyEstimate(amount: amount, usesTrendFallback: true)
     }
     static func completedMonthTotals(records: [HouseholdRecord], now: Date = Date(), calendar: Calendar = .current) throws -> [Double] {
         guard let currentMonth = calendar.dateInterval(of: .month, for: now)?.start else { throw ModelError.insufficientHistory }
@@ -79,25 +93,50 @@ enum ExpenseIntelligence {
             return total
         }
     }
-    static func predictMonth(history: [Double], model: MLModel) throws -> Double {
-        guard history.count == 3, history.allSatisfy({ $0.isFinite && $0 > 0 }) else { throw ModelError.insufficientHistory }
+    static func estimateMonth(history: [Double], model: MLModel) throws -> MonthlyEstimate {
+        guard history.count == 3, history.allSatisfy({ $0.isFinite && $0 > 0 && $0 <= 1_000_000_000_000 }) else { throw ModelError.insufficientHistory }
         let average = history.reduce(0, +) / 3
-        let input = try MLDictionaryFeatureProvider(dictionary: ["latestRatio": history[2] / average, "previousRatio": history[1] / average])
+        guard average.isFinite, average > 0 else { throw ModelError.insufficientHistory }
+        let latestRatio = history[2] / average
+        let previousRatio = history[1] / average
+
+        // The bundled regressor was trained on synthetic ratios in these ranges.
+        // Outside that envelope it extrapolates sharply (e.g. 54k/23k/19k -> 5.4k),
+        // so use a damped recent trend rather than trusting that extrapolation.
+        let latestTrainingRange = 0.8330927492528469...1.1723745141781126
+        let previousTrainingRange = 0.9390704276832605...1.0540911314301622
+        guard latestTrainingRange.contains(latestRatio), previousTrainingRange.contains(previousRatio) else {
+            return trendFallback(for: history)
+        }
+
+        let input = try MLDictionaryFeatureProvider(dictionary: ["latestRatio": latestRatio, "previousRatio": previousRatio])
         let result = try model.prediction(from: input)
         guard let value = result.featureValue(for: "nextRatio"), value.type == .double else { throw ModelError.invalidPrediction }
         let amount = value.doubleValue * average
         guard amount.isFinite && amount > 0 && amount <= 1_000_000_000_000 && amount <= average * 10 else { throw ModelError.invalidPrediction }
-        return amount
+        return MonthlyEstimate(amount: amount, usesTrendFallback: false)
+    }
+    static func predictMonth(history: [Double], model: MLModel) throws -> Double {
+        try estimateMonth(history: history, model: model).amount
     }
     static func forecast(records: [HouseholdRecord], now: Date = Date(), calendar: Calendar = .current) throws -> MonthlyForecast {
         guard let forecaster else { throw ModelError.missingModel }
         let totals = try completedMonthTotals(records: records, now: now, calendar: calendar)
-        let current = try predictMonth(history: totals, model: forecaster)
-        // Two-step forecast: next month includes this month's predicted total, not partial spending.
-        let next = try predictMonth(history: [totals[1], totals[2], current], model: forecaster)
+        let current = try estimateMonth(history: totals, model: forecaster)
+        // Don't recursively feed a trend fallback into the model as if it were an ML forecast.
+        let next: MonthlyEstimate
+        if current.usesTrendFallback {
+            next = trendFallback(for: [totals[1], totals[2], current.amount])
+        } else {
+            // Two-step forecast: next month includes this month's predicted total, not partial spending.
+            next = try estimateMonth(history: [totals[1], totals[2], current.amount], model: forecaster)
+        }
         let month = calendar.dateInterval(of: .month, for: now)!.start
         let nextMonth = calendar.date(byAdding: .month, value: 1, to: month)!
-        return MonthlyForecast(thisMonth: month, thisMonthAmount: current, nextMonth: nextMonth, nextMonthAmount: next, history: totals)
+        return MonthlyForecast(thisMonth: month, thisMonthAmount: current.amount,
+            thisMonthUsesTrendFallback: current.usesTrendFallback,
+            nextMonth: nextMonth, nextMonthAmount: next.amount,
+            nextMonthUsesTrendFallback: next.usesTrendFallback, history: totals)
     }
     struct SpendingAlert: Identifiable {
         var category: String

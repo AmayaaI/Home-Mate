@@ -31,20 +31,21 @@ private struct LoginViewScreen: View {
     private var localError: String? { get { viewModel.localError } nonmutating set { viewModel.localError = newValue } }
     var body: some View {
         GeometryReader { geometry in
-            let wide = geometry.size.width >= 900
+            let wide = geometry.size.width >= 700
             ScrollView {
                 VStack(spacing: 0) {
                     if onContinueOffline == nil {
                         HStack { Button { dismiss() } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }.accessibilityLabel("Back"); Spacer() }.frame(maxWidth: 1000)
                     }
                     if wide {
-                        HStack(spacing: 80) { brand(wide: true).frame(maxWidth: 380); formContent.frame(maxWidth: 430) }.frame(maxWidth: 1000).padding(.vertical, 40)
+                        HStack(spacing: 36) { brand(wide: true).frame(maxWidth: 380); formContent(compact: true).frame(maxWidth: 430) }.frame(maxWidth: 1000).padding(.vertical, 24)
                     } else {
-                        VStack(spacing: 28) { brand(wide: false); formContent }.frame(maxWidth: 430).padding(.vertical, 24)
+                        VStack(spacing: 22) { brand(wide: false); formContent(compact: false) }.frame(maxWidth: 430).padding(.vertical, 20)
                     }
                 }.padding(.horizontal, 24).frame(maxWidth: .infinity).frame(minHeight: geometry.size.height, alignment: wide ? .center : .top)
-            }.scrollDismissesKeyboard(.interactively).background(HomeBackdrop())
+            }.scrollDismissesKeyboard(.interactively).background(HomeBackdrop().ignoresSafeArea())
         }.foregroundStyle(DashboardPalette.ink).toolbar(.hidden, for: .navigationBar)
+            .toolbar(.hidden, for: .tabBar)
             .sheet(isPresented: $showReset) { PasswordResetView() }
             .alert("Unable to continue", isPresented: $viewModel.showingError) {
                 Button("OK", role: .cancel) {}
@@ -52,14 +53,14 @@ private struct LoginViewScreen: View {
             .onChange(of: viewModel.accountSignedIn) { _, signedIn in if signedIn && onContinueOffline == nil { dismiss() } }
     }
     private func brand(wide: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: wide ? 16 : 22) {
             HStack(spacing: 10) {
                 Image(systemName: "house.lodge.fill").font(.title2).foregroundStyle(DashboardPalette.mint)
                 Text("HomeMate").font(.title3.bold()).foregroundStyle(.white)
                 Spacer()
             }
             Text(registering ? "Good things\nstart at home." : "Less life admin.\nMore living.")
-                .font(.system(.largeTitle, design: .rounded, weight: .bold)).tracking(-1.4).foregroundStyle(.white)
+                .font(.system(wide ? .title : .largeTitle, design: .rounded, weight: .bold)).tracking(-1.2).foregroundStyle(.white)
                 .fixedSize(horizontal: false, vertical: true)
             Text(registering ? "Your people. Your plans. One happy place." : "Your household, beautifully in sync.")
                 .font(.subheadline).foregroundStyle(.white.opacity(0.7))
@@ -69,16 +70,16 @@ private struct LoginViewScreen: View {
                         .background(.white.opacity(0.1), in: Capsule()).foregroundStyle(DashboardPalette.mint)
                 }
             }
-        }.padding(28).frame(maxWidth: .infinity, alignment: .leading)
+        }.padding(wide ? 22 : 26).frame(maxWidth: .infinity, alignment: .leading)
             .background { HomeHeroSurface() }.clipShape(RoundedRectangle(cornerRadius: 30))
     }
-    private var formContent: some View {
-        VStack(spacing: 24) {
+    private func formContent(compact: Bool) -> some View {
+        VStack(spacing: compact ? 14 : 22) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(registering ? "Create your account" : "Welcome home").font(.title2.bold()).tracking(-0.7)
                 Text(registering ? "Make room for a more organised day." : "Sign in and pick up where you left off.").font(.subheadline).foregroundStyle(.secondary)
             }.frame(maxWidth: .infinity, alignment: .leading)
-            VStack(spacing: 18) {
+            VStack(spacing: compact ? 12 : 18) {
                 inputCard(icon: "envelope", label: "EMAIL ADDRESS", active: focused == .email) {
                     TextField("you@example.com", text: $viewModel.accountEmail).keyboardType(.emailAddress).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focused, equals: .email).submitLabel(.next).onSubmit { focused = .password }
                 }
@@ -113,18 +114,26 @@ private struct LoginViewScreen: View {
                     }.frame(maxWidth: .infinity).frame(minHeight: 54).foregroundStyle(.white).background(DashboardPalette.brandFill, in: RoundedRectangle(cornerRadius: 18)).shadow(color: DashboardPalette.green.opacity(0.12), radius: 6, y: 4)
                 }.buttonStyle(HomePressStyle()).disabled(viewModel.accountBusy)
             }
-            if !viewModel.accountConfigured { Text("Cloud sign-in is not connected yet. You can still use HomeMate on this device.").font(.caption).foregroundStyle(DashboardPalette.muted).multilineTextAlignment(.center) }
             HStack(spacing: 5) {
                 Text(registering ? "Already have an account?" : "New to HomeMate?").foregroundStyle(DashboardPalette.muted)
-                Button(registering ? "Log in" : "Create account") { viewModel.switchMode(); focused = .email }.fontWeight(.semibold)
+                Button(registering ? "Log in" : "Create account") {
+                    withAnimation(.easeInOut(duration: 0.2)) { viewModel.switchMode() }
+                    focused = .email
+                }.fontWeight(.semibold)
             }.font(.subheadline)
+            if !viewModel.accountConfigured { Text("Cloud sign-in is not connected yet. You can still use HomeMate on this device.").font(.caption).foregroundStyle(DashboardPalette.muted).multilineTextAlignment(.center) }
             if let onContinueOffline {
                 VStack(spacing: 8) {
                     Button("Use offline household", action: onContinueOffline).font(.caption.weight(.semibold)).padding(.vertical, 4)
                     Text("Offline mode is shared on this device. Sign in to keep your household separate.").font(.caption2).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 }
             }
-        }.disabled(viewModel.accountBusy)
+        }
+        .padding(compact ? 16 : 22)
+        .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).stroke(DashboardPalette.green.opacity(0.10), lineWidth: 1))
+        .shadow(color: .black.opacity(0.045), radius: 14, y: 6)
+        .disabled(viewModel.accountBusy)
     }
     private func inputCard<Content: View>(icon: String, label: String, active: Bool, @ViewBuilder content: () -> Content) -> some View {
         HStack(spacing: 10) {

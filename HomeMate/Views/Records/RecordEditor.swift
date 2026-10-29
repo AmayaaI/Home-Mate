@@ -147,11 +147,11 @@ private struct RecordEditorScreen: View {
                             .font(.caption).foregroundStyle(.secondary)
                     }
                 }
-                if record.kind == .expense || record.kind == .bill {
-                    Section("On-device Core ML") {
+                if [.task, .bill, .expense, .maintenance].contains(record.kind) {
+                    Section("Category suggestion") {
                         Button("Suggest category") { viewModel.suggestCategory() }
                         if let categoryMessage { Text(categoryMessage).font(.caption).foregroundStyle(categoryFailed ? .red : DashboardPalette.green) }
-                        Text("Demo model trained on English household expense examples. Review merchant names and unclear OCR carefully. Saved manual corrections keep only category-pair counts on this device; titles, receipt text and amounts are not recorded as feedback. The model is not retrained.").font(.caption).foregroundStyle(.secondary)
+                        Text("Suggestions are based on the description. Review the result and change it whenever needed.").font(.caption).foregroundStyle(.secondary)
                     }
                 }
                 if record.kind == .event || record.kind == .task || record.kind == .maintenance {

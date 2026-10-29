@@ -36,13 +36,37 @@ private struct MoreViewScreen: View {
     }
 
     var body: some View {
+        Group {
+            if let destination {
+                destinationView(destination)
+                    .transition(.move(edge: .trailing))
+            } else {
+                homePage
+                    .transition(.move(edge: .leading))
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: destination?.id)
+        .task {
+            await viewModel.refreshFamily()
+            #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("--preview"), ProcessInfo.processInfo.arguments.contains("--preview-errands") { destination = .errands }
+            if ProcessInfo.processInfo.arguments.contains("--preview"), ProcessInfo.processInfo.arguments.contains("--preview-insights") { destination = .insights }
+            #endif
+        }
+        .onChange(of: destination?.id) { oldValue, newValue in
+            if oldValue != nil && newValue == nil { Task { await viewModel.refreshFamily() } }
+        }
+    }
+
+    private var homePage: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 householdCard
 
                 HouseholdContextView(context: dependencies.household)
                     .padding(16)
-                    .background(cardBackground, in: RoundedRectangle(cornerRadius: 16))
+                    .background(cardBackground, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(DashboardPalette.green.opacity(0.10), lineWidth: 1))
 
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
@@ -88,18 +112,7 @@ private struct MoreViewScreen: View {
         .background(pageBackground.ignoresSafeArea())
         .foregroundStyle(DashboardPalette.ink)
         .toolbar(.hidden, for: .navigationBar)
-        .task {
-            await viewModel.refreshFamily()
-            #if DEBUG
-            if ProcessInfo.processInfo.arguments.contains("--preview"), ProcessInfo.processInfo.arguments.contains("--preview-errands") { destination = .errands }
-            if ProcessInfo.processInfo.arguments.contains("--preview"), ProcessInfo.processInfo.arguments.contains("--preview-insights") { destination = .insights }
-            #endif
-        }
         .refreshable { await viewModel.refreshFamily() }
-        .sheet(item: $destination, onDismiss: { Task { await viewModel.refreshFamily() } }) { selected in
-            destinationView(selected)
-                .presentationDragIndicator(.visible)
-        }
     }
 
     private var householdCard: some View {
@@ -163,8 +176,17 @@ private struct MoreViewScreen: View {
             }
         }
         .padding(16)
-        .background(cardBackground, in: RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.05), radius: 2, y: 1)
+        .background {
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .fill(cardBackground.gradient)
+                .overlay(alignment: .topTrailing) {
+                    Circle().fill(DashboardPalette.green.opacity(colorScheme == .dark ? 0.08 : 0.05))
+                        .frame(width: 140, height: 140).offset(x: 65, y: -92)
+                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                }
+        }
+        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(DashboardPalette.green.opacity(0.12), lineWidth: 1))
+        .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.06), radius: 12, y: 5)
     }
 
     private var memberRow: some View {
@@ -209,8 +231,8 @@ private struct MoreViewScreen: View {
                     Image(systemName: icon)
                         .font(.system(size: 19, weight: .medium))
                         .foregroundStyle(DashboardPalette.green)
-                        .frame(width: 40, height: 40)
-                        .background(DashboardPalette.green.opacity(colorScheme == .dark ? 0.16 : 0.10), in: RoundedRectangle(cornerRadius: 12))
+                        .frame(width: 44, height: 44)
+                        .background(DashboardPalette.green.opacity(colorScheme == .dark ? 0.18 : 0.11), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                     Spacer(minLength: 0)
                     Text(badge)
                         .font(.system(.caption2, weight: .semibold))
@@ -233,11 +255,21 @@ private struct MoreViewScreen: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(14)
-            .frame(maxWidth: .infinity, minHeight: 124, alignment: .topLeading)
-            .background(cardBackground, in: RoundedRectangle(cornerRadius: 16))
-            .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.05), radius: 2, y: 1)
-            .contentShape(RoundedRectangle(cornerRadius: 16))
+            .padding(15)
+            .frame(maxWidth: .infinity, minHeight: 132, alignment: .topLeading)
+            .background {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(cardBackground.gradient)
+                    .overlay(alignment: .bottomTrailing) {
+                        Image(systemName: "arrow.up.right")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(DashboardPalette.green.opacity(0.55))
+                            .padding(12)
+                    }
+            }
+            .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(DashboardPalette.green.opacity(0.10), lineWidth: 1))
+            .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.045), radius: 9, y: 3)
+            .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
         .buttonStyle(HomePressStyle())
         .accessibilityElement(children: .combine)
@@ -249,28 +281,31 @@ private struct MoreViewScreen: View {
         case .insights:
             NavigationStack {
                 AnalyticsView()
-                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { destination = nil } } }
+                    .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Back", systemImage: "chevron.left") { destination = nil } } }
             }
         case .maintenance: RecordsView(kind: .maintenance, onClose: { destination = nil }).responsiveHomeWidth()
         case .communication:
             NavigationStack {
                 FamilyCommunicationView(family: dependencies.household.family)
-                    .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { destination = nil } } }
+                    .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Back", systemImage: "chevron.left") { destination = nil } } }
             }
         case .members:
             NavigationStack {
                 if let family = viewModel.family {
                     FamilyMembersView(family: family)
-                        .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { destination = nil } } }
+                        .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Back", systemImage: "chevron.left") { destination = nil } } }
                 }
                 else {
                     HouseholdMembersSetupView(viewModel: viewModel, dismiss: { destination = nil })
                 }
             }
-        case .settings: dismissible { SettingsView() }
+        case .settings: SettingsView(onBack: { destination = nil })
         case .signIn: dismissible { NavigationStack { LoginView() } }
         case .profile:
-            NavigationStack { ProfileSettingsView(accountEmail: viewModel.accountSignedIn ? viewModel.accountEmail : "") }
+            NavigationStack {
+                ProfileSettingsView(accountEmail: viewModel.accountSignedIn ? viewModel.accountEmail : "")
+                    .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Back", systemImage: "chevron.left") { destination = nil } } }
+            }
         case .notifications:
             NavigationStack {
                 Form {
@@ -282,20 +317,20 @@ private struct MoreViewScreen: View {
                 }
                 .navigationTitle("Notifications")
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { destination = nil } } }
+                .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Back", systemImage: "chevron.left") { destination = nil } } }
             }
         case .errands:
-            ErrandsMapView()
+            ErrandsMapView(onClose: { destination = nil })
         }
     }
 
     private func dismissible<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content().safeAreaInset(edge: .top, spacing: 0) {
             HStack {
-                Spacer()
-                Button("Done") { destination = nil }
+                Button("Back", systemImage: "chevron.left") { destination = nil }
                     .font(.body.weight(.semibold))
                     .frame(minWidth: 44, minHeight: 44)
+                Spacer(minLength: 0)
             }
             .padding(.horizontal, 16)
             .background(cardBackground)

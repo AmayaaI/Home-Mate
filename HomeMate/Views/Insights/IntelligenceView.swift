@@ -23,14 +23,51 @@ private struct AnalyticsViewScreen: View {
                 VStack(alignment: .leading, spacing: 22) {
                     HomeSectionTitle(eyebrow: "A clearer picture", title: "Expense insights")
                     VStack(alignment: .leading, spacing: 16) {
-                        HStack { Text("THIS MONTH").font(.caption2 .weight(.bold)).tracking(1.5); Spacer(); Image(systemName: "chart.bar.xaxis").font(.title2) }.foregroundStyle(DashboardPalette.mint)
-                        Text(viewModel.money(viewModel.currentTotal)).font(.largeTitle .weight(.bold)).tracking(-1).minimumScaleFactor(0.6).lineLimit(1)
-                        Text("A little awareness goes a long way.").font(.footnote).foregroundStyle(.white.opacity(0.75))
-                        Rectangle().fill(.white.opacity(0.15)).frame(height: 1)
-                        HStack { Text("Last month").font(.caption); Spacer(); Text(viewModel.money(viewModel.previous)).font(.body .weight(.semibold)) }.foregroundStyle(.white.opacity(0.85))
-                    }.padding(24).foregroundStyle(.white).background(DashboardPalette.brandFill.gradient, in: RoundedRectangle(cornerRadius: 28)).shadow(color: DashboardPalette.green.opacity(0.18), radius: 14, y: 7)
+                        HStack {
+                            Label("MONTHLY OVERVIEW", systemImage: "sparkle")
+                                .font(.caption2.weight(.bold)).tracking(1.2)
+                            Spacer()
+                            Image(systemName: "chart.bar.xaxis")
+                                .font(.system(size: 18, weight: .semibold))
+                                .frame(width: 42, height: 42)
+                                .background(.white.opacity(0.13), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        }.foregroundStyle(.white.opacity(0.84))
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(viewModel.money(viewModel.currentTotal))
+                                .font(.system(size: 38, weight: .bold, design: .rounded))
+                                .tracking(-1).contentTransition(.numericText())
+                                .minimumScaleFactor(0.6).lineLimit(1)
+                            Text(Date.now.formatted(.dateTime.month(.wide).year()))
+                                .font(.subheadline.weight(.medium)).foregroundStyle(.white.opacity(0.72))
+                        }
+                        HStack(spacing: 10) {
+                            Image(systemName: "arrow.left.arrow.right")
+                                .font(.caption.weight(.bold)).foregroundStyle(DashboardPalette.mint)
+                            Text("Last month")
+                                .font(.caption.weight(.medium)).foregroundStyle(.white.opacity(0.72))
+                            Spacer()
+                            Text(viewModel.money(viewModel.previous))
+                                .font(.subheadline.weight(.semibold)).foregroundStyle(.white)
+                        }
+                        .padding(.horizontal, 13).padding(.vertical, 12)
+                        .background(.white.opacity(0.10), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    }
+                    .padding(22)
+                    .foregroundStyle(.white)
+                    .background {
+                        ZStack(alignment: .topTrailing) {
+                            RoundedRectangle(cornerRadius: 26, style: .continuous)
+                                .fill(LinearGradient(colors: [DashboardPalette.brandFill, DashboardPalette.brandFill.opacity(0.84)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            Circle().stroke(.white.opacity(0.09), lineWidth: 1).frame(width: 190, height: 190).offset(x: 65, y: -90)
+                            Circle().fill(.white.opacity(0.06)).frame(width: 125, height: 125).offset(x: 32, y: -54)
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
+                    }
+                    .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).stroke(.white.opacity(0.12), lineWidth: 1))
+                    .shadow(color: DashboardPalette.brandFill.opacity(0.22), radius: 18, y: 9)
                     VStack(alignment: .leading, spacing: 20) {
-                        Text("Where it goes").font(.headline .weight(.bold))
+                        Label("Where it goes", systemImage: "chart.pie.fill")
+                            .font(.headline.weight(.bold)).foregroundStyle(DashboardPalette.green)
                         if viewModel.groups.isEmpty {
                             ContentUnavailableView("Your story starts here", systemImage: "chart.bar", description: Text("Record expenses to see your spending patterns."))
                         } else {
@@ -46,12 +83,12 @@ private struct AnalyticsViewScreen: View {
                                 }.padding(12).background(DashboardPalette.surface, in: RoundedRectangle(cornerRadius: 12))
                             }
                         }
-                    }.padding(20).homeCard()
+                    }.padding(20).homeCard(cornerRadius: 22)
                     anomalyCard
                     patternsCard
                     if let warning = viewModel.budgetWarning {
                         Label(warning, systemImage: "exclamationmark.circle").font(.subheadline)
-                            .padding(20).homeCard().accessibilityElement(children: .combine)
+                            .padding(20).homeCard(cornerRadius: 22).accessibilityElement(children: .combine)
                     }
                     forecastCard
                     VStack(alignment: .leading, spacing: 16) {
@@ -67,14 +104,14 @@ private struct AnalyticsViewScreen: View {
                         }
                         Text("Spending alerts compare this month's total with three prior monthly totals. They use statistical thresholds, not a separate ML model.").font(.caption2).foregroundStyle(DashboardPalette.muted)
                         Text("Based on recorded expenses and simple historical averages.").font(.caption2).foregroundStyle(DashboardPalette.muted)
-                    }.padding(20).frame(maxWidth: .infinity, alignment: .leading).background(DashboardPalette.mint.opacity(0.17), in: RoundedRectangle(cornerRadius: 24))
+                    }.padding(20).frame(maxWidth: .infinity, alignment: .leading).background(DashboardPalette.mint.opacity(0.14), in: RoundedRectangle(cornerRadius: 22, style: .continuous)).overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(DashboardPalette.green.opacity(0.10), lineWidth: 1))
                 }.padding(24).padding(.bottom, 16).frame(maxWidth: 860).frame(maxWidth: .infinity)
             }.task(id: viewModel.analysisKey) { await viewModel.analyse() }
                 .background(HomeBackdrop()).navigationTitle("Insights").navigationBarTitleDisplayMode(.inline)
     }
     private var anomalyCard: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Label("Unusual transactions", systemImage: "brain").font(.headline).foregroundStyle(DashboardPalette.green)
+            Label("Unusual transactions", systemImage: "exclamationmark.triangle").font(.headline).foregroundStyle(DashboardPalette.green)
             Text(viewModel.context?.family?.name ?? "Private household").font(.subheadline)
             Text("Last 30 days · experimental Core ML model trained on simulated households. Scores are not calibrated confidence or proof of an error.").font(.caption).foregroundStyle(.secondary)
             if let report = viewModel.analysis?.anomalies {
@@ -107,7 +144,7 @@ private struct AnalyticsViewScreen: View {
                     }.buttonStyle(.plain).accessibilityElement(children: .combine)
                 }
             } else { ProgressView("Checking spending patterns…") }
-        }.padding(20).homeCard()
+        }.padding(20).homeCard(cornerRadius: 22)
     }
     private var patternsCard: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -123,12 +160,12 @@ private struct AnalyticsViewScreen: View {
                     }.accessibilityElement(children: .combine)
                 }
             } else { ProgressView("Finding patterns…") }
-        }.padding(20).homeCard()
+        }.padding(20).homeCard(cornerRadius: 22)
     }
     private var forecastCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Label("Core ML predictions", systemImage: "brain").font(.headline .weight(.bold))
+                Label("Core ML predictions", systemImage: "chart.line.uptrend.xyaxis").font(.headline .weight(.bold))
                 Spacer()
                 Text("DEMO TRAINED").font(.caption2.weight(.bold)).padding(6).background(DashboardPalette.mint.opacity(0.25), in: Capsule())
             }.foregroundStyle(DashboardPalette.green)
@@ -140,7 +177,8 @@ private struct AnalyticsViewScreen: View {
             switch viewModel.forecast {
             case .success(let forecast):
                 VStack(spacing: 12) {
-                    forecastRow(forecast.thisMonth, amount: forecast.thisMonthAmount, caption: "Estimated full month")
+                    forecastRow(forecast.thisMonth, amount: forecast.thisMonthAmount,
+                                caption: forecast.thisMonthUsesTrendFallback ? "Trend-based estimate" : "Estimated full month")
                     Text("Recorded this month: \(viewModel.money(viewModel.currentTotal))").font(.subheadline)
                     if viewModel.preferences.monthlyBudget > 0 {
                         Text("Monthly budget: \(viewModel.money(viewModel.preferences.monthlyBudget))").font(.subheadline)
@@ -149,9 +187,16 @@ private struct AnalyticsViewScreen: View {
                         Text("Actual spending has already exceeded this estimate. Use recorded spending when planning the rest of this month.").font(.caption).foregroundStyle(.secondary)
                     }
                     Divider()
-                    forecastRow(forecast.nextMonth, amount: forecast.nextMonthAmount, caption: "Two-step model estimate")
+                    forecastRow(forecast.nextMonth, amount: forecast.nextMonthAmount,
+                                caption: forecast.nextMonthUsesTrendFallback ? "Trend-based estimate" : "Two-step model estimate")
                 }
-                Text("Based on your last three completed months. Next month's prediction also uses this month's estimated total; uncertainty increases with the extra step.").font(.caption2).foregroundStyle(DashboardPalette.muted)
+                if forecast.thisMonthUsesTrendFallback || forecast.nextMonthUsesTrendFallback {
+                    Text("This spending pattern is outside the model’s demo training range. A damped trend from recent months is used instead of an unreliable model extrapolation.")
+                        .font(.caption).foregroundStyle(DashboardPalette.muted)
+                } else {
+                    Text("Based on your last three completed months. Next month's prediction also uses this month's estimate, so uncertainty increases with the extra step.")
+                        .font(.caption2).foregroundStyle(DashboardPalette.muted)
+                }
             case .failure(let error):
                 Text(error.localizedDescription).font(.footnote).foregroundStyle(DashboardPalette.muted)
             }
@@ -176,7 +221,7 @@ private struct AnalyticsViewScreen: View {
                 Label("Try the trained models", systemImage: "play.circle.fill").font(.footnote .weight(.semibold))
             }
             Text("Real on-device Core ML models trained on demonstration data: authored English expense descriptions and simulated spending histories. Predictions are experimental; review categories and estimates.").font(.caption2).foregroundStyle(DashboardPalette.muted)
-        }.padding(20).homeCard()
+        }.padding(20).homeCard(cornerRadius: 22)
     }
     private func forecastRow(_ month: Date, amount: Double, caption: String) -> some View {
         HStack {
@@ -220,7 +265,7 @@ private struct CoreMLDemoViewScreen: View {
     var body: some View {
         Form {
             Section {
-                Label("Actual on-device inference", systemImage: "brain").font(.headline)
+                Label("Actual on-device inference", systemImage: "cpu").font(.headline)
                 Text("These are editable demo inputs. This screen does not change your household records. Both models were trained on demonstration data, not your personal expenses.").font(.caption).foregroundStyle(.secondary)
             }
             Section("Expense category") {
@@ -234,7 +279,12 @@ private struct CoreMLDemoViewScreen: View {
                 TextField("Two months ago", value: $viewModel.previous, format: .number).keyboardType(.decimalPad)
                 TextField("Last month", value: $viewModel.latest, format: .number).keyboardType(.decimalPad)
                 Button("Run forecast model", systemImage: "chart.line.uptrend.xyaxis") { viewModel.predictForecast() }
-                if let prediction { LabeledContent("Core ML estimate", value: viewModel.money(prediction)) }
+                if let prediction {
+                    LabeledContent(viewModel.forecastUsesTrendFallback ? "Trend-based estimate" : "Core ML estimate", value: viewModel.money(prediction))
+                    if viewModel.forecastUsesTrendFallback {
+                        Text("These ratios are outside the model’s demo training range, so a damped trend from recent months is used.").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
                 if let forecastError { Text(forecastError).font(.caption).foregroundStyle(.red) }
                 Text("The model learns spending trends from simulated histories. Demo estimates are not validated for real-world forecasting.").font(.caption).foregroundStyle(.secondary)
             }

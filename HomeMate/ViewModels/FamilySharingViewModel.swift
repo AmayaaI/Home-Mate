@@ -48,7 +48,7 @@ final class FamilySharingViewModel: ScreenViewModel {
         do { try await account.refreshIdentity() } catch { if !Task.isCancelled { self.error = error.localizedDescription } }
         while !Task.isCancelled {
             if !working { await refresh() }
-            do { try await Task.sleep(for: .seconds(15)) } catch { return }
+            do { try await Task.sleep(for: .seconds(300)) } catch { return }
         }
     }
 

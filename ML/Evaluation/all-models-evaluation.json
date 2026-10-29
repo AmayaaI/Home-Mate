@@ -143,7 +143,7 @@
     },
     "count" : 24,
     "exactTrainValidationOverlap" : 0,
-    "macroF1" : 0.86878306878306877,
+    "macroF1" : 0.86878306878306866,
     "mistakes" : [
       {
         "expected" : "Home",
@@ -216,22 +216,30 @@
   },
   "forecast" : {
     "count" : 320,
-    "MAE" : 0.030762400624205471,
-    "MAPEPercent" : 3.0337845260085148,
+    "fallbackCount" : 1,
+    "MAE" : 0.030617428322471968,
+    "MAPEPercent" : 3.0131462005206897,
     "meanBaselineMAE" : 0.12158856760473169,
     "meanBaselineMAPEPercent" : 11.514004563365825,
     "meanBaselineRMSE" : 0.14450523498122503,
-    "RMSE" : 0.039308807922028205,
+    "rawModelMAE" : 0.030762400624205471,
+    "rawModelMAPEPercent" : 3.0337845260085148,
+    "rawModelRMSE" : 0.039308807922028205,
+    "RMSE" : 0.039149107829590885,
     "units" : "normalised ratio"
   },
   "forecastLKRStress" : {
     "count" : 12,
-    "MAE" : 6295.2469383853122,
-    "MAPEPercent" : 38.471961934218562,
+    "fallbackCount" : 4,
+    "MAE" : 5380.3585314063157,
+    "MAPEPercent" : 34.935407714208118,
     "meanBaselineMAE" : 6972.2222222222226,
     "meanBaselineMAPEPercent" : 35.50570524735496,
     "meanBaselineRMSE" : 9367.2498829896904,
-    "RMSE" : 8741.0206967705926,
+    "rawModelMAE" : 6295.2469383853122,
+    "rawModelMAPEPercent" : 38.471961934218562,
+    "rawModelRMSE" : 8741.0206967705926,
+    "RMSE" : 7656.2814438195101,
     "units" : "LKR (authored scenarios, not observed households)"
   },
   "modelSHA256" : {

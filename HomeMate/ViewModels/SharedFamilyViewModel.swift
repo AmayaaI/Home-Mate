@@ -74,7 +74,7 @@ final class SharedFamilyViewModel: ScreenViewModel {
         guard active, isActive else { return }
         while !Task.isCancelled {
             if !writing { await refresh() }
-            do { try await Task.sleep(for: .seconds(15)) } catch { return }
+            do { try await Task.sleep(for: .seconds(300)) } catch { return }
         }
     }
 

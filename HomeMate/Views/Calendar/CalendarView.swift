@@ -13,6 +13,7 @@ struct CalendarView: View {
 private struct CalendarViewScreen: View {
 
     @Environment(\.homeContentWidth) private var contentWidth
+    @Environment(\.colorScheme) private var colorScheme
     @State private var allHouseholds = false
     @State private var accessibleRecords: [HouseholdRecord] = []
 
@@ -21,6 +22,11 @@ private struct CalendarViewScreen: View {
 
 
     private let calendar = Calendar.current
+
+    private var dayCellSize: CGFloat {
+        let horizontalInsets: CGFloat = contentWidth >= 760 ? 104 : 64
+        return min(42, max(30, (contentWidth - horizontalInsets) / 7))
+    }
 
 
 
@@ -33,32 +39,37 @@ private struct CalendarViewScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("MAKE ROOM FOR WHAT MATTERS").font(.system(size: 9, weight: .bold)).tracking(1.2).foregroundStyle(DashboardPalette.green)
-                            Text("A plan for every day.").font(.system(size: 25, weight: .bold, design: .rounded)).tracking(-0.7)
+                VStack(alignment: .leading, spacing: 18) {
+                    HStack(alignment: .center, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("YOUR HOUSEHOLD, AT A GLANCE")
+                                .font(.caption2.weight(.bold)).tracking(1.1).foregroundStyle(DashboardPalette.green)
+                            Text("Calendar")
+                                .font(.system(size: 29, weight: .bold, design: .rounded)).tracking(-0.7)
                         }
                         Spacer()
-                        Image(systemName: "leaf").font(.title .weight(.light)).foregroundStyle(DashboardPalette.green.opacity(0.5))
-                    }.padding(.bottom, 4)
+                        Image(systemName: "calendar")
+                            .font(.title2.weight(.semibold)).foregroundStyle(DashboardPalette.green)
+                            .frame(width: 48, height: 48)
+                            .background(DashboardPalette.green.opacity(0.09), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    }.padding(.bottom, 2)
                     Picker("Viewing", selection: $allHouseholds) {
                         Text(viewModel.context?.family?.name ?? "Private").tag(false)
                         Text("All Households").tag(true)
                     }.pickerStyle(.segmented)
-                    if contentWidth >= 760 {
-                        HStack(alignment: .top, spacing: 24) {
-                            VStack(spacing: 16) { monthSwitcher; filters; monthGrid }
-                                .frame(minWidth: 300, idealWidth: 360, maxWidth: 400)
-                            agenda.frame(maxWidth: .infinity)
-                        }
-                    } else {
+                    VStack(spacing: 14) {
                         monthSwitcher
-                        filters
                         monthGrid
-                        agenda
                     }
-                }.padding(.horizontal, contentWidth >= 760 ? 28 : 16).padding(.top, 16).padding(.bottom, 24).frame(maxWidth: 1200).frame(maxWidth: .infinity)
+                    .padding(contentWidth >= 760 ? 24 : 16)
+                    .frame(maxWidth: 760)
+                    .frame(maxWidth: .infinity)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(DashboardPalette.green.opacity(colorScheme == .dark ? 0.16 : 0.08)))
+                    .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.045), radius: 16, y: 7)
+                    filters
+                    agenda
+                }.padding(.horizontal, contentWidth >= 760 ? 28 : 16).padding(.top, 18).padding(.bottom, 28).frame(maxWidth: 820).frame(maxWidth: .infinity)
             }.background(HomeBackdrop()).foregroundStyle(DashboardPalette.ink)
                 .toolbar(.hidden, for: .navigationBar)
                 .onChange(of: selectedDate) { _, date in
@@ -103,7 +114,7 @@ private struct CalendarViewScreen: View {
             Button { viewModel.moveMonth(1) } label: { Image(systemName: "chevron.right").frame(width: 36, height: 40) }.accessibilityLabel("Next month")
             Spacer(minLength: 0)
             Button { viewModel.addActivity() } label: { Image(systemName: "plus").font(.headline .weight(.semibold)).frame(width: 40, height: 40).foregroundStyle(.white).background(DashboardPalette.brandFill, in: RoundedRectangle(cornerRadius: 10)) }.accessibilityLabel("Add event or task")
-        }.padding(8).homeCard(cornerRadius: 20)
+        }.padding(.horizontal, 2)
     }
     private var filters: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -124,14 +135,14 @@ private struct CalendarViewScreen: View {
         }.buttonStyle(.plain).accessibilityAddTraits(filter == kind ? .isSelected : [])
     }
     private var monthGrid: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 10) {
             HStack(spacing: 0) {
                 ForEach(Array(viewModel.weekdayNames.enumerated()), id: \.offset) { _, day in Text(day.uppercased()).font(.caption2 .weight(.semibold)).foregroundStyle(DashboardPalette.muted).frame(maxWidth: .infinity) }
-            }.padding(.bottom, 4)
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 0) {
+            }.padding(.bottom, 5)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 3) {
                 ForEach(viewModel.month.days, id: \.self) { date in dayCell(date) }
             }
-        }.padding(18).homeCard()
+        }.padding(.top, 4)
     }
     private func dayCell(_ date: Date) -> some View {
         let selected = calendar.isDate(date, inSameDayAs: selectedDate)
@@ -147,10 +158,10 @@ private struct CalendarViewScreen: View {
             VStack(spacing: 3) {
                 Text("\(calendar.component(.day, from: date))").font(.system(size: 13, weight: selected || calendar.isDateInToday(date) ? .bold : .medium))
                 HStack(spacing: 2) { ForEach(kinds.prefix(3)) { kind in Circle().fill(selected ? .white : color(kind)).frame(width: 4, height: 4) } }.frame(height: 4)
-            }.frame(width: 36, height: 36).foregroundStyle(selected ? .white : inMonth ? DashboardPalette.ink : Color.gray.opacity(0.45))
-                .background(selected ? DashboardPalette.brandFill : .clear, in: RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(calendar.isDateInToday(date) && !selected ? DashboardPalette.green.opacity(0.4) : .clear))
-                .frame(maxWidth: .infinity).frame(height: 40)
+            }.frame(width: dayCellSize, height: dayCellSize).foregroundStyle(selected ? .white : inMonth ? DashboardPalette.ink : Color.gray.opacity(0.45))
+                .background(selected ? DashboardPalette.brandFill : .clear, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(calendar.isDateInToday(date) && !selected ? DashboardPalette.green.opacity(0.45) : .clear, lineWidth: 1.5))
+                .frame(maxWidth: .infinity).frame(height: dayCellSize + 8)
         }.buttonStyle(.plain).accessibilityLabel("\(date.formatted(date: .complete, time: .omitted)), \(count) activities").accessibilityAddTraits(selected ? .isSelected : [])
     }
     private var activityHeader: some View {
@@ -194,9 +205,20 @@ private struct CalendarViewScreen: View {
                 Button { editing = record } label: { Label("View details", systemImage: "arrow.up.right").font(.caption .weight(.semibold)) }.foregroundStyle(DashboardPalette.green)
             }
         }.padding(16).padding(.leading, 4).frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
-            .overlay(alignment: .leading) { Rectangle().fill(color(record.kind)).frame(width: 6) }
-            .clipShape(RoundedRectangle(cornerRadius: 20)).shadow(color: DashboardPalette.green.opacity(0.05), radius: 12, y: 5)
+            .background {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .fill(color(record.kind).opacity(colorScheme == .dark ? 0.10 : 0.055))
+                }
+            }
+            .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(color(record.kind).opacity(0.14)))
+            .overlay(alignment: .leading) {
+                Capsule().fill(color(record.kind).opacity(0.68)).frame(width: 4).padding(.vertical, 14)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .shadow(color: color(record.kind).opacity(colorScheme == .dark ? 0.04 : 0.07), radius: 10, y: 4)
     }
     private func color(_ kind: RecordKind) -> Color {
         switch kind {

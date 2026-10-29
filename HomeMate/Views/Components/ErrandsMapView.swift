@@ -4,6 +4,7 @@ import MapKit
 struct ErrandsMapView: View {
     @EnvironmentObject private var dependencies: AppDependencies
     @Environment(\.dismiss) private var dismiss
+    var onClose: (() -> Void)? = nil
     @State private var selected: UUID?
     @State private var editing: HouseholdRecord?
     @State private var includeCompleted = false
@@ -103,7 +104,16 @@ struct ErrandsMapView: View {
                 }.padding().frame(maxWidth: 760).frame(maxWidth: .infinity)
             }.background(Color(uiColor: .systemGroupedBackground))
                 .navigationTitle("Errands Map").navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button {
+                            if let onClose { onClose() } else { dismiss() }
+                        } label: {
+                            if onClose == nil { Text("Done") }
+                            else { Label("Back", systemImage: "chevron.left") }
+                        }
+                    }
+                }
                 .tint(DashboardPalette.green)
                 .onAppear { position = initialMapPosition }
                 .refreshable { await dependencies.household.refresh() }

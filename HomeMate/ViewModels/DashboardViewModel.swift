@@ -26,6 +26,12 @@ final class DashboardViewModel: ScreenViewModel {
             .sorted { !$0.completed && $1.completed }
     }
     var spending: Double { monthlyExpenses.reduce(0) { $0 + $1.amount } }
+    func spending(in category: String) -> Double {
+        let key = category.trimmingCharacters(in: .whitespacesAndNewlines)
+        return monthlyExpenses
+            .filter { $0.category.trimmingCharacters(in: .whitespacesAndNewlines).localizedCaseInsensitiveCompare(key) == .orderedSame }
+            .reduce(0) { $0 + $1.amount }
+    }
     var breakdown: [(String, Double)] {
         let categories = Dictionary(grouping: monthlyExpenses, by: \.category).map { ($0.key, $0.value.reduce(0) { $0 + $1.amount }) }.sorted { $0.1 > $1.1 }
         if categories.count <= 3 { return categories }

@@ -3,9 +3,10 @@ import SwiftUI
 struct RecordRow: View {
     @EnvironmentObject private var dependencies: AppDependencies
     let record: HouseholdRecord
+    var accent: Color? = nil
     var body: some View {
         ViewModelHost(make: RecordRowViewModel(store: dependencies.store, account: dependencies.account, context: dependencies.household)) { model in
-            RecordRowScreen(record: record, viewModel: model)
+            RecordRowScreen(record: record, viewModel: model, accent: accent)
         }.id(dependencies.account.dataScope)
     }
 }
@@ -14,6 +15,9 @@ private struct RecordRowScreen: View {
 
     let record: HouseholdRecord
     @ObservedObject var viewModel: RecordRowViewModel
+    var accent: Color?
+
+    private var iconColor: Color { accent ?? DashboardPalette.green }
 
     private var assigneeLabel: String {
         AssignmentDisplay.label(for: record.assignee, accountEmail: viewModel.account.email, localName: viewModel.profile.name, members: viewModel.context?.members ?? [], shared: viewModel.context?.family != nil)
@@ -21,7 +25,7 @@ private struct RecordRowScreen: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-            Image(systemName: record.kind.icon).font(.title3.weight(.semibold)).foregroundStyle(DashboardPalette.green).frame(width: 48, height: 48).background(DashboardPalette.mint.opacity(0.22), in: RoundedRectangle(cornerRadius: 14))
+            Image(systemName: record.kind.icon).font(.title3.weight(.semibold)).foregroundStyle(iconColor).frame(width: 48, height: 48).background(iconColor.opacity(0.13), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             VStack(alignment: .leading, spacing: 7) {
                 Text(record.title).font(.body.weight(.semibold)).fixedSize(horizontal: false, vertical: true).foregroundStyle(DashboardPalette.ink)
                     .strikethrough(record.completed && record.kind != .bill)
@@ -29,7 +33,7 @@ private struct RecordRowScreen: View {
                 if record.kind != .expense { RecordStatusBadge(record: record) }
             }
             Spacer()
-            if record.amount > 0 { Text(viewModel.money(record.amount)).font(.body .weight(.bold)).foregroundStyle(DashboardPalette.green) }
+            if record.amount > 0 { Text(viewModel.money(record.amount)).font(.body .weight(.bold)).foregroundStyle(iconColor) }
         }.padding(.vertical, 9)
     }
 }

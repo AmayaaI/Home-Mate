@@ -51,42 +51,63 @@ private struct SettingsViewScreen: View {
             List {
                 Section {
                     Button { page = .profile } label: {
-                        HStack(spacing: 16) {
-                            ProfileAvatar(data: viewModel.profile.personalDetails?.avatarData, name: viewModel.profile.name, size: 56)
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(viewModel.profile.name).font(.headline).foregroundStyle(.primary)
-                                Text(viewModel.accountSignedIn ? viewModel.accountEmail : viewModel.profile.household).font(.subheadline).foregroundStyle(.secondary)
+                        HStack(spacing: 14) {
+                            ProfileAvatar(data: viewModel.profile.personalDetails?.avatarData, name: viewModel.profile.name, size: 62)
+                                .padding(3)
+                                .background(.white.opacity(0.18), in: Circle())
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("YOUR PROFILE")
+                                    .font(.caption2.weight(.bold)).tracking(1.1).foregroundStyle(.white.opacity(0.75))
+                                Text(viewModel.profile.name).font(.title3.weight(.bold)).foregroundStyle(.white)
+                                Text(viewModel.accountSignedIn ? viewModel.accountEmail : viewModel.profile.household)
+                                    .font(.caption).foregroundStyle(.white.opacity(0.82)).lineLimit(1)
                             }
-                        }.padding(.vertical, 8)
+                            Spacer(minLength: 2)
+                            Image(systemName: "arrow.up.right")
+                                .font(.caption.weight(.bold)).foregroundStyle(.white.opacity(0.9))
+                        }
+                        .padding(16)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .fill(LinearGradient(colors: [DashboardPalette.brandFill, DashboardPalette.brandFill.opacity(0.88), DashboardPalette.brandFill], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .overlay(alignment: .topTrailing) {
+                                    Circle().fill(.white.opacity(0.08)).frame(width: 150, height: 150).offset(x: 50, y: -90)
+                                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                                }
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     }
+                    .buttonStyle(HomePressStyle())
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                    .listRowBackground(Color.clear)
                 }
                 Section("Household") {
                     settingsLink("My private space", symbol: "house", page: .household)
                     settingsLink("Family & sharing", symbol: "person.2", page: .members)
-                    Button { showFamilyChat = true } label: { Label(viewModel.accountSignedIn ? "Shared families & chat" : "Offline notes", systemImage: "bubble.left.and.bubble.right") }
+                    Button { showFamilyChat = true } label: { Label(viewModel.accountSignedIn ? "Shared families & chat" : "Offline notes", systemImage: "bubble.left.and.bubble.right").foregroundStyle(green) }
                 }
                 Section {
                     Toggle(isOn: Binding(get: { appLock.enabled }, set: { value in Task { await appLock.setEnabled(value) } })) {
-                        Label("Require Face ID", systemImage: "faceid")
+                        Label("Require Face ID", systemImage: "faceid").foregroundStyle(green)
                     }.disabled(appLock.busy)
                     if let message = appLock.message { Text(message).font(.footnote).foregroundStyle(.secondary) }
                 } header: { Text("Privacy & security") } footer: {
                     Text("Lock HomeMate when you leave the app. Use Face ID or Touch ID to unlock. Device passcode alone cannot unlock HomeMate.")
                 }
                 Section("Preferences") {
-                    Toggle("Notifications", systemImage: "bell.badge", isOn: $viewModel.notifications)
+                    Toggle("Notifications", systemImage: "bell.badge", isOn: $viewModel.notifications).foregroundStyle(green)
                     settingsLink("Currency", symbol: "banknote", page: .currency)
                     Picker(selection: Binding(get: { appearance }, set: { appearance = $0 })) {
                         Text("System").tag("system")
                         Text("Light").tag("light")
                         Text("Dark").tag("dark")
                     } label: {
-                        Label("Appearance", systemImage: "circle.lefthalf.filled")
+                        Label("Appearance", systemImage: "circle.lefthalf.filled").foregroundStyle(green)
                     }
                 }
                 Section("Data & storage") {
                     settingsLink("Sync status", symbol: "arrow.triangle.2.circlepath", page: .sync)
-                    NavigationLink { AnalyticsView() } label: { Label("Insights", systemImage: "chart.bar") }
+                    NavigationLink { AnalyticsView() } label: { Label("Insights", systemImage: "chart.bar").foregroundStyle(green) }
                 }
                 Section("Support") {
                     settingsLink("Help & support", symbol: "questionmark.circle", page: .help)
@@ -98,11 +119,23 @@ private struct SettingsViewScreen: View {
                     } label: {
                         Label(viewModel.accountSignedIn ? "Sign out" : "Sign in",
                               systemImage: viewModel.accountSignedIn ? "rectangle.portrait.and.arrow.right" : "person.crop.circle")
+                            .foregroundStyle(viewModel.accountSignedIn ? Color.red : green)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-            }.listStyle(.insetGrouped)
+            }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
                 .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.large)
+                .toolbar {
+                    if let onBack {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button("Back", systemImage: "chevron.left", action: onBack)
+                        }
+                    }
+                }
                 .task {
                     #if DEBUG
                     if ProcessInfo.processInfo.arguments.contains("--preview"), ProcessInfo.processInfo.arguments.contains("--preview-profile") { page = .profile }
@@ -133,7 +166,7 @@ private struct SettingsViewScreen: View {
     private func settingsLink(_ title: String, symbol: String, page target: SettingsPage) -> some View {
         Button { page = target } label: {
             HStack {
-                Label(title, systemImage: symbol).foregroundStyle(.primary)
+                Label(title, systemImage: symbol).foregroundStyle(green)
                 Spacer()
                 Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
             }
