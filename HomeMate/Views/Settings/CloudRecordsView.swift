@@ -36,7 +36,7 @@ private struct CloudRecordsViewScreen: View {
                     Button("Delete", role: .destructive) { pendingDelete = record }
                 }
             }
-        }.navigationTitle("Cloud records")
+        }.homeListChrome().navigationTitle("Cloud records")
             .toolbar { Button("Refresh", systemImage: "arrow.clockwise") { Task { await viewModel.load() } }.disabled(busy) }
             .task { await viewModel.load() }
             .refreshable { await viewModel.load() }

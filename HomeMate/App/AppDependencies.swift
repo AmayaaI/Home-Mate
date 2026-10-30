@@ -21,6 +21,7 @@ final class AppDependencies: ObservableObject {
         self.store = store
         self.account = account
         household = HouseholdContext(account: account)
+        store.onRemindersChanged = { [weak self] in self?.scheduleWidgetRefresh() }
         household.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
             self?.scheduleWidgetRefresh()
@@ -105,7 +106,7 @@ final class AppDependencies: ObservableObject {
         scopes[account.dataScope + ":private"] = store.records
         locations.update(scopes: scopes, identity: household.identity,
                          email: account.email, localName: store.profile.name, enabled: active && store.profile.reminders)
-        store.scheduleReminders(for: visibleRecords, identifierPrefix: household.identity)
+        store.scheduleReminders(scopes: active ? scopes : [:])
         #if DEBUG
         guard !ProcessInfo.processInfo.arguments.contains("--preview") else { return }
         #endif

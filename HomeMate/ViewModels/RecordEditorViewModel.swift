@@ -244,6 +244,10 @@ final class RecordEditorViewModel: ScreenViewModel {
         let scope = account.dataScope; let snapshot = normalizedRecord
         saving = true; saveError = nil; defer { saving = false }
         do {
+            if ReminderSchedule.date(for: snapshot) != nil {
+                try await store.prepareReminderPermission()
+                guard isCurrent(scope) else { return false }
+            }
             do {
                 if taskVisibility == .privateTask {
                     let saved = store.upsert(snapshot)
@@ -268,6 +272,9 @@ final class RecordEditorViewModel: ScreenViewModel {
 
     private var normalizedRecord: HouseholdRecord {
         var value = record
+        if value.reminderDate == nil {
+            value.reminderDate = ReminderSchedule.date(for: value)
+        }
         if taskVisibility == .privateTask { value.assignee = "Me" }
         else if !supportsAssignment { value.assignee = "Everyone" }
         if value.kind == .bill {

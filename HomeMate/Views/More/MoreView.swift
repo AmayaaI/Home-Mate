@@ -92,7 +92,7 @@ private struct MoreViewScreen: View {
 
                 Button {
                     if viewModel.accountSignedIn { viewModel.signOut() }
-                    else { destination = .signIn }
+                    else { dependencies.store.guestSessionActive = false }
                 } label: {
                     Label(viewModel.accountSignedIn ? "Sign Out" : "Sign In", systemImage: viewModel.accountSignedIn ? "rectangle.portrait.and.arrow.right" : "person.crop.circle")
                         .font(.system(.subheadline, weight: .semibold))
@@ -106,7 +106,7 @@ private struct MoreViewScreen: View {
             .padding(.horizontal, 16)
             .padding(.top, 16)
             .padding(.bottom, 24)
-            .frame(maxWidth: 900)
+            .frame(maxWidth: 1200)
             .frame(maxWidth: .infinity)
         }
         .background(pageBackground.ignoresSafeArea())
@@ -300,7 +300,6 @@ private struct MoreViewScreen: View {
                 }
             }
         case .settings: SettingsView(onBack: { destination = nil })
-        case .signIn: dismissible { NavigationStack { LoginView() } }
         case .profile:
             NavigationStack {
                 ProfileSettingsView(accountEmail: viewModel.accountSignedIn ? viewModel.accountEmail : "")
@@ -315,25 +314,13 @@ private struct MoreViewScreen: View {
                         Text("HomeMate schedules local reminders for your pending activities. Allow notifications when iOS asks. You can also change permission in the device’s Settings app.")
                     }
                 }
+                .homeFormChrome()
                 .navigationTitle("Notifications")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { ToolbarItem(placement: .topBarLeading) { Button("Back", systemImage: "chevron.left") { destination = nil } } }
             }
         case .errands:
             ErrandsMapView(onClose: { destination = nil })
-        }
-    }
-
-    private func dismissible<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-        content().safeAreaInset(edge: .top, spacing: 0) {
-            HStack {
-                Button("Back", systemImage: "chevron.left") { destination = nil }
-                    .font(.body.weight(.semibold))
-                    .frame(minWidth: 44, minHeight: 44)
-                Spacer(minLength: 0)
-            }
-            .padding(.horizontal, 16)
-            .background(cardBackground)
         }
     }
 
@@ -418,9 +405,9 @@ private struct HouseholdMembersSetupView: View {
                 Text("Email verification is requested only when you choose to create or join a shared household. Opening Members keeps you on this page.")
                     .font(.caption).foregroundStyle(DashboardPalette.muted).padding(.horizontal, 6)
             }
-            .padding(16).frame(maxWidth: 760).frame(maxWidth: .infinity)
+            .padding(16).frame(maxWidth: 1200).frame(maxWidth: .infinity)
         }
-        .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+        .background(HomeBackdrop())
         .navigationTitle("Household Members").navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done", action: dismiss) } }
         .sheet(isPresented: $showSharingSetup, onDismiss: { Task { await viewModel.refreshFamily() } }) {
@@ -486,9 +473,9 @@ private struct FamilyCommunicationScreen: View {
                 else { notices }
             }
             .padding(.horizontal, 16).padding(.vertical, 12)
-            .frame(maxWidth: 760).frame(maxWidth: .infinity)
+            .frame(maxWidth: 1200).frame(maxWidth: .infinity)
         }
-        .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+        .background(HomeBackdrop())
         .navigationTitle("Family Communication").navigationBarTitleDisplayMode(.inline)
         .task { await viewModel.load() }
         .refreshable { await viewModel.load() }
@@ -734,6 +721,7 @@ private struct AnnouncementComposer: View {
                 }
                 if let error { Text(error).font(.footnote).foregroundStyle(DashboardPalette.red) }
             }
+            .homeFormChrome()
             .navigationTitle(draft.revision == nil ? "New notice" : "Edit notice")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -795,6 +783,7 @@ private struct CommunicationSearchView: View {
                     ContentUnavailableView.search(text: query)
                 }
             }
+            .homeListChrome()
             .searchable(text: $query, prompt: "Search messages")
             .navigationTitle("Search Messages").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
@@ -803,7 +792,7 @@ private struct CommunicationSearchView: View {
 }
 
 private enum MoreDestination: String, Identifiable {
-    case expenses, insights, communication, maintenance, members, errands, notifications, settings, profile, signIn
+    case expenses, insights, communication, maintenance, members, errands, notifications, settings, profile
     var id: String { rawValue }
 }
 

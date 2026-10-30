@@ -66,12 +66,21 @@ struct SplashScreen: View {
                 VStack(spacing: 20) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 28).fill(green.opacity(0.1)).frame(width: 112, height: 112).blur(radius: 6)
-                        RoundedRectangle(cornerRadius: 24, style: .continuous).fill(.white)
+                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                            .fill(LinearGradient(
+                                colors: [DashboardPalette.brandFill, Color(red: 0.035, green: 0.22, blue: 0.20)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ))
                             .frame(width: 104, height: 104)
-                            .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 12)
-                        // The pasted export references a PNG without including it.
-                        // Keep HomeMate's existing house mark until a logo asset is provided.
-                        Image(systemName: "house.lodge.fill").font(.system(size: 49, weight: .medium)).foregroundStyle(green)
+                            .shadow(color: DashboardPalette.green.opacity(0.24), radius: 16, x: 0, y: 12)
+                        Image(systemName: "house.fill")
+                            .font(.system(size: 48, weight: .medium))
+                            .foregroundStyle(.white)
+                        Image(systemName: "heart.fill")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(DashboardPalette.mint)
+                            .offset(y: 13)
                     }.frame(width: 104, height: 104)
                         .overlay(alignment: .bottomTrailing) {
                             Image(systemName: "checkmark").font(.caption2 .weight(.bold)).foregroundStyle(.white)

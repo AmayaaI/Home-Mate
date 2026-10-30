@@ -288,7 +288,7 @@ private struct CoreMLDemoViewScreen: View {
                 if let forecastError { Text(forecastError).font(.caption).foregroundStyle(.red) }
                 Text("The model learns spending trends from simulated histories. Demo estimates are not validated for real-world forecasting.").font(.caption).foregroundStyle(.secondary)
             }
-        }.scrollContentBackground(.hidden).background(HomeBackdrop()).navigationTitle("Try Core ML").navigationBarTitleDisplayMode(.inline)
+        }.homeFormChrome().navigationTitle("Try Core ML").navigationBarTitleDisplayMode(.inline)
     }
 }
 

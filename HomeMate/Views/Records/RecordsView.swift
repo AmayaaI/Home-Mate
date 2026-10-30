@@ -241,7 +241,7 @@ private struct RecordsViewScreen: View {
                     }
                 }.padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 24).frame(maxWidth: 1200).frame(maxWidth: .infinity)
             }
-            .background(Color(uiColor: .systemGroupedBackground))
+            .background(HomeBackdrop())
             .navigationTitle(kind == .task ? "Tasks" : kind.rawValue)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(selected == nil ? .hidden : .visible, for: .navigationBar)

@@ -198,7 +198,9 @@ private struct FamilyChatViewScreen: View {
                 Section("Private to your account") { Text("These notes are not sent to your family. Use Family text chat inside a shared family to message real members.") }
                 Section("Storage") { Text("These private notes, attachments and voice notes stay on this device in your account. For shared messages, open Family & sharing → your family → Family text chat.") }
                 Section { Button("Remove sample messages", role: .destructive) { viewModel.removeSamples() }.disabled(!viewModel.personalMessages.contains { $0.isSample }) }
-            }.navigationTitle("Chat details").navigationBarTitleDisplayMode(.inline).toolbar { Button("Done") { showDetails = false } }
+            }
+            .homeListChrome()
+            .navigationTitle("Chat details").navigationBarTitleDisplayMode(.inline).toolbar { Button("Done") { showDetails = false } }
         }
     }
     private func dayLabel(_ day: Date) -> String { (Calendar.current.isDateInToday(day) ? "TODAY • " : "") + day.formatted(.dateTime.month(.abbreviated).day()).uppercased() }

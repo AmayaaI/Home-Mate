@@ -79,7 +79,7 @@ private struct FamilySharingViewScreen: View {
                     }
                 }
             }
-        }.listStyle(.insetGrouped).navigationTitle("Family Hub")
+        }.homeListChrome().navigationTitle("Family Hub")
             .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
             .disabled(working)
             .refreshable { await viewModel.refresh() }
@@ -163,7 +163,7 @@ private struct SharedFamilyViewScreen: View {
                     }
                 }
             }
-        }.listStyle(.insetGrouped).navigationTitle(family.name).navigationBarTitleDisplayMode(.inline)
+        }.homeListChrome().navigationTitle(family.name).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .topBarTrailing) {
                 Button("Add shared activity", systemImage: "plus") { viewModel.addActivity() }.disabled(writing)
             } }
@@ -246,7 +246,7 @@ private struct FamilyMembersViewScreen: View {
             .padding(.horizontal, 16).padding(.vertical, 12)
             .frame(maxWidth: 760).frame(maxWidth: .infinity)
         }
-        .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+        .background(HomeBackdrop())
         .navigationTitle("Household Members").navigationBarTitleDisplayMode(.inline)
         .disabled(viewModel.busy)
         .task { await viewModel.load() }
@@ -484,7 +484,7 @@ private struct SharedFamilyChatViewScreen: View {
                 }
                 .padding(.horizontal, 16).padding(.vertical, 14)
             }
-            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .background(HomeBackdrop())
             .onChange(of: messages.count) { _, _ in
                 withAnimation(.easeOut(duration: 0.2)) { proxy.scrollTo("chat-bottom", anchor: .bottom) }
             }
@@ -590,7 +590,9 @@ private struct ShareRecordWithFamilyViewScreen: View {
                 }
             }
             if busy { ProgressView() }
-        }.navigationTitle("Share with family").navigationBarTitleDisplayMode(.inline)
+        }
+        .homeListChrome()
+        .navigationTitle("Share with family").navigationBarTitleDisplayMode(.inline)
             .task { await viewModel.load() }
             .alert("Shared successfully", isPresented: $viewModel.shared) {
                 Button("Done") { dismiss() }

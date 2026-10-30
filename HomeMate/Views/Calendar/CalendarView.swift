@@ -14,6 +14,8 @@ private struct CalendarViewScreen: View {
 
     @Environment(\.homeContentWidth) private var contentWidth
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @ScaledMetric(relativeTo: .caption) private var filterHeight: CGFloat = 44
     @State private var allHouseholds = false
     @State private var accessibleRecords: [HouseholdRecord] = []
 
@@ -40,19 +42,8 @@ private struct CalendarViewScreen: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    HStack(alignment: .center, spacing: 12) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("YOUR HOUSEHOLD, AT A GLANCE")
-                                .font(.caption2.weight(.bold)).tracking(1.1).foregroundStyle(DashboardPalette.green)
-                            Text("Calendar")
-                                .font(.system(size: 29, weight: .bold, design: .rounded)).tracking(-0.7)
-                        }
-                        Spacer()
-                        Image(systemName: "calendar")
-                            .font(.title2.weight(.semibold)).foregroundStyle(DashboardPalette.green)
-                            .frame(width: 48, height: 48)
-                            .background(DashboardPalette.green.opacity(0.09), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    }.padding(.bottom, 2)
+                    HomePageHeader(eyebrow: "Your household, at a glance", title: "Calendar", symbol: "calendar")
+                        .padding(.bottom, 2)
                     Picker("Viewing", selection: $allHouseholds) {
                         Text(viewModel.context?.family?.name ?? "Private").tag(false)
                         Text("All Households").tag(true)
@@ -62,14 +53,14 @@ private struct CalendarViewScreen: View {
                         monthGrid
                     }
                     .padding(contentWidth >= 760 ? 24 : 16)
-                    .frame(maxWidth: 760)
+                    .frame(maxWidth: 1200)
                     .frame(maxWidth: .infinity)
                     .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(DashboardPalette.green.opacity(colorScheme == .dark ? 0.16 : 0.08)))
                     .shadow(color: .black.opacity(colorScheme == .dark ? 0 : 0.045), radius: 16, y: 7)
                     filters
                     agenda
-                }.padding(.horizontal, contentWidth >= 760 ? 28 : 16).padding(.top, 18).padding(.bottom, 28).frame(maxWidth: 820).frame(maxWidth: .infinity)
+                }.padding(.horizontal, contentWidth >= 760 ? 28 : 16).padding(.top, 18).padding(.bottom, 28).frame(maxWidth: 1200).frame(maxWidth: .infinity)
             }.background(HomeBackdrop()).foregroundStyle(DashboardPalette.ink)
                 .toolbar(.hidden, for: .navigationBar)
                 .onChange(of: selectedDate) { _, date in
@@ -117,19 +108,36 @@ private struct CalendarViewScreen: View {
         }.padding(.horizontal, 2)
     }
     private var filters: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                filterPill("All activities", kind: nil)
-                ForEach([RecordKind.task, .bill, .maintenance, .event, .expense]) { kind in filterPill(kind == .event ? "Family events" : kind.rawValue, kind: kind) }
-            }.padding(.vertical, 2)
+        Group {
+            if contentWidth < 550 || dynamicTypeSize.isAccessibilitySize {
+                let columns = dynamicTypeSize.isAccessibilitySize ? 1 : (contentWidth < 360 || dynamicTypeSize >= .xxLarge ? 2 : 3)
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: columns), spacing: 8) {
+                    filterPill("All activities", kind: nil, expands: true)
+                    ForEach([RecordKind.task, .bill, .maintenance, .event, .expense]) { kind in
+                        filterPill(kind == .event ? "Family events" : kind.rawValue, kind: kind, expands: true)
+                    }
+                }
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        filterPill("All activities", kind: nil)
+                        ForEach([RecordKind.task, .bill, .maintenance, .event, .expense]) { kind in filterPill(kind == .event ? "Family events" : kind.rawValue, kind: kind) }
+                    }.padding(.vertical, 2)
+                }
+            }
         }
     }
-    private func filterPill(_ title: String, kind: RecordKind?) -> some View {
+    private func filterPill(_ title: String, kind: RecordKind?, expands: Bool = false) -> some View {
         Button { withAnimation(.easeInOut(duration: 0.15)) { filter = kind } } label: {
             HStack(spacing: 6) {
                 Circle().fill(kind.map(color) ?? DashboardPalette.mint).frame(width: 8, height: 8)
                 Text(title).font(.caption .weight(.semibold))
-            }.padding(.horizontal, 12).padding(.vertical, 7).foregroundStyle(filter == kind ? .white : DashboardPalette.muted)
+                    .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 1)
+                    .minimumScaleFactor(dynamicTypeSize.isAccessibilitySize ? 1 : 0.85)
+                    .multilineTextAlignment(.center)
+            }.padding(.horizontal, expands ? 8 : 12).padding(.vertical, 7)
+                .frame(maxWidth: expands ? .infinity : nil, minHeight: filterHeight)
+                .foregroundStyle(filter == kind ? .white : DashboardPalette.muted)
                 .background(filter == kind ? DashboardPalette.brandFill : Color(uiColor: .secondarySystemGroupedBackground), in: Capsule())
                 .overlay(Capsule().stroke(filter == kind ? .clear : Color.gray.opacity(0.1)))
         }.buttonStyle(.plain).accessibilityAddTraits(filter == kind ? .isSelected : [])

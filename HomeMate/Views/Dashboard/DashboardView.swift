@@ -101,11 +101,11 @@ private struct DashboardViewScreen: View {
                 .padding(.horizontal, 18)
                 .padding(.top, 14)
                 .padding(.bottom, 42)
-                .frame(maxWidth: 760)
+                .frame(maxWidth: 1200)
                 .frame(maxWidth: .infinity)
             }
             .scrollIndicators(.hidden)
-            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .background(HomeBackdrop())
             .toolbar(.hidden, for: .navigationBar)
             .tint(DashboardPalette.green)
             .sheet(item: $viewModel.selected) { RecordDetailView(record: $0) }
@@ -543,10 +543,11 @@ private struct DashboardViewScreen: View {
     }
 
     private var budgetAndInsightsSection: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 260, maximum: 420), spacing: 12)], spacing: 12) {
+        VStack(spacing: 12) {
             budgetAlertCard
             coreMLInsightCard
         }
+        .frame(maxWidth: .infinity)
     }
 
     private var budgetAlertCard: some View {
@@ -892,6 +893,7 @@ private struct DashboardViewScreen: View {
                     }
                 }
             }
+            .homeListChrome()
             .navigationTitle("Needs attention")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -913,6 +915,7 @@ private struct DashboardViewScreen: View {
                     Text("Enter a budget between 0 and 1 trillion.").foregroundStyle(.red)
                 }
             }
+            .homeFormChrome()
             .navigationTitle("Monthly budget")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -936,6 +939,7 @@ private struct DashboardViewScreen: View {
                         .foregroundStyle(.red)
                 }
             }
+            .homeFormChrome()
             .navigationTitle("Family update")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

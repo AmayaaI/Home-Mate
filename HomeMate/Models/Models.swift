@@ -85,8 +85,10 @@ enum ReminderSchedule {
     }
 
     static func date(for record: HouseholdRecord, now: Date = Date()) -> Date? {
-        guard record.reminderEnabled != false else { return nil }
-        if let custom = record.reminderDate, custom > now, custom < record.date { return custom }
+        guard !record.completed, record.kind != .expense, record.reminderEnabled != false else { return nil }
+        if let custom = record.reminderDate {
+            return custom > now && custom < record.date ? custom : nil
+        }
         return defaultDate(for: record, now: now)
     }
 }

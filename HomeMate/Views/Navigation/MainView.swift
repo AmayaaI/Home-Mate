@@ -33,7 +33,7 @@ private struct MainViewScreen: View {
         self.viewModel = viewModel
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
-        if arguments.contains("--preview"), let index = arguments.firstIndex(of: "--preview-tab"), arguments.indices.contains(index + 1), let tab = Int(arguments[index + 1]), (0...4).contains(tab) {
+        if arguments.contains("--preview"), let index = arguments.firstIndex(of: "--preview-tab"), arguments.indices.contains(index + 1), let tab = Int(arguments[index + 1]), (0...5).contains(tab) {
             _selectedTab = State(initialValue: tab)
         }
         #endif
@@ -68,13 +68,24 @@ private struct MainViewScreen: View {
                             }
                         }.padding(.horizontal, 12)
                         Spacer(minLength: 20)
-                        HStack(spacing: 10) {
-                            ProfileAvatar(data: viewModel.profile.personalDetails?.avatarData, name: viewModel.profile.name, size: 38)
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(viewModel.profile.name).font(.footnote .weight(.semibold))
-                                Text("A little more harmony.").font(.caption2).foregroundStyle(DashboardPalette.muted)
-                            }
-                        }.padding(20)
+                        Button { selectedTab = 5 } label: {
+                            HStack(spacing: 10) {
+                                ProfileAvatar(data: viewModel.profile.personalDetails?.avatarData, name: viewModel.profile.name, size: 38)
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(viewModel.profile.name.isEmpty ? "Your profile" : viewModel.profile.name).font(.footnote .weight(.semibold)).lineLimit(1)
+                                    Text(viewModel.accountSignedIn ? viewModel.accountEmail : "Personal profile").font(.caption2).foregroundStyle(DashboardPalette.muted).lineLimit(1)
+                                }
+                                Spacer(minLength: 0)
+                                Image(systemName: "chevron.right").font(.caption2.weight(.semibold)).foregroundStyle(DashboardPalette.muted)
+                            }.padding(12)
+                                .foregroundStyle(selectedTab == 5 ? DashboardPalette.green : DashboardPalette.ink)
+                                .background(selectedTab == 5 ? DashboardPalette.mint.opacity(0.3) : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        }
+                        .buttonStyle(HomePressStyle())
+                        .accessibilityLabel("Open profile settings")
+                        .accessibilityAddTraits(selectedTab == 5 ? .isSelected : [])
+                        .padding(.horizontal, 12).padding(.bottom, 8)
                     }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         .background(HomeBackdrop()).toolbar(.hidden, for: .navigationBar)
                         .navigationSplitViewColumnWidth(min: 220, ideal: 240, max: 260)
@@ -95,7 +106,11 @@ private struct MainViewScreen: View {
                         .tabItem { Label("More", systemImage: "ellipsis") }.tag(4)
                 }
             }
-        }.tint(DashboardPalette.green)
+        }
+        .onChange(of: sizeClass) { _, newSizeClass in
+            if newSizeClass == .compact && selectedTab == 5 { selectedTab = 4 }
+        }
+        .tint(DashboardPalette.green)
     }
     @ViewBuilder private var destination: some View {
         switch selectedTab {
@@ -103,6 +118,8 @@ private struct MainViewScreen: View {
         case 1: RecordsView(kind: .task)
         case 2: RecordsView(kind: .bill)
         case 3: CalendarView()
+        case 4: MoreView()
+        case 5: NavigationStack { ProfileSettingsView(accountEmail: viewModel.accountSignedIn ? viewModel.accountEmail : "") }
         default: MoreView()
         }
     }

@@ -124,9 +124,7 @@ private struct SettingsViewScreen: View {
                     }
                 }
             }
-            .listStyle(.insetGrouped)
-            .scrollContentBackground(.hidden)
-            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .homeListChrome()
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
@@ -173,7 +171,7 @@ private struct SettingsViewScreen: View {
         }
     }
     @ViewBuilder private func detail(_ selected: SettingsPage) -> some View {
-        Form {
+                        Form {
             switch selected {
             case .profile:
                 Section("Personal information") { TextField("Your name", text: $viewModel.draftProfile.name).exactTextEntry(); Text(viewModel.accountSignedIn ? viewModel.accountEmail : "Local profile • no account connected") }
@@ -196,7 +194,8 @@ private struct SettingsViewScreen: View {
                 Section("Privacy") { Text("Signed-in account data is saved locally and automatically synced to Firebase, including your profile, activities, budget, notices, private notes, photos and voice notes. Receipt text recognition runs on your device. Face ID and device permissions stay on each device."); Text("Local data is separated by your Firebase account. Signing out hides that account’s household and notifications. Offline data is kept separately on this device.") }
                 Section("Technologies") { Text("Apple system frameworks; no third-party packages. Bundled Core ML category, forecast and unusual-transaction models trained on demonstration data. Categories are editable; forecasts need three completed months. Unusual-transaction scores use earlier household payments and are experimental. Trends and statistical fallbacks are labelled separately.") }
             }
-        }.scrollContentBackground(.hidden).background(HomeBackdrop())
+        }
+        .homeFormChrome()
     }
     @ViewBuilder private var cloudControls: some View {
         Section("Firebase account") {

@@ -14,6 +14,8 @@ struct LoginView: View {
 private struct LoginViewScreen: View {
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     var onContinueOffline: (() -> Void)? = nil
 
     @State private var showPassword = false
@@ -31,19 +33,38 @@ private struct LoginViewScreen: View {
     private var localError: String? { get { viewModel.localError } nonmutating set { viewModel.localError = newValue } }
     var body: some View {
         GeometryReader { geometry in
-            let wide = geometry.size.width >= 700
-            ScrollView {
-                VStack(spacing: 0) {
-                    if onContinueOffline == nil {
-                        HStack { Button { dismiss() } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }.accessibilityLabel("Back"); Spacer() }.frame(maxWidth: 1000)
+            let wide = geometry.size.width >= 850 && !dynamicTypeSize.isAccessibilitySize
+            let panelHeight = max(560, min(760, geometry.size.height - 48))
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        if onContinueOffline == nil {
+                            HStack { Button { dismiss() } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }.accessibilityLabel("Back"); Spacer() }.frame(maxWidth: .infinity)
+                        }
+                        if wide {
+                            HStack(spacing: 20) {
+                                brand(wide: true)
+                                    .frame(width: (geometry.size.width - 68) * 0.57)
+                                formContent(wide: true, minimumHeight: panelHeight)
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 24)
+                        } else {
+                            VStack(spacing: 20) { brand(wide: false); formContent(wide: false) }.frame(maxWidth: 560).padding(.vertical, 20)
+                        }
                     }
-                    if wide {
-                        HStack(spacing: 36) { brand(wide: true).frame(maxWidth: 380); formContent(compact: true).frame(maxWidth: 430) }.frame(maxWidth: 1000).padding(.vertical, 24)
-                    } else {
-                        VStack(spacing: 22) { brand(wide: false); formContent(compact: false) }.frame(maxWidth: 430).padding(.vertical, 20)
-                    }
-                }.padding(.horizontal, 24).frame(maxWidth: .infinity).frame(minHeight: geometry.size.height, alignment: wide ? .center : .top)
-            }.scrollDismissesKeyboard(.interactively).background(HomeBackdrop().ignoresSafeArea())
+                    .id("auth-top")
+                    .padding(.horizontal, 24).frame(maxWidth: .infinity).frame(minHeight: geometry.size.height, alignment: wide ? .center : .top)
+                }
+                .scrollDismissesKeyboard(.interactively)
+                .onChange(of: registering) { _, _ in
+                    focused = nil
+                    withAnimation(.easeInOut(duration: 0.2)) { proxy.scrollTo("auth-top", anchor: .top) }
+                }
+                .background(HomeBackdrop().ignoresSafeArea())
+            }
         }.foregroundStyle(DashboardPalette.ink).toolbar(.hidden, for: .navigationBar)
             .toolbar(.hidden, for: .tabBar)
             .sheet(isPresented: $showReset) { PasswordResetView() }
@@ -53,48 +74,95 @@ private struct LoginViewScreen: View {
             .onChange(of: viewModel.accountSignedIn) { _, signedIn in if signedIn && onContinueOffline == nil { dismiss() } }
     }
     private func brand(wide: Bool) -> some View {
-        VStack(alignment: .leading, spacing: wide ? 16 : 22) {
-            HStack(spacing: 10) {
-                Image(systemName: "house.lodge.fill").font(.title2).foregroundStyle(DashboardPalette.mint)
-                Text("HomeMate").font(.title3.bold()).foregroundStyle(.white)
-                Spacer()
-            }
-            Text(registering ? "Good things\nstart at home." : "Less life admin.\nMore living.")
-                .font(.system(wide ? .title : .largeTitle, design: .rounded, weight: .bold)).tracking(-1.2).foregroundStyle(.white)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(registering ? "Your people. Your plans. One happy place." : "Your household, beautifully in sync.")
-                .font(.subheadline).foregroundStyle(.white.opacity(0.7))
-            HStack(spacing: 8) {
-                ForEach(["Plan together", "Spend smarter"], id: \.self) { text in
-                    Text(text).font(.caption2.weight(.medium)).padding(.horizontal, 12).padding(.vertical, 8)
-                        .background(.white.opacity(0.1), in: Capsule()).foregroundStyle(DashboardPalette.mint)
+        Group {
+            if wide {
+                VStack(alignment: .leading, spacing: 20) {
+                    Label("Made for your household", systemImage: "house")
+                        .font(.caption.weight(.semibold))
+                        .padding(.horizontal, 12).padding(.vertical, 8)
+                        .background(HomeMateStyle.card.opacity(0.85), in: Capsule())
+                    brandCopy(wide: true)
+                    Spacer(minLength: 260)
                 }
+                .padding(32)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .background {
+                    GeometryReader { geometry in
+                        Image("AuthWelcome")
+                            .resizable().scaledToFill()
+                            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)
+                            .clipped()
+                            .overlay(Color.black.opacity(colorScheme == .dark ? 0.25 : 0))
+                            .overlay(alignment: .top) {
+                                LinearGradient(colors: [HomeMateStyle.card.opacity(0.97), HomeMateStyle.card.opacity(0.80), .clear], startPoint: .top, endPoint: .bottom)
+                                    .frame(height: geometry.size.height * 0.42)
+                            }
+                    }.accessibilityHidden(true)
+                }
+            } else {
+                HStack(spacing: 0) {
+                    brandCopy(wide: false)
+                        .padding(.leading, 22).padding(.vertical, 24)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if !dynamicTypeSize.isAccessibilitySize {
+                        Image("AuthWelcome")
+                            .resizable().scaledToFit()
+                            .frame(width: 144)
+                            .overlay(Color.black.opacity(colorScheme == .dark ? 0.20 : 0))
+                            .accessibilityHidden(true)
+                    }
+                }
+                .padding(.trailing, dynamicTypeSize.isAccessibilitySize ? 22 : 0)
+                .frame(maxWidth: .infinity)
+                .background(colorScheme == .dark ? HomeMateStyle.card : Color(red: 0.98, green: 0.98, blue: 0.95))
             }
-        }.padding(wide ? 22 : 26).frame(maxWidth: .infinity, alignment: .leading)
-            .background { HomeHeroSurface() }.clipShape(RoundedRectangle(cornerRadius: 30))
+        }
+        .foregroundStyle(DashboardPalette.green)
+        .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).stroke(Color.primary.opacity(0.04)))
+        .shadow(color: .black.opacity(0.06), radius: 16, y: 10)
     }
-    private func formContent(compact: Bool) -> some View {
-        VStack(spacing: compact ? 14 : 22) {
+
+    private func brandCopy(wide: Bool) -> some View {
+        VStack(alignment: .leading, spacing: wide ? 12 : 10) {
+            Text("HomeMate")
+                .font(wide ? .largeTitle.bold() : .title2.bold()).tracking(-0.8)
+                .accessibilityAddTraits(.isHeader)
+            Text(registering ? "Good things start at home." : "Less life admin. More living.")
+                .font(wide ? .title3.weight(.semibold) : .subheadline.weight(.semibold))
+                .fixedSize(horizontal: false, vertical: true)
+            if wide {
+                Text("Your household routines, bills and family plans.\nTogether in one happy place.")
+                    .font(.subheadline).foregroundStyle(.primary.opacity(0.75))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+    private var authTeal: Color { Color(red: 20 / 255, green: 95 / 255, blue: 87 / 255) }
+
+    private func formContent(wide: Bool, minimumHeight: CGFloat = 0) -> some View {
+        VStack(spacing: 24) {
             VStack(alignment: .leading, spacing: 6) {
-                Text(registering ? "Create your account" : "Welcome home").font(.title2.bold()).tracking(-0.7)
-                Text(registering ? "Make room for a more organised day." : "Sign in and pick up where you left off.").font(.subheadline).foregroundStyle(.secondary)
+                Text(registering ? "Create your account" : "Welcome Back").font(.title2.bold()).tracking(-0.7)
+                Text(registering ? "Make room for a more organised day." : "Sign in to access household routines, budgets and family plans.").font(.subheadline).foregroundStyle(.secondary)
             }.frame(maxWidth: .infinity, alignment: .leading)
-            VStack(spacing: compact ? 12 : 18) {
-                inputCard(icon: "envelope", label: "EMAIL ADDRESS", active: focused == .email) {
-                    TextField("you@example.com", text: $viewModel.accountEmail).keyboardType(.emailAddress).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focused, equals: .email).submitLabel(.next).onSubmit { focused = .password }
+            if wide { Spacer(minLength: 0) }
+            VStack(spacing: 20) {
+                inputCard(icon: "envelope", label: "Email Address", active: focused == .email) {
+                    TextField("you@example.com", text: $viewModel.accountEmail).accessibilityLabel("Email address").keyboardType(.emailAddress).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focused, equals: .email).submitLabel(.next).onSubmit { focused = .password }
                 }
-                inputCard(icon: "lock", label: "PASSWORD", active: focused == .password) {
+                inputCard(icon: "lock", label: "Password", active: focused == .password) {
                     HStack {
                         Group {
                             if showPassword { TextField("Enter your password", text: $viewModel.accountPassword) }
                             else { SecureField("Enter your password", text: $viewModel.accountPassword) }
-                        }.textContentType(registering ? .newPassword : .password).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focused, equals: .password).submitLabel(registering ? .next : .go).onSubmit { if registering { focused = .confirmation } else { submit() } }
+                        }.accessibilityLabel("Password").textContentType(registering ? .newPassword : .password).textInputAutocapitalization(.never).autocorrectionDisabled().focused($focused, equals: .password).submitLabel(registering ? .next : .go).onSubmit { if registering { focused = .confirmation } else { submit() } }
                         Button { showPassword.toggle() } label: { Image(systemName: showPassword ? "eye.slash" : "eye").frame(width: 32, height: 36).foregroundStyle(DashboardPalette.muted) }.accessibilityLabel(showPassword ? "Hide password" : "Show password")
                     }
                 }
                 if registering {
-                    inputCard(icon: "lock.shield", label: "CONFIRM PASSWORD", active: focused == .confirmation) {
-                        SecureField("Repeat your password", text: $viewModel.confirmation).textContentType(.newPassword).focused($focused, equals: .confirmation).submitLabel(.go).onSubmit(submit)
+                    inputCard(icon: "lock.shield", label: "Confirm Password", active: focused == .confirmation) {
+                        SecureField("Repeat your password", text: $viewModel.confirmation).accessibilityLabel("Confirm password").textContentType(.newPassword).focused($focused, equals: .confirmation).submitLabel(.go).onSubmit(submit)
                     }
                 }
                 HStack {
@@ -111,36 +179,56 @@ private struct LoginViewScreen: View {
                         if viewModel.accountBusy { ProgressView().tint(.white) }
                         Text(registering ? "Create account" : "Log in").font(.body .weight(.semibold))
                         if !viewModel.accountBusy { Image(systemName: "arrow.right").font(.footnote .weight(.semibold)) }
-                    }.frame(maxWidth: .infinity).frame(minHeight: 54).foregroundStyle(.white).background(DashboardPalette.brandFill, in: RoundedRectangle(cornerRadius: 18)).shadow(color: DashboardPalette.green.opacity(0.12), radius: 6, y: 4)
+                    }.frame(maxWidth: .infinity).frame(minHeight: 52).foregroundStyle(.white).background(authTeal, in: RoundedRectangle(cornerRadius: 12)).shadow(color: authTeal.opacity(0.16), radius: 8, y: 4)
                 }.buttonStyle(HomePressStyle()).disabled(viewModel.accountBusy)
             }
-            HStack(spacing: 5) {
-                Text(registering ? "Already have an account?" : "New to HomeMate?").foregroundStyle(DashboardPalette.muted)
-                Button(registering ? "Log in" : "Create account") {
-                    withAnimation(.easeInOut(duration: 0.2)) { viewModel.switchMode() }
-                    focused = .email
-                }.fontWeight(.semibold)
+            if wide { Spacer(minLength: 0) }
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 5) { accountSwitch }
+                VStack(spacing: 8) { accountSwitch }
             }.font(.subheadline)
             if !viewModel.accountConfigured { Text("Cloud sign-in is not connected yet. You can still use HomeMate on this device.").font(.caption).foregroundStyle(DashboardPalette.muted).multilineTextAlignment(.center) }
             if let onContinueOffline {
-                VStack(spacing: 8) {
-                    Button("Use offline household", action: onContinueOffline).font(.caption.weight(.semibold)).padding(.vertical, 4)
+                VStack(spacing: 12) {
+                    HStack(spacing: 12) {
+                        Rectangle().fill(Color.primary.opacity(0.10)).frame(height: 1)
+                        Text("ON THIS DEVICE").font(.caption2).tracking(1).foregroundStyle(.secondary).fixedSize()
+                        Rectangle().fill(Color.primary.opacity(0.10)).frame(height: 1)
+                    }.accessibilityHidden(true)
+                    Button(action: onContinueOffline) {
+                        Label("Use offline household", systemImage: "house")
+                            .font(.subheadline.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 44)
+                            .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
+                    }.buttonStyle(HomePressStyle())
                     Text("Offline mode is shared on this device. Sign in to keep your household separate.").font(.caption2).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 }
             }
         }
-        .padding(compact ? 16 : 22)
-        .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).stroke(DashboardPalette.green.opacity(0.10), lineWidth: 1))
-        .shadow(color: .black.opacity(0.045), radius: 14, y: 6)
+        .padding(wide ? 24 : 22)
+        .frame(minHeight: minimumHeight)
+        .background(HomeMateStyle.card, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .shadow(color: .black.opacity(0.06), radius: 16, y: 10)
+        .tint(DashboardPalette.green)
         .disabled(viewModel.accountBusy)
     }
+    @ViewBuilder private var accountSwitch: some View {
+                Text(registering ? "Already have an account?" : "New to HomeMate?").foregroundStyle(DashboardPalette.muted)
+                Button(registering ? "Log in" : "Create account") {
+                    withAnimation(.easeInOut(duration: 0.2)) { viewModel.switchMode() }
+                    // Keep the new screen anchored at its header; the user can opt into the keyboard by tapping a field.
+                    focused = nil
+                }.fontWeight(.semibold)
+    }
     private func inputCard<Content: View>(icon: String, label: String, active: Bool, @ViewBuilder content: () -> Content) -> some View {
-        HStack(spacing: 10) {
-            Image(systemName: icon).font(.body).foregroundStyle(DashboardPalette.muted.opacity(0.7)).frame(width: 20)
-            VStack(alignment: .leading, spacing: 4) { Text(label).font(.caption2 .weight(.semibold)).tracking(0.7).foregroundStyle(DashboardPalette.muted); content().font(.body) }
-        }.padding(.horizontal, 14).padding(.vertical, 10).frame(minHeight: 60).background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(active ? DashboardPalette.green.opacity(0.5) : .clear, lineWidth: 1)).shadow(color: .black.opacity(0.04), radius: 2, y: 1)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label).font(.caption.weight(.semibold))
+            HStack(spacing: 10) {
+                Image(systemName: icon).font(.body).foregroundStyle(.secondary).frame(width: 20).accessibilityHidden(true)
+                content().font(.body)
+            }.padding(.horizontal, 14).padding(.vertical, 8).frame(minHeight: 48)
+                .background(Color(uiColor: .tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(active ? DashboardPalette.green.opacity(0.5) : .clear, lineWidth: 1))
+        }
     }
     private func submit() {
         focused = nil

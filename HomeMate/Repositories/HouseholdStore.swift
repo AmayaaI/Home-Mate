@@ -19,6 +19,10 @@ final class HouseholdStore: ObservableObject {
     private var snapshots: [String: Snapshot] = [:]
     private var storageAvailable = true
     private let notificationsEnabled: Bool
+    var onRemindersChanged: (() -> Void)?
+    private var reminderWork: Task<Void, Never>?
+    private var reminderRevision = 0
+    private var automaticReminderDates: [String: (due: Date, reminder: Date)] = [:]
     private let container: NSPersistentContainer
 
     init(storageURL: URL? = nil, notificationsEnabled: Bool = true) {
@@ -427,21 +431,69 @@ final class HouseholdStore: ObservableObject {
     var monthlyExpenses: [HouseholdRecord] {
         ExpenseIntelligence.spendingRecords(records, inMonthOf: Date())
     }
-    func scheduleReminders(for scheduledRecords: [HouseholdRecord]? = nil, identifierPrefix: String? = nil) {
+    func scheduleReminders(scopes: [String: [HouseholdRecord]]? = nil) {
         guard notificationsEnabled else { return }
-        let center = UNUserNotificationCenter.current()
-        center.removeAllPendingNotificationRequests()
-        guard profile.reminders else { return }
-        let values = scheduledRecords ?? records
-        let prefix = identifierPrefix ?? scope
-        for record in values.filter({ !$0.completed && $0.kind != .expense && $0.reminderEnabled != false && $0.date > Date() }).sorted(by: { $0.date < $1.date }).prefix(60) {
-            let content = UNMutableNotificationContent()
-            content.title = record.title
-            content.body = "\(record.kind.rawValue) reminder for \(record.assignee)"
-            content.sound = .default
-            guard let reminder = ReminderSchedule.date(for: record) else { continue }
-            let time = max(1, reminder.timeIntervalSinceNow)
-            center.add(UNNotificationRequest(identifier: prefix + ":" + record.id.uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)))
+        if scopes == nil, let onRemindersChanged { onRemindersChanged(); return }
+        let values = profile.reminders ? (scopes ?? [scope: records]) : [:]
+        reminderRevision += 1
+        let revision = reminderRevision
+        let previous = reminderWork
+        // Serialize reconciliation so an older refresh cannot overwrite a newer save.
+        reminderWork = Task { @MainActor [weak self] in
+            await previous?.value
+            guard let self, self.reminderRevision == revision else { return }
+            let center = UNUserNotificationCenter.current()
+            let pending = await center.pendingNotificationRequests()
+            guard self.reminderRevision == revision else { return }
+            var requests: [(Date, UNNotificationRequest)] = []
+            for (scope, records) in values {
+                for var record in records {
+                    let id = "homemate.deadline:" + scope + ":" + record.id.uuidString
+                    if record.reminderDate == nil {
+                        if let cached = self.automaticReminderDates[id], cached.due == record.date {
+                            record.reminderDate = cached.reminder
+                        } else if let date = ReminderSchedule.date(for: record) {
+                            self.automaticReminderDates[id] = (record.date, date)
+                            record.reminderDate = date
+                        }
+                    }
+                    guard let date = ReminderSchedule.date(for: record) else { continue }
+                    let content = UNMutableNotificationContent()
+                    content.title = record.title
+                    content.body = "\(record.kind.rawValue) reminder for \(record.assignee)"
+                    content.sound = .default
+                    let components = Calendar.current.dateComponents([.calendar, .timeZone, .year, .month, .day, .hour, .minute, .second], from: date)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                    requests.append((date, UNNotificationRequest(identifier: id, content: content, trigger: trigger)))
+                }
+            }
+            let desired = requests.sorted { $0.0 < $1.0 }.prefix(60).map(\.1)
+            let ids = Set(desired.map(\.identifier))
+            // Remove only our deadline requests (including the previous scope:UUID format).
+            let obsolete = pending.filter {
+                let legacy = UUID(uuidString: String($0.identifier.suffix(36))) != nil && !$0.identifier.hasPrefix("homemate.")
+                return ($0.identifier.hasPrefix("homemate.deadline:") || legacy) && !ids.contains($0.identifier)
+            }
+            center.removePendingNotificationRequests(withIdentifiers: obsolete.map(\.identifier))
+            for request in desired {
+                guard self.reminderRevision == revision else { return }
+                if let old = pending.first(where: { $0.identifier == request.identifier }),
+                   old.content.title == request.content.title, old.content.body == request.content.body,
+                   (old.trigger as? UNCalendarNotificationTrigger)?.dateComponents == (request.trigger as? UNCalendarNotificationTrigger)?.dateComponents { continue }
+                do { try await center.add(request) }
+                catch { if self.reminderRevision == revision { self.error = "Could not schedule reminder: " + error.localizedDescription } }
+            }
+        }
+    }
+    /// Saving an enabled reminder must never silently succeed without notification permission.
+    func prepareReminderPermission() async throws {
+        guard notificationsEnabled else { return }
+        guard profile.reminders else {
+            throw NSError(domain: "HomeMate.Reminders", code: 1, userInfo: [NSLocalizedDescriptionKey: "Turn on reminders in HomeMate Settings, or turn off this activity's reminder to save without an alert."])
+        }
+        let allowed = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+        guard allowed else {
+            throw NSError(domain: "HomeMate.Reminders", code: 2, userInfo: [NSLocalizedDescriptionKey: "Allow notifications in device Settings → Notifications → HomeMate, or turn off this activity's reminder to save without an alert."])
         }
     }
     func enableNotifications() async {

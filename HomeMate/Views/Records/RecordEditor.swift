@@ -309,7 +309,7 @@ private struct RecordDetailScreen: View {
             .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 28)
             .frame(maxWidth: 700).frame(maxWidth: .infinity)
         }
-        .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+        .background(HomeBackdrop())
         .navigationTitle("\(record.kind.detailName) Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

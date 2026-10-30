@@ -4,6 +4,11 @@ import SwiftUI
 enum HomeMateStyle {
     static let background = Color(uiColor: .systemGroupedBackground)
     static let backgroundUIColor = UIColor.systemGroupedBackground
+    static let card = Color(uiColor: .secondarySystemGroupedBackground)
+    static let inset = Color(uiColor: .tertiarySystemGroupedBackground)
+    static let pageInset: CGFloat = 16
+    static let pageSpacing: CGFloat = 18
+    static let cardRadius: CGFloat = 22
 }
 
 

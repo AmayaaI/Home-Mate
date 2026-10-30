@@ -54,6 +54,7 @@ struct HouseholdAnnouncementsView: View {
                 }.padding(.vertical, 6)
             }
         }
+        .homeListChrome()
         .navigationTitle("Announcements")
         .toolbar {
             Button("New announcement", systemImage: "plus") {
@@ -81,7 +82,7 @@ private struct AnnouncementEditor: View {
                 TextField("Message", text: $draft.body, axis: .vertical).lineLimit(4...12)
                 Toggle("Important", isOn: $draft.important)
                 if let error { Text(error).foregroundStyle(.red) }
-            }.navigationTitle(draft.revision == nil ? "New announcement" : "Edit announcement")
+            }.homeFormChrome().navigationTitle(draft.revision == nil ? "New announcement" : "Edit announcement")
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.disabled(saving) }
                     ToolbarItem(placement: .confirmationAction) {

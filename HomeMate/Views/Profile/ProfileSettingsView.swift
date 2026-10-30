@@ -122,6 +122,7 @@ private struct ProfileSettingsViewScreen: View {
             .sheet(isPresented: $editEmergency) {
                 NavigationStack {
                     Form { TextField("Contact name", text: $viewModel.draft.emergencyName).exactTextEntry(); TextField("Phone number", text: $viewModel.draft.emergencyPhone).keyboardType(.phonePad); if !viewModel.validEmergencyPhone { Text("Enter 7–15 digits, with an optional + at the beginning.").foregroundStyle(.red) }; Text("Saved only when you save your profile.").font(.caption) }
+                        .homeFormChrome()
                         .navigationTitle("Emergency contact").navigationBarTitleDisplayMode(.inline).toolbar { Button("Done") { editEmergency = false }.disabled(!viewModel.validEmergencyPhone) }
                 }
             }

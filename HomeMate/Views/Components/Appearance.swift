@@ -41,8 +41,8 @@ struct HomePrimaryButton: View {
             Label(title, systemImage: icon).font(.body .weight(.semibold))
                 .frame(maxWidth: .infinity).frame(minHeight: 52)
                 .foregroundStyle(.white)
-                .background(DashboardPalette.brandFill, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .shadow(color: DashboardPalette.green.opacity(0.10), radius: 6, y: 3)
+                .background(DashboardPalette.brandFill.gradient, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .shadow(color: DashboardPalette.green.opacity(0.16), radius: 10, y: 5)
         }.buttonStyle(HomePressStyle())
     }
 }
@@ -56,11 +56,51 @@ struct HomeSectionTitle: View {
         }
     }
 }
+struct HomePageHeader: View {
+    var eyebrow: String
+    var title: String
+    var symbol: String? = nil
+    var body: some View {
+        HStack(alignment: .center, spacing: 14) {
+            HomeSectionTitle(eyebrow: eyebrow, title: title)
+            Spacer(minLength: 8)
+            if let symbol {
+                Image(systemName: symbol)
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(DashboardPalette.green)
+                    .frame(width: 46, height: 46)
+                    .background(DashboardPalette.green.opacity(0.10), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    .accessibilityHidden(true)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+struct HomeEmptyState: View {
+    var title: String
+    var message: String
+    var symbol: String
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(systemName: symbol)
+                .font(.system(size: 28, weight: .medium))
+                .foregroundStyle(DashboardPalette.green)
+                .frame(width: 68, height: 68)
+                .background(DashboardPalette.mint.opacity(0.22), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+            Text(title).font(.headline.weight(.semibold))
+            Text(message).font(.footnote).foregroundStyle(DashboardPalette.muted).multilineTextAlignment(.center)
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity)
+        .homeCard(cornerRadius: 22)
+        .accessibilityElement(children: .combine)
+    }
+}
 extension View {
     func homeCard(cornerRadius: CGFloat = 24) -> some View {
-        self.background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).stroke(Color.primary.opacity(0.045), lineWidth: 1))
-            .shadow(color: .black.opacity(0.025), radius: 10, x: 0, y: 4)
+        self.background(HomeMateStyle.card, in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).stroke(Color.primary.opacity(0.055), lineWidth: 1))
+            .shadow(color: .black.opacity(0.035), radius: 12, x: 0, y: 5)
     }
 }
 
@@ -84,6 +124,22 @@ private struct HomeResponsiveContainer: ViewModifier {
 extension View {
     // Measure the actual detail pane, so rotation and iPad window resizing reflow content.
     func responsiveHomeWidth() -> some View { modifier(HomeResponsiveContainer()) }
+    func homeListChrome() -> some View {
+        self
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(HomeBackdrop())
+            .tint(DashboardPalette.green)
+    }
+    func homeFormChrome() -> some View {
+        self
+            .scrollContentBackground(.hidden)
+            .background(HomeBackdrop())
+            .tint(DashboardPalette.green)
+    }
+    func homeCanvas() -> some View {
+        self.background(HomeBackdrop()).tint(DashboardPalette.green)
+    }
 }
 
 struct AppLockContainer<Content: View>: View {

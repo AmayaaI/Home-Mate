@@ -46,7 +46,30 @@ private final class VisibilityHTTPFixture: URLProtocol {
 }
 
 /// Pure logic tests and isolated temporary stores. No production Firebase or Keychain writes.
+/// Covers input validation, legacy decoding, cloud encoding, filtering, and edge cases.
 struct ValidationTests {
+    /// A delivered/expired explicit reminder must not become a new automatic alert.
+    @Test func expiredReminderDoesNotReschedule() {
+        let now = Date(timeIntervalSince1970: 2_000_000_000)
+        var record = HouseholdRecord(kind: .task, title: "Test", date: now.addingTimeInterval(3600))
+        record.reminderDate = now.addingTimeInterval(-60)
+        #expect(ReminderSchedule.date(for: record, now: now) == nil)
+        record.reminderDate = now.addingTimeInterval(3601)
+        #expect(ReminderSchedule.date(for: record, now: now) == nil)
+    }
+    /// Saved reminder dates remain fixed across refreshes; completed/disabled work is excluded.
+    @Test func explicitReminderIsStableAndRespectsState() {
+        let now = Date(timeIntervalSince1970: 2_000_000_000)
+        var record = HouseholdRecord(kind: .task, title: "Test", date: now.addingTimeInterval(3600))
+        record.reminderDate = ReminderSchedule.defaultDate(for: record, now: now)
+        #expect(ReminderSchedule.date(for: record, now: now.addingTimeInterval(60)) == record.reminderDate)
+        record.completed = true
+        #expect(ReminderSchedule.date(for: record, now: now) == nil)
+        record.completed = false; record.reminderEnabled = false
+        #expect(ReminderSchedule.date(for: record, now: now) == nil)
+        record.reminderEnabled = true; record.kind = .expense
+        #expect(ReminderSchedule.date(for: record, now: now) == nil)
+    }
     @Test func optionalCoordinatesPreserveLegacyDecoding() throws {
         let record = HouseholdRecord(kind: .task, title: "Old record")
         let data = try JSONEncoder().encode(record)
@@ -226,6 +249,7 @@ struct ValidationTests {
     }
 }
 
+/// Verifies spending totals, bill payment dates, monthly history, and calendar boundaries.
 struct SpendingTests {
     private var calendar: Calendar { var c = Calendar(identifier: .gregorian); c.timeZone = TimeZone(secondsFromGMT: 0)!; return c }
     private func date(_ month: Int, day: Int = 10) -> Date { calendar.date(from: DateComponents(year: 2026, month: month, day: day))! }
@@ -262,6 +286,7 @@ struct SpendingTests {
     }
 }
 
+/// Exercises local persistence, account scoping, and household transitions with temporary stores.
 @MainActor
 struct PersistenceTests {
     @Test func privateNoticesAddEditDeleteWithoutReplacingOthers() async throws {
@@ -759,6 +784,7 @@ struct PersistenceTests {
 }
 
 /// Tests use real bundled inference and deterministic history; no production data or network.
+/// Includes feature validation, forecasting, category feedback, budgets, and anomaly behavior.
 struct ExpenseIntelligenceTests {
     private var calendar: Calendar { var c = Calendar(identifier: .gregorian); c.timeZone = TimeZone(secondsFromGMT: 0)!; return c }
     private var now: Date { calendar.date(from: DateComponents(year: 2026, month: 10, day: 20))! }
@@ -841,6 +867,7 @@ struct ExpenseIntelligenceTests {
     }
 }
 
+/// Checks monitoring scope isolation, device limits, and invalid or stale region preferences.
 struct ErrandMonitoringTests {
     @Test func scopesKeepIdenticalRecordIDsSeparateAndRespectDeviceLimit() {
         let record = HouseholdRecord(kind: .task, title: "Place")
@@ -860,6 +887,7 @@ struct ErrandMonitoringTests {
     }
 }
 
+/// Confirms map visibility and directions preserve user-entered locations and coordinates.
 struct ErrandMapVisibilityTests {
     @Test func typedAddressesRemainVisibleWithoutInventingPins() {
         var record = HouseholdRecord(kind: .task, title: "Shop")
@@ -883,6 +911,7 @@ struct ErrandMapVisibilityTests {
     }
 }
 
+/// Guards health-related receipt categorization against unrelated report wording.
 struct MedicalCategoryCorrectionTests {
     @Test func medicalReportsUseHealthWithoutMatchingUnrelatedReports() {
         #expect(ExpenseIntelligence.medicalCategoryCorrection("Medical report") == "Health")
@@ -892,6 +921,7 @@ struct MedicalCategoryCorrectionTests {
     }
 }
 
+/// Audits forecast fallback limits and prevents target/future data from leaking into history.
 struct ForecastAuditTests {
     @Test func outOfTrainingRangeHistoryUsesDampedTrendInsteadOfUnreliableExtrapolation() throws {
         let model = try #require(ExpenseIntelligence.forecaster)
@@ -927,6 +957,7 @@ struct ForecastAuditTests {
     }
 }
 
+/// Covers allowed historical expense dates, the current day, future dates, and non-expenses.
 struct ExpenseDatePolicyTests {
     @Test func permitsEarlierYearsAndTodayButNotFutureDays() throws {
         var calendar = Calendar(identifier: .gregorian)

@@ -63,6 +63,8 @@ struct ErrandsMapView: View {
                                 Button("View errand") { editing = record }.buttonStyle(.bordered)
                                 directions(record).buttonStyle(.borderedProminent)
                             }
+                            Divider()
+                            ErrandGeofenceControls(record: record, service: dependencies.locations)
                         }.padding().frame(maxWidth: .infinity, alignment: .leading)
                             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
                     }
@@ -90,7 +92,14 @@ struct ErrandsMapView: View {
                                     Text(record.completed ? "Completed" : record.date < Date() ? "Overdue · Pending" : "Upcoming · Pending").font(.caption)
                                 }.frame(maxWidth: .infinity, alignment: .leading)
                             }.foregroundStyle(.primary)
-                            if ErrandMapPolicy.hasPin(record) { directions(record).font(.subheadline) }
+                            if ErrandMapPolicy.hasPin(record) {
+                                HStack {
+                                    directions(record).font(.subheadline)
+                                    Spacer()
+                                    Button("Arrival reminder", systemImage: "location.circle") { editing = record }
+                                        .font(.subheadline)
+                                }
+                            }
                             else {
                                 Button("Choose map location", systemImage: "mappin.and.ellipse") { editing = record }
                                 Text("This address has no saved map pin yet.").font(.caption).foregroundStyle(.secondary)
@@ -102,7 +111,7 @@ struct ErrandsMapView: View {
                     } label: { Label("Arrival reminders", systemImage: "location.circle") }
                     .padding().background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
                 }.padding().frame(maxWidth: 760).frame(maxWidth: .infinity)
-            }.background(Color(uiColor: .systemGroupedBackground))
+            }.background(HomeBackdrop())
                 .navigationTitle("Errands Map").navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -128,19 +137,93 @@ struct ErrandsMapView: View {
         }
     }
     private var errandsMap: some View {
-                    Map(position: $position, selection: $selected) {
-                        ForEach(records.filter(ErrandMapPolicy.hasPin)) { record in
-                            if let latitude = record.latitude, let longitude = record.longitude {
-                                Marker(record.title, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
-                                    .tint(DashboardPalette.green).tag(record.id)
-                            }
-                        }
-                    }.mapControls { MapCompass(); MapScaleView() }
-                        .frame(height: 320).clipShape(RoundedRectangle(cornerRadius: 18))
-                        .accessibilityLabel("Errands map. Saved places are also available in the list below.")
+        ErrandGeofenceMap(records: records, service: dependencies.locations, position: $position, selected: $selected)
     }
     private func directions(_ record: HouseholdRecord) -> some View {
         ErrandDirectionsLink(record: record)
+    }
+}
+
+private struct ErrandGeofenceMap: View {
+    let records: [HouseholdRecord]
+    @ObservedObject var service: ErrandLocationService
+    @Binding var position: MapCameraPosition
+    @Binding var selected: UUID?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Map(position: $position, selection: $selected) {
+                ForEach(records.filter(ErrandMapPolicy.hasPin)) { record in
+                    if let latitude = record.latitude, let longitude = record.longitude {
+                        let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                        if !record.completed, let radius = service.radius(for: record), ErrandRegionPolicy.validRadius(radius) {
+                            MapCircle(center: center, radius: radius)
+                                .foregroundStyle(DashboardPalette.green.opacity(0.14))
+                                .stroke(DashboardPalette.green.opacity(0.7), lineWidth: 2)
+                        }
+                        Marker(record.title, coordinate: center)
+                            .tint(DashboardPalette.green).tag(record.id)
+                    }
+                }
+            }
+            .mapControls { MapCompass(); MapScaleView() }
+            .frame(height: 320).clipShape(RoundedRectangle(cornerRadius: 18))
+            .accessibilityLabel("Errands map with saved arrival reminder areas. Select a place or use the list below to configure a reminder.")
+            Label("Shaded circles show saved reminder areas. Delivery needs location and notification permissions.", systemImage: "location.circle")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+    }
+}
+
+private struct ErrandGeofenceControls: View {
+    @EnvironmentObject private var dependencies: AppDependencies
+    let record: HouseholdRecord
+    @ObservedObject var service: ErrandLocationService
+    @State private var draftRadius = 200.0
+
+    private var eligible: Bool {
+        !ErrandRegionPolicy.eligible([record], shared: dependencies.household.family != nil,
+                                     email: dependencies.account.email, localName: dependencies.store.profile.name).isEmpty
+    }
+    private var savedRadius: Double? { service.radius(for: record) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Toggle("Remind me when I arrive", isOn: Binding(
+                get: { savedRadius != nil },
+                set: { service.setReminder(record, radius: $0 ? draftRadius : nil) }
+            ))
+            // An old preference can always be turned off, even after assignment or completion changes.
+            .disabled(!eligible && savedRadius == nil)
+            Picker("Geofence radius", selection: Binding(
+                get: { savedRadius ?? draftRadius },
+                set: { value in
+                    draftRadius = value
+                    if savedRadius != nil { service.setReminder(record, radius: value) }
+                }
+            )) {
+                ForEach([100.0, 200.0, 500.0, 1000.0], id: \.self) { value in
+                    Text(value == 1000 ? "1 km" : "\(Int(value)) m").tag(value)
+                }
+            }.pickerStyle(.menu).disabled(!eligible)
+            if !eligible {
+                Text("Arrival reminders are available for incomplete tasks, maintenance and events assigned to you or Everyone, with a saved map pin.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            if savedRadius != nil {
+                Text(service.status).font(.caption).foregroundStyle(.secondary)
+                if service.authorization != .authorizedAlways {
+                    Button("Set up location permissions", systemImage: "location") { service.requestPermission() }
+                }
+                if !service.notificationStatus.isEmpty {
+                    Text(service.notificationStatus).font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            Text("Reminders are saved on this device. Your location is not shared with family.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+        .onAppear { draftRadius = savedRadius ?? 200 }
+        .onChange(of: record.id) { _, _ in draftRadius = savedRadius ?? 200 }
     }
 }
 
@@ -180,10 +263,8 @@ private struct ErrandDetailView: View {
     @Environment(\.dismiss) private var dismiss
     var record: HouseholdRecord
     @ObservedObject var service: ErrandLocationService
-    @State private var radius = 200.0
-    private var eligible: Bool {
-        !ErrandRegionPolicy.eligible([record], shared: dependencies.household.family != nil, email: dependencies.account.email, localName: dependencies.store.profile.name).isEmpty
-    }
+    @State private var previewPosition: MapCameraPosition = .automatic
+    @State private var previewSelection: UUID?
     var body: some View {
         NavigationStack {
             Form {
@@ -194,19 +275,20 @@ private struct ErrandDetailView: View {
                     NavigationLink("Edit activity") { RecordEditor(record: record) }
                     if ErrandMapPolicy.hasPin(record) { ErrandDirectionsLink(record: record) }
                 }
-                Section("Arrival reminder") {
-                    Picker("Radius", selection: $radius) {
-                        ForEach([100.0, 200.0, 500.0, 1000.0], id: \.self) { Text("\(Int($0)) metres").tag($0) }
-                    }.onChange(of: radius) { _, value in if service.radius(for: record) != nil { service.setReminder(record, radius: value) } }
-                    Toggle("Remind me when I arrive", isOn: Binding(get: { service.radius(for: record) != nil }, set: { service.setReminder(record, radius: $0 ? radius : nil) }))
-                        .disabled(!eligible)
-                    if !eligible { Text("Arrival reminders are available for incomplete errands assigned to you or Everyone.").font(.caption) }
-                    ArrivalPermissionView(service: service)
-                    Text("This preference is for this device only. No family member's location is shared. Arrival reminders may be delayed by iOS.").font(.caption).foregroundStyle(.secondary)
+                if ErrandMapPolicy.hasPin(record) {
+                    Section("Reminder area") {
+                        ErrandGeofenceMap(records: [record], service: service, position: $previewPosition, selected: $previewSelection)
+                    }
                 }
-            }.navigationTitle("Errand")
+                Section("Arrival reminder") {
+                    ErrandGeofenceControls(record: record, service: service)
+                }
+                Section("Permissions") {
+                    ArrivalPermissionView(service: service)
+                    Text("Arrival reminders may be delayed by iOS. After enabling one, leave the area and re-enter to test an arrival.").font(.caption).foregroundStyle(.secondary)
+                }
+            }.homeFormChrome().navigationTitle("Errand")
                 .toolbar { Button("Done") { dismiss() } }
-                .onAppear { radius = service.radius(for: record) ?? 200 }
         }
     }
 }
@@ -255,7 +337,7 @@ struct ErrandPlacePicker: View {
                     }
                 }
                 Section { Text("Place search uses Apple Maps and requires an internet connection. Your device location is not required to search.").font(.caption) }
-            }.navigationTitle("Choose location")
+            }.homeListChrome().navigationTitle("Choose location")
                 .toolbar { Button("Cancel") { search?.cancel(); dismiss() } }
                 .onDisappear { search?.cancel() }
         }
